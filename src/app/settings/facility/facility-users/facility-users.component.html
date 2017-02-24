@@ -1,0 +1,196 @@
+<div id="content" *ngIf="user">
+   <div class="row">
+      <article class="col-sm-12">
+         <sa-widget [editbutton]="false" color="darken">
+            <header>
+               <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+               <h2>Facility Users</h2>
+               <div class="widget-toolbar">
+                  <a class="btn btn-primary" data-toggle="modal" data-target="#newUser"><i class="fa fa-plus"></i> New Facility User</a>
+               </div>
+            </header>
+            <div>
+               <div class="widget-body no-padding">
+                  <div class="table-responsive">
+                     <div class="dt-toolbar">
+                        <div class="col-xs-12 col-sm-6 hidden-xs">
+                           <div id="datatable_fixed_column_filter" class="dataTables_filter">
+                              <label>
+                              <span class="input-group-addon">
+                              <i class="glyphicon glyphicon-search"></i>
+                              </span>
+                              <input type="search" class="form-control" placeholder="Search" aria-controls="datatable_fixed_column">
+                              </label>
+                           </div>
+                        </div>
+                     </div>
+                     <table class="table table-bordered table-striped">
+                        <thead>
+                           <tr>
+                              <th>Name</th>
+                              <th>Email Address</th>
+                              <th>Phone Number</th>
+                              <th>Access Level</th>
+                              <th>Registered By</th>
+                              <th style="width: 15%; text-align: center">Options</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr *ngFor="let user of usersList">
+                              <td>{{user.name}}</td>
+                              <td>{{user.email}}</td>
+                              <td>{{user.phone_number}}</td>
+                              <td>{{user.access_level.name}}</td>
+                              <td>{{user.created_by.name}}</td>
+                              <td style="text-align: center">
+                                 <a class="btn btn-primary btn-xs" data-toggle="modal" attr.data-target="#edit{{user.id}}">Edit</a>
+                                 <a class="btn btn-danger btn-xs" data-toggle="modal" attr.data-target="#disable{{user.id}}">Disable</a>
+                              </td>
+                              <!--Edit Modal-->
+                              <div id="edit{{user.id}}" class="modal fade" role="dialog">
+                                 <div class="modal-dialog">
+                                    <div class="modal-content">
+                                       <div class="modal-header">
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                          <h4 class="modal-title">New Facility User</h4>
+                                       </div>
+                                       <div class="modal-body">
+                                          <form #editForm="ngForm">
+                                             <table style="width: 100%" class="table">
+                                                <tbody>
+                                                   <tr>
+                                                      <th>User Type</th>
+                                                      <td *ngIf="user.access_level">
+                                                         <select class="form-control" id="select-1" [(ngModel)]="user.access_level.id" name="access_level">
+                                                         <option *ngFor="let level of accessLevelList | async " value="{{level.id}}">{{level.name}}</option>
+                                                         </select>
+                                                      </td>
+                                                   </tr>
+                                                   <tr>
+                                                      <th>Full Name</th>
+                                                      <td><input type="text" class="form-control" [(ngModel)]="user.name" name="name"></td>
+                                                   </tr>
+                                                   <!--<tr>
+                                                      <th>Username</th>
+                                                      <td><input type="text" class="form-control"></td>
+                                                      </tr>-->
+                                                   <tr>
+                                                      <th>Phone Number</th>
+                                                      <td><input type="text" class="form-control" [(ngModel)]="user.phone_number" name="phone_number"></td>
+                                                   </tr>
+                                                   <tr>
+                                                      <th>Email Address</th>
+                                                      <td><input type="text" class="form-control" [(ngModel)]="user.email" name="email"></td>
+                                                   </tr>
+                                                   <tr>
+                                                      <th>Facility</th>
+                                                      <td><input type="text" class="form-control" [(ngModel)]="user.facility.type.name" name="facility"></td>
+                                                   </tr>
+                                                   <tr>
+                                                      <td></td>
+                                                      <td style="text-align: right"><button class="btn btn-primary" type="submit" (click)="onUpdate(user)" data-dismiss="modal"><i class="fa fa-save"></i> Save	</button>
+                                                         <button class="btn btn-primary" data-dismiss="modal"> Cancel	</button>
+                                                      </td>
+                                                   </tr>
+                                                </tbody>
+                                             </table>
+                                          </form>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <!--Disable Modal-->
+                              <div id="disable{{user.id}}" class="modal fade" role="dialog">
+                                 <div class="modal-dialog modal-sm">
+                                    <div class="modal-content">
+                                       <div class="modal-header">
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                          <h4 class="modal-title">Disable</h4>
+                                       </div>
+                                       <div class="modal-body">
+                                          <form>
+                                             <h3>Are you sure you want to disable {{user.name}}?</h3>
+                                             <div style="text-align: right">
+                                                <button class="btn btn-primary"(click)="disable(user.id)"> Disable	</button>
+                                                <button class="btn btn-danger" data-dismiss="modal"> Cancel	</button>
+                                             </div>
+                                          </form>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
+                  <!--New Modal-->
+                  <div id="newUser" class="modal fade" role="dialog">
+                     <div class="modal-dialog">
+                        <div class="modal-content">
+                           <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                              <h4 class="modal-title">New Facility User</h4>
+                           </div>
+                           <div class="modal-body">
+                              <form (ngSubmit)="onSubmit()" #usersForm="ngForm">
+                              <table style="width: 100%" class="table">
+                                 <tbody>
+                                     <tr>
+                                        <th>Created By ID (Temp)</th>
+                                       <td><input type="text" class="form-control" [(ngModel)]="user.created_by_id" name="created_by_id"></td>                                         
+                                     </tr>
+                                    <tr>
+                                       <th>User Type</th>
+                                       <td>
+                                          <select class="form-control" id="select-1" [(ngModel)]="user.access_level_id" name="access_level">
+                                          <option *ngFor="let level of accessLevelList | async "value="{{level.id}}">{{level.name}}</option>
+                                          </select>
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <th>Full Name</th>
+                                       <td><input type="text" class="form-control" [(ngModel)]="user.name" name="name"></td>
+                                    </tr>
+                                    <!--<tr>
+                                       <th>Username</th>
+                                       <td><input type="text" class="form-control"></td>
+                                       </tr>-->
+                                    <tr>
+                                       <th>Phone Number</th>
+                                       <td><input type="text" class="form-control" [(ngModel)]="user.phone_number" name="phone_number"></td>
+                                    </tr>
+                                    <tr>
+                                       <th>Email Address</th>
+                                       <td><input type="text" class="form-control" [(ngModel)]="user.email" name="email"></td>
+                                    </tr>
+                                    <tr>
+                                       <th>Facility</th>
+                                       <td>
+                                          <select class="form-control" id="select-1" [(ngModel)]="user.facility_id" name="facility_id">
+                                          <option *ngFor="let types of facilityTypes | async "value="{{types.id}}">{{types.name}}</option>
+                                          </select>
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Password (Temp)</th>
+                                       <td><input type="password" class="form-control" [(ngModel)]="user.password" name="password"></td>                                         
+                                     </tr>
+                                    <tr>
+                                       <td></td>
+                                       <td style="text-align: right"><button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> Save	</button>
+                                          <button class="btn btn-primary" data-dismiss="modal"> Cancel	</button>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                              </form>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </sa-widget>
+      </article>
+   </div>
+</div>

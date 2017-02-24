@@ -1,0 +1,540 @@
+<div id="content">
+    <sa-widgets-grid>
+        <!-- row -->
+        <div class="row">
+            <!-- ADD PATIENT WIDGET START -->
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <!-- Widget ID (each widget will need unique ID)-->
+                <sa-widget [colorbutton]="false" [deletebutton]="false" [custombutton]="false" [editbutton]="false">
+                    <!-- widget options:
+                        usage: <sa-widget id="wid-id-0" [editbutton]="false">
+                        [colorbutton]="false"
+                        [editbutton]="false"
+                        [togglebutton]="false"
+                        [deletebutton]="false"
+                        [fullscreenbutton]="false"
+                        [custombutton]="false"
+                        [collapsed]="true"
+                        [sortable]="false"
+                    -->
+                    <header>
+                        <h2><strong>Patients</strong></h2>
+                        <h6 style="text-align:right">(Fields Marked with <span style="color:red; font-weight:bold">*</span>  Asterisks are )</h6>
+                    </header>
+                    <!-- widget div-->
+                    <div role="content">
+                    <!-- widget content -->
+                        <div class="widget-body">
+                            <!--<pre>
+                                {{patientForm.value | json}}
+                            </pre>-->
+                            <form (ngSubmit)="onSubmit(); isClickedOnce = true;" novalidate [formGroup]="patientForm">
+                                <!-- Patients Information and Demographics -->
+                                <fieldset class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                    <legend>Patient Information and Demographics</legend>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Medical Record No.</label>
+                                        <input class="form-control" placeholder="Medical Record No." type="text"  formControlName="id">
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" [ngClass]="{'has-error': ccc_number_warning !== null}">
+                                        <span style="color:red; font-weight:bold">*</span><label class="control-label" for="ccc"> Patient Number CCC</label>
+                                        <input id="ccc" class="form-control"  placeholder="Patient Number" type="text" formControlName="ccc_number">
+                                    </div>
+                                    <!-- Error handling -->
+                                    <div *ngIf="ccc_number_warning !== null" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <alert type="danger" dismissible="true">
+                                            <strong>Error!</strong> {{ccc_number_warning}}.
+                                        </alert>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Last Name</label>
+                                        <input class="form-control" placeholder="Last name" type="text" formControlName="last_name">
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label><span style="color:red; font-weight:bold">*</span> First Name</label>
+                                        <input class="form-control"  placeholder="First Name" type="text" formControlName="first_name">
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Other Name</label>
+                                        <input class="form-control" placeholder="Other Name" type="text" formControlName="other_name">
+                                    </div>
+                                    <!-- Date picker -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label><span style="color:red; font-weight:bold">*</span> Date of Birth:</label>
+                                            <div class="input-group">
+                                                <input type="text" formControlName="birth_date" placeholder="Select a date" class="form-control datepicker" [saUiDatepicker]="{ dateFormat: 'yy/mm/dd' , changeMonth: true, changeYear: true, yearRange : '-120:+0', maxDate : '0D'}" (selectDate)='setDate($event,"birthday")'>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End of date picker -->
+                                    <!-- This is meant to handle cases when the data is not being loaded -->
+                                    <div [ngSwitch]="birth_place | async" class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Place of birth</label>
+                                            <div *ngSwitchCase="null" >
+                                                <div class="form-group">
+                                                    <i class="fa fa-cog fa-spin fa-2x fa-fw"></i>
+                                                    <span>Loading...</span>
+                                                </div>
+                                            </div>
+                                            <div *ngSwitchDefault>
+                                                <select class="form-control" formControlName="county_sub_id">
+                                                    <option *ngFor="let location of birth_place | async " value="{{location.id}}">{{location.name}}</option>
+                                                </select>
+                                            </div>
+                                    </div>
+                                    <div *ngIf="!edit" class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Age (Years)</label>
+                                        <input class="form-control" placeholder="Age (Years)" type="text" formControlName="age_in_years" >
+                                    </div>
+                                    <div *ngIf="!edit" class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Age (Months)</label>
+                                        <input class="form-control" placeholder="Age (Months)" type="text" formControlName="age_in_months" >
+                                    </div>
+                                    <div *ngIf="edit" class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Start Age (Years)</label>
+                                        <input class="form-control" placeholder="Start Age (Years)" type="text" name="start_age" >
+                                    </div>
+                                    <div *ngIf="edit" class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Current Age (Years)</label>
+                                        <input class="form-control" placeholder="Current Age (Years)" type="text" name="current_age" >
+                                    </div>
+                                    <div *ngIf="patientForm.get('gender').value !== 'female'" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label><span style="color:red; font-weight:bold">*</span> Gender</label>
+                                        <select  class="form-control" id="select-1" formControlName="gender">
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                        </select>
+                                    </div>
+                                    <div *ngIf="patientForm.get('gender').value === 'female'" class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label> <span style="color:red; font-weight:bold">*</span> Gender</label>
+                                        <select  class="form-control" id="select-1" formControlName="gender">
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                        </select>
+                                    </div>
+                                    <div *ngIf="patientForm.get('gender').value === 'female'" class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Pregnant?</label>
+                                        <select class="form-control" id="select-1" formControlName="is_pregnant">
+                                            <option value="1">Yes</option>
+                                            <option value="0">No</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Start weight (KG)</label>
+                                        <input class="form-control" placeholder="Current Weight" type="text" formControlName="initial_weight" >
+                                    </div>
+                                    <div *ngIf="edit" class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label><span style="color:red; font-weight:bold">*</span>Current Weight (KG)</label>
+                                        <input class="form-control" placeholder="Weight" type="text" formControlName="current_weight" >
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Start Height (KG)</label>
+                                        <input class="form-control" placeholder="Current Height" type="text" formControlName="initial_height" >
+                                    </div>
+                                    <div *ngIf="edit" class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label><span style="color:red; font-weight:bold">*</span>Current Height (CM)</label>
+                                        <input class="form-control" placeholder="Height" type="text" formControlName="current_height" >
+                                    </div>
+                                    <div *ngIf="edit" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Current Body Surface Area (MSQ)</label> 
+                                        <input class="form-control" placeholder="<<auto generate>>"  type="text"  formControlName="current_bsa" readonly/>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Start Body Surface Area (MSQ)</label>
+                                        <input class="form-control" placeholder="<<auto generate>>"  type="text"  formControlName="initial_bsa" readonly/>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-5 col-md-5 col-lg-5" [ngClass]="{'has-error': (patientForm.get('phone_number').touched || patientForm.get('phone_number').dirty) && !patientForm.get('phone_number').valid }">
+                                        <label for="phone" class="control-label">Phone Contact</label>
+                                        <input id="phone" class="form-control" maxlength="10" placeholder="e.g 0712345678" type="text" formControlName="phone_number">
+                                    </div>
+                                    <div class=" form-group col-xs-12 col-sm-7 col-md-7 col-lg-7">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12">
+                                                <label class="control-label">Receive SMS Reminders</label>
+                                            </div>
+                                            <div class="col-sm-12 col-md-10">
+                                                <label class="radio radio-inline no-margin">
+                                                    <input type="radio" value="1" class="radiobox style-2" formControlName="is_sms" />
+                                                    <span>Yes</span>
+                                                </label>
+                                                <label class="radio radio-inline">
+                                                    <input type="radio" value="0" class="radiobox style-2" formControlName="is_sms" />
+                                                    <span>No</span>
+                                                </label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div *ngIf="patientForm.get('phone_number').errors?.required" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <alert type="danger" dismissible="true">
+                                            <strong>Error!</strong> Phone number is required.
+                                        </alert>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Patients Physical Contact(s)</label>
+                                        <textarea class="form-control" placeholder="Physical Address" rows="3" formControlName="physical_address"></textarea>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Patients Alternate Contact(s)</label>
+                                        <textarea class="form-control" placeholder="Alternate phone number" rows="3" formControlName="alternate_number"></textarea>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Does patient belong to any support group?</label>
+                                        <div class=" form-group col-sm-12">
+                                            <label class="checkbox-inline">
+                                                <input class="form" type="checkbox" formControlName="is_support">Yes</label>
+                                        </div>
+                                        <textarea class="form-control" placeholder="Support group" rows="3" formControlName="support_group" [readonly]="patientForm.get('is_support').value != true"></textarea>
+                                    </div>
+                                </fieldset>
+                                <!-- Patient History -->
+                                <fieldset class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                    <legend>Patient History</legend>
+                                    <div *ngIf="patientForm.get('age_in_years').value >= 18">
+                                        <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                            <label>Patient Status</label>
+                                            <select class="form-control" id="select-1" formControlName="patient_status">
+                                                <option value="no partner">No partner</option>
+                                                <option value="concordant">Concordant</option>
+                                                <option value="discordant">Discordant</option>
+                                            </select>
+                                        </div>
+                                        <div *ngIf="patientForm.get('patient_status').value != 'no partner'" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                            <label>Disclosure</label>
+                                                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-10">
+                                                            <label class="radio radio-inline no-margin">
+                                                                <input type="radio" value="1" class="radiobox style-2" formControlName="disclosure" />
+                                                                <span>Yes</span>
+                                                            </label>
+                                                            <label class="radio radio-inline">
+                                                                <input type="radio" value="0" class="radiobox style-2" formControlName="disclosure" />
+                                                                <span>No</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                        <div *ngIf="patientForm.get('patient_status').value == 'concordant'" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                            <label>Match to spouse in this ccc?</label>
+                                            <input class="form-control" placeholder="Enter ccc number" formControlName="spouse_ccc" />
+                                        </div>
+                                        <div [ngSwitch]="familyPlanning | async" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                            <label>Family planning method</label>
+                                                <div *ngSwitchCase="null" >
+                                                    <div class="form-group">
+                                                        <i class="fa fa-cog fa-spin fa-2x fa-fw"></i>
+                                                        <span>Loading...</span>
+                                                    </div>
+                                                </div>
+                                                <div *ngSwitchDefault>
+                                                    <ss-multiselect-dropdown [options]="familyPlanning | async" [texts]="myTexts" [settings]="mySettings" [(ngModel)]="family_planning_list" [ngModelOptions]="{standalone: true}"></ss-multiselect-dropdown>
+                                                </div>
+                                        </div>
+                                    </div>
+                                        <div [ngSwitch]="chronicIllness | async" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Does Patient have other Chronic Illnesses</label>
+                                            <div *ngSwitchCase="null" >
+                                                <div class="form-group">
+                                                    <i class="fa fa-cog fa-spin fa-2x fa-fw"></i>
+                                                    <span>Loading...</span>
+                                                </div>
+                                            </div>
+                                            <div *ngSwitchDefault>
+                                                <ss-multiselect-dropdown [options]="chronicIllness | async" [texts]="myTexts" [settings]="mySettings" [(ngModel)]="chronic_illness_list" [ngModelOptions]="{standalone: true}"></ss-multiselect-dropdown>
+                                            </div>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>If other Illnesses</label>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" formControlName="is_illness">Click Here</label>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>List Them Below (Use commas to separate)</label>
+                                        <textarea placeholder="Other Illnesses" class="form-control" row="3" formControlName="other_illness" [readonly]="patientForm.get('is_illness').value != true"></textarea>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Is Patient Taking any Other Drugs?</label>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" formControlName="is_drugs">Yes</label>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>List Them (Use commas to separate)</label>
+                                        <textarea placeholder="Other Drugs (if any)" class="form-control" row="3" formControlName="other_drugs" [readonly]="patientForm.get('is_drugs').value != true"></textarea>
+                                    </div>
+                                    <div [ngSwitch]="allergiesList | async" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Drug Allergies/ADR</label>
+                                            <div *ngSwitchCase="null" >
+                                                <div class="form-group">
+                                                    <i class="fa fa-cog fa-spin fa-2x fa-fw"></i>
+                                                    <span>Loading...</span>
+                                                </div>
+                                            </div>
+                                            <div *ngSwitchDefault>
+                                                <ss-multiselect-dropdown [options]="allergiesList | async" [texts]="myTexts" [settings]="mySettings" [(ngModel)]="allergies_list" [ngModelOptions]="{standalone: true}"></ss-multiselect-dropdown>
+                                            </div>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Does Patient have any Other Drugs/ADR not Listed?</label>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" formControlName="is_allergies">Yes</label>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>List Them (Use commas to separate)</label>
+                                        <textarea placeholder="List ADR(s) (if any)" class="form-control" rows="3" formControlName="other_allergies" [readonly]="patientForm.get('is_allergies').value != true"></textarea>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Does Patient Smoke?</label>
+                                        <select class="form-control" id="select-1" formControlName="is_smoke">
+                                            <option value="0">No</option>
+                                            <option value="1">Yes</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Does Patient Drink Alcohol?</label>
+                                        <select class="form-control" id="select-1" formControlName="is_alcohol">
+                                            <option value="0">No</option>
+                                            <option value="1">Yes</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Tested for TB?</label>
+                                        <select class="form-control" id="select-1" formControlName="is_tb_tested">
+                                            <option value="0">No</option>
+                                            <option value="1">Yes</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Does Patient have TB?</label>
+                                        <select class="form-control" id="select-1" formControlName="is_tb">
+                                            <option value="0">No</option>
+                                            <option value="1">Yes</option>
+                                        </select>
+                                    </div>
+                                    <div *ngIf="patientForm.get('is_tb').value == 1" class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Select TB Category</label>
+                                        <select class="form-control" id="select-1" formControlName="tb_category">
+                                            <option selected>--Selected--</option>
+                                            <option value="1">Category 1</option>
+                                            <option value="2">Category 2</option>
+                                        </select>
+                                    </div>
+                                    <div *ngIf="patientForm.get('tb_category').value >= 1" class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label>TB Phase?</label>
+                                        <select class="form-control" id="select-1" formControlName="tb_phase">
+                                            <option value="intensive">Intensive</option>
+                                            <option value="continuation">Continuation</option>
+                                            <option value="completed">Completed</option>
+                                        </select>
+                                    </div>
+                                    <div *ngIf="patientForm.get('tb_phase').value != '' || null">
+                                        <div [ngSwitch]="patientForm.get('tb_phase').value">
+                                            <div *ngSwitchCase="'completed'">
+                                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                                    <label>End of phase:</label>
+                                                    <div class="input-group">
+                                                        <input type="text" placeholder="End phase" class="form-control datepicker" [saUiDatepicker]="{ dateFormat: 'yy/mm/dd' }" (selectDate)='setDate($event,"tb_end")' formControlName="end_date">
+                                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div *ngSwitchDefault>
+                                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>Start of phase:</label>
+                                                        <div class="input-group">
+                                                            <input type="text" formControlName="start_date" placeholder="Start phase" class="form-control datepicker" [saUiDatepicker]="{ dateFormat: 'yy/mm/dd', maxDate: 'new Date()' }" (selectDate)='setDate($event,"tb_start")'>
+                                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                                    <label>End of phase:</label>
+                                                    <div class="input-group">
+                                                        <input type="text" formControlName="end_date" placeholder="End phase" class="form-control datepicker" [saUiDatepicker]="{ dateFormat: 'yy/mm/dd' }" (selectDate)='setDate($event,"tb_end")'>
+                                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="edit" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Date of next appointment:</label>
+                                        <div class="input-group">
+                                            <input  type="text" formControlName="appointment_date" placeholder="Select a date" class="form-control datepicker" [saUiDatepicker]="{ dateFormat: 'yy/mm/dd', maxDate: 'new Date()' }" (selectDate)='setDate($event,"appointment")'>
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Days to next appointment</label>
+                                        <div class="input-group">
+                                            <input  type="text" formControlName="days_to" placeholder="" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </fieldset>
+
+                                <!-- Patient Information -->
+                                <fieldset class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                    <legend>Patient Information</legend>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label><span style="color:red; font-weight:bold">*</span> Enrollment date:</label>
+                                        <div class="input-group">
+                                            <input  type="text" formControlName="enrollment_date" placeholder="Select a date" class="form-control datepicker" [saUiDatepicker]="{ dateFormat: 'yy/mm/dd', maxDate: 'new Date()', defaultDate: +5 }" (selectDate)='setDate($event,"enrollment")'>
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                        </div>
+                                    </div>
+                                    <div [ngSwitch]="status | async" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label><span style="color:red; font-weight:bold">*</span> Current Status</label>
+                                            <div *ngSwitchCase="null" >
+                                                <div class="form-group">
+                                                    <i class="fa fa-cog fa-spin fa-2x fa-fw"></i>
+                                                    <span>Loading...</span>
+                                                </div>
+                                            </div>
+                                            <div *ngSwitchDefault>
+                                                <select  class="form-control" id="select-1" formControlName="status_id">
+                                                    <option *ngFor="let 'stata' of status | async" value="{{stata.id}}">{{stata.name}}</option>
+                                                </select>
+                                            </div>
+                                    </div>
+                                    <div *ngIf="edit" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Date of status change:</label>
+                                        <div class="input-group">
+                                            <input type="text" formControlName="status_change" placeholder="End date" class="form-control datepicker" [saUiDatepicker]="{ dateFormat: 'yy/mm/dd' }" (selectDate)='setDate($event, "status_change")'>
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                        </div>
+                                    </div>
+                                    <div [ngSwitch]="patientSources" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label><span style="color:red; font-weight:bold">*</span> Source of Patient</label>
+                                            <div *ngSwitchCase="null" >
+                                                <div class="form-group">
+                                                    <i class="fa fa-cog fa-spin fa-2x fa-fw"></i>
+                                                    <span>Loading...</span>
+                                                </div>
+                                            </div>
+                                            <div *ngSwitchDefault>
+                                                <select  class="form-control" id="select-1" formControlName="source_id">
+                                                    <option *ngFor="let source of patientSources" value="{{source.id}}">{{source.name}}</option>
+                                                    <input type="hidden" value="{{source.name}}">
+                                                </select>
+                                            </div>
+                                    </div>
+                                    <div [ngSwitch]="patientServices" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label><span style="color:red; font-weight:bold">*</span> Type of Service</label>
+                                            <div *ngSwitchCase="null" >
+                                                <div class="form-group">
+                                                    <i class="fa fa-cog fa-spin fa-2x fa-fw"></i>
+                                                    <span>Loading...</span>
+                                                </div>
+                                            </div>
+                                            <div *ngSwitchDefault>
+                                                <select  class="form-control" id="select-1" formControlName="service_id" (click)="setService(patientForm.get('service_id').value)">
+                                                    <option *ngFor="let service of patientServices" value="{{service.id}}">{{service.name}}</option>
+                                                </select>
+                                            </div>
+                                    </div>
+                                    <div *ngIf="regimen?.regimen" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Start Regimen</label>
+                                                <select  class="form-control" id="select-1" formControlName="initial_regimen_id">
+                                            <option *ngFor="let regimens of regimen.regimen" value="{{regimens.id}}">{{regimens.name}}</option>
+                                        </select>
+                                    </div>
+                                    <div *ngIf="regimen && patientForm.get('service_id').value == 2" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Pep reason</label>
+                                        <select  class="form-control" id="select-1" formControlName="pep_reason">
+                                            <option selected>--Select--</option>
+                                            <option value="Occupational">Occupational</option>
+                                            <option value="Sexual Assault">Sexual Assault</option>
+                                            <option value="Other Reason">Other Reason</option>
+                                        </select>
+                                    </div>
+                                    <div *ngIf="patientForm.get('service_id').value != 4" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Start Regimen Date</label>
+                                        <input id="reg_date" type="text" formControlName="regimen_start_date" placeholder="Regimen start date" class="form-control datepicker" [saUiDatepicker]="{ dateFormat: 'yy/mm/dd', maxDate: 'new Date()' }" (selectDate)='setDate($event,"regimen")'>
+                                    </div>
+                                    
+                                    <div *ngIf="edit && regimen" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Current Regimen</label>
+                                                <select  class="form-control" id="select-1" formControlName="current_regimen_id">
+                                            <option *ngFor="let regimens of regimen.regimen" value="{{regimens.id}}">{{regimens.name}}</option>
+                                        </select>
+                                    </div>
+                                    <div *ngIf="regimen && regimen.name != 'PEP'" [ngSwitch]="patientWhostage" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>WHO Stage</label>
+                                            <div *ngSwitchCase="null" >
+                                                <div class="form-group">
+                                                    <i class="fa fa-cog fa-spin fa-2x fa-fw"></i>
+                                                    <span>Loading...</span>
+                                                </div>
+                                            </div>
+                                            <div *ngSwitchDefault>
+                                                <select class="form-control" id="select-1" formControlName="who_stage_id">
+                                            <option *ngFor="let who_stage of patientWhostage | async" value="{{who_stage.id}}">{{who_stage.name}}</option>
+                                        </select>
+                                    </div>
+                                    </div>
+                                    <div *ngIf="regimen && patientForm.get('service_id').value != 2" [ngSwitch]="patientProphylaxis | async" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Drug Prophylaxis</label>
+                                            <div *ngSwitchCase="null" >
+                                                <div class="form-group">
+                                                    <i class="fa fa-cog fa-spin fa-2x fa-fw"></i>
+                                                    <span>Loading...</span>
+                                                </div>
+                                            </div>
+                                            <div *ngSwitchDefault>
+                                                <ss-multiselect-dropdown [options]="patientProphylaxis | async" [texts]="myTexts" [settings]="mySettings" [(ngModel)]="a" [ngModelOptions]="{standalone: true}"></ss-multiselect-dropdown>
+                                            </div>
+                                    </div>
+                                    <div *ngIf="patientForm.get('prophylaxis').value == 3">
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                            <div class="form-group">
+                                                <label>Isoniazid start date:</label>
+                                                <div class="input-group">
+                                                    <input type="text" formControlName="isoniazid_start" placeholder="Start date" class="form-control datepicker" [saUiDatepicker]="{ dateFormat: 'yy/mm/dd', maxDate: 'new Date()' }" (selectDate)='setDate($event,"isoniazid_start")'>
+                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                            <label>Isoniazid end date:</label>
+                                            <div class="input-group">
+                                                <input type="text" formControlName="isoniazid_end" placeholder="End date" class="form-control datepicker" [saUiDatepicker]="{ dateFormat: 'yy/mm/dd' }" (selectDate)='setDate($event, "isoniazid_end")'>
+                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="!edit" class="col-sm-12" align="right">
+                                        <button class="btn btn-primary" type="submit" [disabled]="!patientForm.valid || isClickedOnce">
+                                            <i class="fa fa-save"></i> Save
+                                        </button>
+                                        <button class="btn btn-primary" type="button" [disabled]="isClickedOnce" (click)="isClickedOnce = true">
+                                            <i class="fa fa-save"></i> Dispense
+                                        </button>
+                                        <input type="reset" class="btn btn-danger button_size" value="Reset">
+                                    </div>
+                                    <div *ngIf="edit" class="col-sm-12" align="right">
+                                        <button class="btn btn-primary" type="submit" [disabled]="!patientForm.valid">
+                                            <i class="fa fa-save"></i> Update Patient Information
+                                        </button>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                        <!-- end widget content -->                                            
+                    </div>
+                    <!-- end widget div -->
+                </sa-widget>
+            </article>
+        </div>
+    </sa-widgets-grid>
+</div>

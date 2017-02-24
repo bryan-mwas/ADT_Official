@@ -1,0 +1,47 @@
+<div id="content">
+  <ul class="breadcrumb">
+    <li><a href="http://localhost:80/ADT/notification_management/error_fix">Errors</a> </li>
+    <li>
+      <select style="width:auto;color:#000;font-weight:bold" id="error_list">
+        <option value="Patients without DOB(541)">Patients without DOB(541)</option>
+        <option value="Patients without Appointment(166)">Patients without Appointment(166)</option>
+        <option value="Patients without Current Regimen(252)">Patients without Current Regimen(252)</option>
+        <option value="Patients without Start Regimen(2)">Patients without Start Regimen(2)</option>
+        <option value="Patients without Service Line(3)">Patients without Service Line(3)</option>
+        <option value="Patients without Enrollment date(9)">Patients without Enrollment date(9)</option>
+        <option value="Patients without Status Change date(3)">Patients without Status Change date(3)</option>
+        <option value="Patients without Start Regimen date(5)">Patients without Start Regimen date(5)</option>
+        <option value="Patients with Incorrect Current Regimens(408)">Patients with Incorrect Current Regimens(408)</option>
+      </select>
+    </li>
+  </ul>
+<sa-widgets-grid>
+  <div class="row">
+    <article class="col-sm-12">
+      <sa-widget [editbutton]="false" color="darken">
+        <header><span class="widget-icon"> <i class="fa fa-table"></i> </span>
+          <h2>Errors</h2>
+        </header>
+        <div>
+          <div class="widget-body no-padding">
+            <sa-datatable paginationLength="true" tableClass="table table-striped table-bordered table-hover" width="100%">
+              <thead>
+                <tr>
+                  <th>CCC No</th>
+                  <th>Patient Name</th>
+                  <th>Contact</th>
+                  <th>Date Enrolled</th>
+                  <th>Next Appointment</th>
+                  <th>Current Regimen</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+            </sa-datatable>
+          </div>
+        </div>
+      </sa-widget>
+    </article>
+  </div>
+</sa-widgets-grid>
+</div>

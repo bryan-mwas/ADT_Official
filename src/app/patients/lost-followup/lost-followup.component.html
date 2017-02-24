@@ -1,0 +1,31 @@
+<div id="content">
+  <sa-widgets-grid>
+    <div class="row">
+      <article class="col-sm-12">
+        <sa-widget [editbutton]="false" color="darken">
+          <header><span class="widget-icon"> <i class="fa fa-table"></i> </span>
+            <h2>Lost to Followup</h2>
+          </header>
+          <div>
+            <div class="widget-body no-padding">
+              <sa-datatable paginationLength="true" tableClass="table table-striped table-bordered table-hover" width="100%">
+                <thead>
+                  <tr>
+                    <th>CCC No</th>
+                    <th>Patient Name</th>
+                    <th>Contact</th>
+                    <th>Date Enrolled</th>
+                    <th>Next Appointment</th>
+                    <th>Current Regimen</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+              </sa-datatable>
+            </div>
+          </div>
+        </sa-widget>
+      </article>
+    </div>
+  </sa-widgets-grid>
+</div>

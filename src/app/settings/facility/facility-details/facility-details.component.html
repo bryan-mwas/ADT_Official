@@ -1,0 +1,115 @@
+{{diagnostic}}
+<div id="content">
+  <sa-widgets-grid>
+    <div class="row">
+      <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <sa-widget [editbutton]="false" color="darken">
+          <header>
+            <h2>Facility Details</h2>
+          </header>
+          <div class="widget-body" style="padding: 20px">            
+            <form (ngSubmit)="onSubmit() "#facilityDetailForm="ngForm">
+              <table class="table" style="width: 100%">
+                <tbody>
+                <tr>
+                  <th>Organization Code/MFL No</th>
+                  <td><input type="text" class="form-control" [(ngModel)]="facility.code" name="code" disabled></td>
+                </tr>
+                <tr>
+                  <th>Name of Organization/System</th>
+                  <td><input type="text" class="form-control" [(ngModel)]="facility.name" name="name"></td>
+                </tr>
+                <tr>
+                  <th>Adult Age</th>
+                  <td><input type="text" class="form-control" [(ngModel)]="facility.adult_age" name="adult_age"></td>
+                </tr>
+                <tr>
+                  <th>Maximum Patients per Weekday</th>
+                  <td><input type="text" class="form-control" [(ngModel)]="facility.weekday_max" name="weekday_max"></td>
+                </tr>
+                <tr>
+                  <th>Maximum Patients per Weekend</th>
+                  <td><input type="text" class="form-control" [(ngModel)]="facility.weekend_max" name="weekend_max"></td>
+                </tr>
+                <tr>
+                  <th>Facility Type</th>
+                  <td *ngIf="facility.type">
+                    <select class="form-control" id="select-1" [(ngModel)]="facility.type.id" name="type">
+                      <option *ngFor="let types of facilityTypes | async "value="{{types.id}}">{{types.name}}</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <th>County</th>
+                  <td *ngIf="facility.county">
+                    <select class="form-control" id="select-1" [(ngModel)]="facility.county.id" name="county">
+                      <option *ngFor="let counties of countiesList | async" value="{{counties.id}}">{{counties.name | uppercase}}</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Sub-County</th>
+                  <td *ngIf="facility.subcounty">
+                    <select class="form-control" id="select-1" [(ngModel)]="facility.subcounty.id" name="subcounty">
+                      <option *ngFor="let subcounties of subcountiesList | async" value="{{subcounties.id}}">{{subcounties.name}}</option>
+                    </select>
+                  </td>
+                </tr>                
+                <tr>
+                  <th>Central Site</th>
+                  <td>
+                    <select class="form-control" id="select-1">
+                      <option>Special Treatment Clinic</option>
+                      <option>Spa Nursing Home</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Facility Phone Number</th>
+                  <td><input type="text" class="form-control" [(ngModel)]="facility.phone_number" name="phoneNumber"></td>
+                </tr>
+                <tr>
+                  <th>Does Facility want to send SMS to Patients?</th>
+                  <td>
+                    <select class="form-control" id="select-1" [(ngModel)]="facility.is_sms" name="is_sms">
+                      <option value="1">Yes</option>
+                      <option value="0">No</option>
+                    </select>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+              <hr>
+              <div>
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <legend><b>Client Supported by</b></legend>
+                <div class="inline-group" style="padding-left: 20px">
+                  <label class="radio"><input type="radio" name="supporter_id" value="1" [(ngModel)]="facility.supporter_id">GOK Sponsorship</label>
+                  <label class="radio"><input type="radio" name="supporter_id" value="2"  [(ngModel)]="facility.supporter_id">PEPFAR Sponsorship</label>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <legend><b>Services Offered at the Facility</b></legend>
+                <div class="inline-group" style="padding-left: 20px">
+                  <label>Service Types</label>
+                  <ss-multiselect-dropdown [options]="serviceTypes | async" [texts]="myTexts" [settings]="mySettings" name="service"></ss-multiselect-dropdown>                  
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <legend><b>Client Supplied by</b></legend>
+                <div class="inline-group" style="padding-left: 20px">
+                  <label class="radio"><input type="radio" name="radio-inline" checked="checked">KEMSA</label>
+                  <label class="radio"><input type="radio" name="radio-inline">Kenya Pharma</label>
+                </div>
+              </div>
+              </div>
+              <div style="text-align: right; padding: 12px">
+              <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> Update </button>
+              </div>
+              </form>
+          </div>
+        </sa-widget>
+      </article>
+    </div>
+  </sa-widgets-grid>
+</div>

@@ -1,0 +1,260 @@
+<div id="content">
+    <sa-widgets-grid>
+        <!-- row -->
+        <div class="row">
+            <!-- ADD PATIENT WIDGET START -->
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <!-- Widget ID (each widget will need unique ID)-->
+                <sa-widget [colorbutton]="false" [deletebutton]="false" [custombutton]="false" [editbutton]="false">
+                    <header>
+                        <h2>
+                            <strong>Dispense</strong></h2>
+                    </header>
+                    <!-- widget div-->
+                    <div role="content">
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body">
+                            <form (ngSubmit)="save()" novalidate [formGroup]="dispenseForm">
+                                <fieldset class="col-xs-24 col-sm-6 col-md-6 col-lg-6">
+                                    <legend>Dispensing Information</legend>
+                                    <div class="row">
+                                        <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                            <label><span style="color:red; font-weight:bold">*</span> Select Dispensing Point</label>
+                                            <select class="form-control" id="select-1" placeholder="Select One" formControlName="dispense_point">
+                                                <option selected>Select One</option>
+                                                <option value='1'>Main Store</option>
+                                                <option value='2'>Pharmacy</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                            <label>Patient Number CCC</label>
+                                            <input class="form-control" placeholder="autofilled" type="text" formControlName="ccc_number">
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                            <label>Patient Name</label>
+                                            <input class="form-control" placeholder="autofilled" type="text" formControlName="patient_name">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                            <label><span style="color:red; font-weight:bold">*</span> Dispensing Date</label>
+                                            <div class="input-group">
+                                                <input type="text" formControlName="visit_date" placeholder="Select a date" class="form-control datepicker" [saUiDatepicker]="{ dateFormat: 'yy-mm-dd' }" (selectDate)="setDispenseDate($event)">
+                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                            <label>Purpose of Visit</label>
+                                            <select class="form-control" id="select-1" formControlName="purpose_id">
+                                                <option selected>--Select One--</option>
+                                                <option *ngFor="let purposes of purpose" value="{{purposes.id}}">{{purposes.name}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                            <label>Current Height (CM)</label>
+                                            <input class="form-control" placeholder="autofilled" formControlName="current_height" type="text">
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                            <label><span style="color:red; font-weight:bold">*</span> Current Weight (KG)</label>
+                                            <input class="form-control" placeholder="autofilled" formControlName="current_weight" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                            <label><span style="color:red; font-weight:bold">*</span> Days to Next Appointment</label>
+                                            <input class="form-control" placeholder="autofilled" type="text" formControlName="days_to">
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                            <label><span style="color:red; font-weight:bold">*</span> Date of Next Appointment</label>
+                                            <div class="input-group">
+                                                <input type="text" formControlName="appointment_date" placeholder="Select a date" class="form-control datepicker" [saUiDatepicker]="date_options" [setDate]='setdate' (selectDate)="dateDiff($event)">
+                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                            <label>Last Regimen Dispensed</label>
+                                            <input class="form-control" placeholder="autofilled" type="text" formControlName="last_regimen_id">
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                            <label><span style="color:red; font-weight:bold">*</span> Current Regimen</label>
+                                            <select class="form-control" id="select-1" formControlName="current_regimen_id">
+                                                <option selected>--Select One--</option>
+                                                <option *ngFor="let regimenDrug of regimenDrugs" value={{regimenDrug.id}}>{{regimenDrug.name}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="dispenseForm.get('current_regimen_id').dirty" class="row">
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                            <label><span style="color:red; font-weight:bold">*</span> Regimen Change Reason</label>
+                                            <select class="form-control" id="select-1" formControlName="change_reason_id">
+                                                <option selected>--Select One--</option>
+                                                <option *ngFor="let reasons of reason" value={{reasons.id}}>{{reasons.name}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                            <label>Appointment Adherance (%)</label>
+                                            <input class="form-control" placeholder="autofilled" type="text" formControlName="appointment_adherance" readonly>
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                            <label>Poor/Fair Adherance Reasons</label>
+                                            <select class="form-control" id="select-1" formControlName="non_adherance_reason_id">
+                                                <option selected>--Select One--</option>
+                                                <option *ngFor="let non_adhere of non_adherence" value="{{non_adhere.id}}">{{non_adhere.name}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="col-xs-24 col-sm-6 col-md-6 col-lg-6">
+                                    <legend>Previous Patient Information</legend>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label>Appointment Date</label>
+                                            <div class="input-group">
+                                                <input type="text" name="mydate" placeholder="Select a date" class="form-control datepicker" formControlName="last_appointment" >
+                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Previous Visit Date</label>
+                                        <div class="input-group">
+                                            <input type="text" name="mydate" placeholder="Select a date" class="form-control datepicker" formControlName="previous_visit">
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <div role="content">
+                                            <div class="widget-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th [ngStyle]="{width:'70%'}">Drug Dispensed</th>
+                                                                <th>Quantity Dispensed</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>Bang Bang</td>
+                                                                <td>50mg</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="col-xs-48 col-sm-12 col-md-12 col-lg-12">
+                                    <legend>Drug Details</legend>
+                                    <div class="col-sm-24">
+                                        <div role="content">
+                                            <div class="widget-body">
+                                                <div class="form-group">
+                                                    <span>
+                                                            <button class="btn btn-primary" type="button" (click)="addRow()">
+                                                                Add Another Drug
+                                                            </button>
+                                                        </span>
+                                                </div>
+                                                <div class="table-responsive">
+                                                    <table id="disp_table" class="table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Drug</th>
+                                                                <th>Unit</th>
+                                                                <th>Batch No.</th>
+                                                                <th>Expiry Date</th>
+                                                                <th>Dose</th>
+                                                                <th>Expected Pill Count</th>
+                                                                <th>Actual Pill Count</th>
+                                                                <th>Duration</th>
+                                                                <th>Quantity Dispensed</th>
+                                                                <th>Stock on Hand</th>
+                                                                <th>Indication</th>
+                                                                <th>Comment</th>
+                                                                <th>Missed Pills</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody formArrayName="drugs" *ngFor="let row of rows.controls; let i=index">
+                                                            <tr [formGroupName]="i" (click)="getIndex(i)">
+                                                                <td id="complex_table">
+                                                                    <select class="form-control" id="input" *ngIf="regimen" formControlName="drug_id" id="">
+                                                                        <option value="" *ngFor="let drug of regimen.drugs" value="{{drug.id}}">{{drug.name}}</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td id="complex_table">
+                                                                    <input class="form-control" id="input" type="text" formControlName="unit">
+                                                                </td>
+                                                                <td id="complex_table">
+                                                                    <select class="form-control" formControlName="batch_no" id=""></select>
+                                                                </td>
+                                                                <td id="complex_table">
+                                                                    <input class="form-control" id="input" type="text" formControlName="expiry_date">
+                                                                </td>
+                                                                <td id="complex_table">
+                                                                    <input class="form-control" id="input" type="text" formControlName="dose_id">
+                                                                </td>
+                                                                <td id="complex_table">
+                                                                    <input class="form-control" id="input" type="text" formControlName="expected_pill_count">
+                                                                </td>
+                                                                <td id="complex_table">
+                                                                    <input class="form-control" id="input" type="text" formControlName="actual_pill_count">
+                                                                </td>
+                                                                <td id="complex_table">
+                                                                    <input class="form-control" id="input" type="text" formControlName="duration">
+                                                                </td>
+                                                                <td id="complex_table">
+                                                                    <input class="form-control" id="input" type="text" formControlName="dispensed_qty">
+                                                                </td>
+                                                                <td id="complex_table">
+                                                                    <input class="form-control" id="input" type="text" formControlName="stock_id">
+                                                                </td>
+                                                                <td id="complex_table">
+                                                                    <select class="form-control" id="input" *ngIf="regimen" formControlName="indication" id="">
+                                                                        <option *ngFor="let indication of regimen.drugs['indication']" value="{{indication.id}}">{{indication.name}}</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td id="complex_table">
+                                                                    <input class="form-control" id="input" type="text" formControlName="comment">
+                                                                </td>
+                                                                <td id="complex_table">
+                                                                    <input class="form-control" id="input" type="text" formControlName="missed_pills">
+                                                                </td>
+                                                                <td id="complex_table">
+                                                                    <button type="button" class="btn btn-danger" (click)="smartAlert('Are you sure?','delete_row',i)">Remove</button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    {{ dispenseForm.value | json}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row col-sm-12" align="right" style="padding-bottom:30px">
+                                        <input type="reset" class="btn btn-danger button_size" value="Reset Fields" (click)="smartAlert('You are about to reset the fields are you sure?','reset')">
+                                        <button class="btn btn-primary" [disabled]="!dispenseForm.valid" type="button"><i class="fa fa-print"></i> Print Labels</button>
+                                        <button class="btn btn-primary" [disabled]="!dispenseForm.valid" type="submit"><i class="fa fa-save"></i> Dispense Drugs</button>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </sa-widget>
+            </article>
+        </div>
+    </sa-widgets-grid>
+</div>

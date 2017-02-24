@@ -1,0 +1,151 @@
+<div id="content">
+   <div class="col-sm-12" style="padding: 12px">
+      <sa-widget [editbutton]="false" [fullscreenbutton]="false" [custombutton]="false" [sortable]="false">
+      <header>
+         <ul class="nav nav-tabs pull-left in">
+            <li [class.active]="state.tabs.demo3=='hr1'">
+               <a (click)="state.tabs.demo3 = 'hr1'"><span class="hidden-mobile hidden-tablet"> My CDRRs </span> </a>
+            </li>
+            <li [class.active]="state.tabs.demo3=='hr2'">
+               <a (click)="state.tabs.demo3 = 'hr2'"><span class="hidden-mobile hidden-tablet">My MAPs </span>
+               </a>
+            </li>
+            <li [class.active]="state.tabs.demo3=='hr3'">
+               <a (click)="state.tabs.demo3 = 'hr3'"><span class="hidden-mobile hidden-tablet">My Templates</span> </a>
+            </li>
+         </ul>
+      </header>
+      <!-- widget div-->
+      <div>
+         <!-- widget content -->
+         <div class="widget-body">
+            <tabset>
+               <!--CDRR Tab Content-->
+               <tab [active]="state.tabs.demo3 == 'hr1'">
+                  <div>
+                     <div class="widget-body">
+                        <a class="btn btn-primary">New Satellite CDRRs</a>
+                        <label><b>Filter Period:</b></label>
+                        <select id="select-1">
+                           <option selected>All</option>
+                           <option>Bang Bang</option>
+                           <option>Smash Smash</option>
+                        </select>
+                        <div class="table-responsive">
+                           <div class="dt-toolbar">
+                              <div class="col-xs-12 col-sm-6 hidden-xs">
+                                 <div id="datatable_fixed_column_filter" class="dataTables_filter">
+                                    <label>
+                                    <span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-search"></i>
+                                    </span>
+                                    <input type="search" class="form-control" placeholder="Search" aria-controls="datatable_fixed_column">
+                                    </label>
+                                 </div>
+                              </div>
+                           </div>
+                           <table class="table table-bordered table-striped">
+                              <thead>
+                                 <tr>
+                                    <th>ID</th>
+                                    <th>Period Beginning</th>
+                                    <th>Status</th>
+                                    <th>Facility Name</th>
+                                    <th style="width: 15%; text-align: center">Options</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                                 <tr *ngFor="let cdrr of cdrrList">
+                                    <td>{{cdrr.code}}</td>
+                                    <td>{{cdrr.period_begin}}</td>
+                                    <td>{{cdrr.status}}</td>
+                                    <td>{{cdrr.facility.name}}</td>
+                                    <td style="width: 25%; text-align: center">
+                                       <a [routerLink]="['/orders/view-cdrr']" class="btn btn-default btn-xs"><i class="fa fa-eye"></i> View</a>
+                                       <a [routerLink]="['/orders/update-cdrr']" class="btn btn-primary btn-xs"><i class="fa fa-refresh"></i> Update</a>
+                                       <a class="btn btn-danger btn-xs" title="Delete"><i class="fa fa-trash"></i> Delete</a>
+                                       <a class="btn btn-success btn-xs" title="Download"><i class="fa fa-download"></i> Download</a>
+                                    </td>
+                                 </tr>
+                              </tbody>
+                           </table>
+                        </div>
+                     </div>
+                  </div>
+               </tab>
+               <!--MAPs Tab Content-->
+               <tab [active]="state.tabs.demo3 == 'hr2'">
+                  <div>
+                     <div class="widget-body">
+                        <a class="btn btn-primary">New Satellite MAPs</a>
+                        <label><b>Filter Period:</b></label>
+                        <select id="select-1">
+                           <option selected>All</option>
+                           <option>Bang Bang</option>
+                           <option>Smash Smash</option>
+                        </select>
+                        <div class="table-responsive">
+                           <div class="dt-toolbar">
+                              <div class="col-xs-12 col-sm-6 hidden-xs">
+                                 <div id="datatable_fixed_column_filter" class="dataTables_filter">
+                                    <label>
+                                    <span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-search"></i>
+                                    </span>
+                                    <input type="search" class="form-control" placeholder="Search" aria-controls="datatable_fixed_column">
+                                    </label>
+                                 </div>
+                              </div>
+                           </div>
+                           <table class="table table-bordered table-striped">
+                              <thead>
+                                 <tr>
+                                    <th>ID</th>
+                                    <th>Period Beginning</th>
+                                    <th>Status</th>
+                                    <th>Facility Name</th>
+                                    <th style="width: 15%; text-align: center">Options</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                                 <tr *ngFor="let maps of mapsList">
+                                    <td>{{maps.code}}</td>
+                                    <td>{{maps.period_begin}}</td>
+                                    <td>{{maps.status}}</td>
+                                    <td>{{maps.facility.name}}</td>
+                                    <td style="width: 25%; text-align: center">
+                                       <a [routerLink]="['/orders/view-cdrr']" class="btn btn-default btn-xs"><i class="fa fa-eye"></i> View</a>
+                                       <a [routerLink]="['/orders/update-cdrr']" class="btn btn-primary btn-xs"><i class="fa fa-refresh"></i> Update</a>
+                                       <a class="btn btn-danger btn-xs" title="Delete"><i class="fa fa-trash"></i> Delete</a>
+                                       <a class="btn btn-success btn-xs" title="Download"><i class="fa fa-download"></i> Download</a>
+                                    </td>
+                                 </tr>
+                              </tbody>
+                           </table>
+                        </div>
+                     </div>
+                  </div>
+               </tab>
+               <!--Templates Tab Content-->
+               <tab [active]="state.tabs.demo3 == 'hr3'">
+                  <div>
+                     <sa-widget>
+                        <h3>CDRR Templates</h3>
+                        <hr class="simple">
+                        <p><i class="fa fa-download"></i><a href=""> F-CDRR for Satellite/Standalone Sites.xlsx</a></p>
+                        <p><i class="fa fa-download"></i><a href=""> D-CDRR for Central Sites.xlsx</a></p>
+                        <h3>MAPs Templates</h3>
+                        <hr class="simple">
+                        <p><i class="fa fa-download"></i><a href=""> F-MAPs for Satellite/Standalone Sites.xlsx</a></p>
+                        <p><i class="fa fa-download"></i><a href=""> D-MAPs for Central Sites.xlsx</a></p>
+                     </sa-widget>
+                  </div>
+               </tab>
+            </tabset>
+         </div>
+         <!-- end widget content -->
+      </div>
+      <!-- end widget div -->
+      </sa-widget>
+   </div>
+</div>

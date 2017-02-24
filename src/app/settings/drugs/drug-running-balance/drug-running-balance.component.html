@@ -1,0 +1,34 @@
+<div id="content">
+  <sa-widgets-grid>
+    <div class="row">
+      <article class="col-sm-12">
+        <sa-widget [editbutton]="false" color="darken">
+          <header>
+            <h2>Drug Running Balance</h2>
+          </header>
+          <div class="widget-body col-sm-6" style="text-align: center">
+            <table class="table">
+              <tr>
+                <th style="width: 60%; text-align: center">Select Drugs</th>
+                <td><select class="form-control">
+                  <option>None Selected</option>
+                  <option>ABC/3Tc 60/30 FDC Tabs </option>
+                  <option>Atazanavir</option>
+                </select>  
+                </td> 
+              </tr>
+              <tr><td></td>
+              <td style="text-align: right"><button class="btn btn-primary">Fix Running Balances</button></td>
+              </tr>               
+            </table>                       
+            <div class="bar-holder">
+              <div class="progress">
+                <div class="progress-bar bg-color-blue" saProgressbar data-transitiongoal="19"></div>
+              </div>
+            </div>
+          </div>
+        </sa-widget>
+      </article>
+    </div>
+  </sa-widgets-grid>
+</div>

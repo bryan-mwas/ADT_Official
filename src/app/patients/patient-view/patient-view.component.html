@@ -1,0 +1,576 @@
+<div id="content">
+    <form action="">
+        <pre>{{diagnostic}}</pre>
+        <sa-widgets-grid>
+            <div class="row">
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <sa-widget>
+                        <header>
+                            <h2><strong>Patients</strong> <i>View Patient</i></h2>
+                        </header>
+                        <div role="content">
+                            <div class="jarviswidget-editbox">
+                            </div>
+                            <div class="widget-body">
+                                <!-- Patients Information and Demographics -->
+                                <fieldset class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                    <legend>Patient Information and Demographics</legend>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Medical Record No.</label>
+                                        <input class="form-control" placeholder="Medical Record No." type="text" [(ngModel)]="patient.id" name="medicalRecordNumber" disabled>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label><span style="color:red; font-weight:bold">*</span> Patient Number CCC</label>
+                                        <input class="form-control" placeholder="Patient Number" type="text" [(ngModel)]="patient.ccc_number" name="ccc_number" disabled>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Last Name</label>
+                                        <input class="form-control" placeholder="Last name" type="text" [(ngModel)]="patient.last_name" name="last_name" disabled>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label><span style="color:red; font-weight:bold">*</span> First Name</label>
+                                        <input class="form-control" placeholder="First Name" type="text" [(ngModel)]="patient.first_name" name="first_name" disabled>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Other Name</label>
+                                        <input class="form-control" placeholder="Other Name" type="text" [(ngModel)]="patient.other_name" name="other_name" disabled>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label><span style="color:red; font-weight:bold">*</span> Date of Birth:</label>
+                                            <div class="input-group">
+                                                <input type="text" name="birth_date" [(ngModel)]="patient.birth_date" placeholder="Select a date" class="form-control" disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End of date picker -->
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Place of birth</label>
+                                        <input class="form-control" [(ngModel)]="patient.place_of_birth.name" name="place_of_birth" disabled>
+                                    </div>
+                                    <!--<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+										<label>Age (Years)</label>
+										<input class="form-control" placeholder="Age (Years)" type="text" [(ngModel)]="patient.age_in_years" name="ageYears" disabled="disabled">
+									</div>
+									<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+										<label>Age (Months)</label>
+										<input class="form-control" placeholder="Age (Months)" type="text" [(ngModel)]="patient.age_in_months" name="ageMonths" disabled="disabled">
+									</div>-->
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label><span style="color:red; font-weight:bold">*</span> Gender</label>
+                                        <select class="form-control" [(ngModel)]="patient.gender" name="gender" disabled>
+											<option value="male">Male</option>
+											<option value="female">Female</option>
+											</select>
+                                    </div>
+                                    <div *ngIf="patient.gender === 'Female'" class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Pregnant?</label>
+                                        <select class="form-control" [(ngModel)]="patient.is_pregnant" name="is_pregnant" disabled>
+                                            <option value="1">Yes</option>
+                                            <option value="0">No</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Start weight (KG)</label>
+                                        <input class="form-control" placeholder="Weight" type="text" [(ngModel)]="patient.initial_weight" name="start_weight" disabled>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label><span style="color:red; font-weight:bold">*</span> Current Weight (KG)</label>
+                                        <input class="form-control" placeholder="Weight" type="text" [(ngModel)]="patient.current_weight" name="current_weight" disabled>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Start height (KG)</label>
+                                        <input class="form-control" placeholder="Weight" type="text" [(ngModel)]="patient.initial_height" name="weight" disabled>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label><span style="color:red; font-weight:bold">*</span>Current Height (CM)</label>
+                                        <input class="form-control" placeholder="Height" type="text" [(ngModel)]="patient.current_height" name="height" disabled>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Start Body Surface Area (MSQ)</label>
+                                        <input class="form-control" placeholder="<<auto generate>>" [(ngModel)]="patient.initial_bsa" type="text" disabled="disabled " name="initial_bsa" disabled />
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Current Body Surface Area (MSQ)</label>
+                                        <input class="form-control" placeholder="<<auto generate>>" [(ngModel)]="patient.current_bsa" type="text" disabled="disabled " name="current_bsa" disabled />
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                                        <label>Phone Contact</label>
+                                        <input class="form-control" placeholder="e.g 0712345678" type="text" [(ngModel)]="patient.phone_number" name="phone_number" disabled>
+                                    </div>
+                                    <div class=" form-group col-xs-12 col-sm-7 col-md-7 col-lg-7">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12">
+                                                <label class="control-label">Receive SMS Reminders</label>
+                                            </div>
+                                            <div class="col-sm-12 col-md-10">
+                                                <label class="radio radio-inline no-margin">
+                                                    <input type="radio" value="1" class="radiobox style-2" [(ngModel)]="patient.is_sms" name="is_sms" disabled/>
+                                                    <span>Yes</span>
+                                                </label>
+                                                <label class="radio radio-inline">
+                                                    <input type="radio" value="0" class="radiobox style-2" [(ngModel)]="patient.is_sms" name="is_sms" disabled/>
+                                                    <span>No</span>
+                                                </label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Patients Physical Contact(s)</label>
+                                        <textarea class="form-control" placeholder="n/a" rows="3" [(ngModel)]="patient.physical_address" name="physical_address" disabled></textarea>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Patients Alternate Contact(s)</label>
+                                        <textarea class="form-control" placeholder="n/a" rows="3" [(ngModel)]="patient.alternate_contact" name="alternate_contact" disabled></textarea>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Does patient belong to any support group?</label>
+                                        <div class=" form-group col-sm-12">
+                                            <label class="checkbox-inline">
+                                                <input class="form" type="checkbox" [(ngModel)]="patient.is_support" name="is_support" disabled>Yes</label>
+                                        </div>
+                                        <textarea class="form-control" placeholder="n/a" rows="3" [(ngModel)]="patient.support_group" name="support_group" [disabled]="patient.is_support != true"></textarea>
+                                    </div>
+                                </fieldset>
+                                <!-- Patient History -->
+                                <fieldset class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                    <legend>Patient History</legend>
+                                    <div *ngIf="patient.age_in_years >= 18">
+                                        <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                            <label>Patient Status</label>
+                                            <select class="form-control" id="select-1" [(ngModel)]="patient.status" name="patient_status" disabled>
+
+                                                <option value="no partner">No partner</option>
+
+                                                <option value="concordant">Concordant</option>
+
+                                                <option value="discordant">Discordant</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                            <label>Disclosure</label>
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-10">
+                                                    <label class="radio radio-inline no-margin">
+                                                        <input type="radio" value="1" class="radiobox style-2" [(ngModel)]="patient.disclosure" name="disclosure" disabled/>
+                                                        <span>Yes</span>
+                                                    </label>
+                                                    <label class="radio radio-inline">
+                                                        <input type="radio" value="0" class="radiobox style-2" [(ngModel)]="patient.disclosure" name="disclosure" disabled/>
+                                                        <span>No</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="patient.status == 'concordant'" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                            <label>Match to spouse in this ccc?</label>
+                                            <input class="form-control" placeholder="Enter ccc number" [(ngModel)]="patient.spouse_ccc" type="text" name="spouse_ccc" disabled/>
+                                        </div>
+                                        <!-- Pretty verbose! Bummer! -->
+                                        <div *ngIf="patient.family_planning" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                            <label>Family planning method</label>
+                                            <div class="well">
+                                                <div *ngFor="let family_planning of patient?.family_planning">{{family_planning.family_planning_id}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div *ngIf="patient.illnesses" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Does Patient have other Chronic illnesses</label>
+                                        <div class="well">
+                                            <div *ngFor="let illness of patient?.illnesses">{{illness.illness_id}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" [(ngModel)]="patient.is_illness" name="is_illness" disabled>Click Here</label>
+                                    </div>
+                                    <div *ngIf="patient.other_illnesses" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>List Them Below (Type and enter to add tag)</label>
+                                        <textarea class="form-control" rows="2" [(ngModel)]="patient.other_illnesses.other_illness" name="other_illness" [disabled]="patient.is_illness != true"></textarea>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Is Patient Taking any Other Drugs?</label>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" [(ngModel)]="patient.is_drugs" name="is_drugs" disabled>Yes</label>
+                                    </div>
+                                    <div *ngIf="patient?.other_drug" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>List Them</label>
+                                        <textarea class="form-control" rows="2" [(ngModel)]="patient.other_drug.drug_name" name="drugs" [disabled]="patient.is_drugs != true"></textarea>
+                                    </div>
+                                    <div *ngIf="patient.drug_allergy" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Drug Allergies/ADR</label>
+                                        <div class="well">
+                                            <div *ngFor="let allergy of patient?.drug_allergy">{{allergy.name}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Does Patient have any Other Drugs/ADR not Listed?</label>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" [(ngModel)]="patient.is_allergies" name="is_allergies" disabled>Yes</label>
+                                    </div>
+                                    <div *ngIf="patient?.other_drug_allergy" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>List Them</label>
+                                        <textarea class="form-control" rows="2" [(ngModel)]="patient.other_drug_allergy.allergy_name" name="other_allergies" [disabled]="patient.is_allergies != true"></textarea>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Does Patient Smoke?</label>
+                                        <select class="form-control" [(ngModel)]="patient.is_smoke" name="is_smoke" disabled>
+                                            <option value="1">Yes</option>
+                                            <option value="0">No</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Does Patient Drink Alcohol?</label>
+                                        <select class="form-control" [(ngModel)]="patient.is_alcohol" name="is_alcohol" disabled>
+                                            <option value="1">Yes</option>
+                                            <option value="0">No</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Tested for TB?</label>
+                                        <select class="form-control" [(ngModel)]="patient.is_tb_tested" name="is_tb_tested" disabled>
+                                            <option value="1">Yes</option>
+                                            <option value="0">No</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Does Patient have TB?</label>
+                                        <select class="form-control" [(ngModel)]="patient.is_tb" name="tb" disabled>
+                                            <option value="1">Yes</option>
+                                            <option value="0">No</option>
+                                        </select>
+                                    </div>
+                                    <div *ngIf="patient.is_tb == 1 && patient.tb != null" class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Select TB Category</label>
+                                        <select class="form-control" [(ngModel)]="patient?.tb.category" name="category" disabled>
+                                            <option value="1">Category 1</option>
+                                            <option value="2">Category 2</option>
+                                        </select>
+                                    </div>
+                                    <div *ngIf="patient.tb != null" class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label>TB Phase</label>
+                                        <select class="form-control" [(ngModel)]="patient?.tb.phase" name="tb_phase" disabled>
+                                            <option value="intensive">Intensive</option>
+                                            <option value="continuation">Continuation</option>
+                                            <option value="completed">Completed</option>
+                                        </select>
+                                    </div>
+                                    <div *ngIf="patient?.tb">
+                                        <div *ngIf="patient?.tb.phase" [ngSwitch]="patient?.tb.phase">
+                                            <div *ngSwitchCase="'completed'">
+                                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                                    <label>End of phase:</label>
+                                                    <div class="input-group">
+                                                        <input type="text" placeholder="End phase" class="form-control datepicker" [(ngModel)]="patient?.tb.end_date" name="tb_end" disabled>
+                                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div *ngSwitchDefault>
+                                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>Start of phase:</label>
+                                                        <div class="input-group">
+                                                            <input type="text" placeholder="Start phase" class="form-control datepicker" [(ngModel)]="patient?.tb.start_date" name="tb_start" disabled>
+                                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                                    <label>End of phase:</label>
+                                                    <div class="input-group">
+                                                        <input type="text" placeholder="End phase" class="form-control datepicker" [(ngModel)]="patient?.tb.end_date" name="tb_end" disabled>
+                                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Date of next appointment:</label>
+                                        <div class="input-group">
+                                            <input  type="text" name="appointment_date" placeholder="Select a date" class="form-control" value="{{patient.next_appointment != null && patient.next_appointment.appointment_date}}" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Days to next appointment</label>
+                                        <div class="input-group">
+                                            <input  type="text" name="days_to" placeholder="" [(ngModel)]="days_to" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </fieldset>
+
+                                <!-- Patient Information -->
+                                <fieldset class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                    <legend>Patient Information</legend>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label><span style="color:red; font-weight:bold">*</span> Enrollment date:</label>
+                                        <div class="input-group">
+                                            <input type="text" name="enrollment_date" [(ngModel)]="patient.enrollment_date" placeholder="Select a date" class="form-control" disabled>
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="patient.current_status" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label><span style="color:red; font-weight:bold">*</span> Current Status</label>
+                                        <input *ngIf="patient.current_status[0]" class="form-control" [(ngModel)]="patient.current_status[0].name" name="current_status" disabled>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Date of status change:</label>
+                                        <div class="input-group">
+                                            <input type="text" name="enrollment_date" placeholder="End date" class="form-control datepicker" disabled>
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label><span style="color:red; font-weight:bold">*</span> Source of Patient</label>
+                                        <input class="form-control" type="text" [(ngModel)]="patient?.source['name']" name="patient_source" disabled>
+                                    </div>
+                                    <div *ngIf="patient.service" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label><span style="color:red; font-weight:bold">*</span> Type of Service</label>
+                                        <input type="text" class="form-control" [(ngModel)]="patient?.service['name']" name="service" disabled>
+                                    </div>
+                                    <div *ngIf="patient.start_regimen" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Start Regimen</label>
+										<input type="text" class="form-control" [(ngModel)]="patient.start_regimen.name" name="start regimen" disabled>
+                                    </div>
+                                    <div *ngIf="patient.service.name == 'PEP'" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Pep reason</label>
+                                        <select class="form-control" [(ngModel)]="patient.pep_reason" name="regimen" disabled>
+                                            <option selected>--Select--</option>
+                                            <option value="Occupational">Occupational</option>
+                                            <option value="Sexual Assault">Sexual Assault</option>
+                                            <option value="Other Reason">Other Reason</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Start Regimen Date</label>
+                                        <input type="text" name="regimen_date" placeholder="Regimen start date" class="form-control datepicker" [(ngModel)]="patient.enrollment_date" disabled>
+                                    </div>
+									<div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Current Regimen</label>
+                                        <input type="text" name="regimen_date" placeholder="Regimen start date" class="form-control" disabled>
+                                    </div>
+                                    <div *ngIf="patient.service_type != 'PEP'" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>WHO Stage</label>
+                                        <input type="text" class="form-control" disabled [(ngModel)]="patient.who_stage['name']" name="who_stage">
+                                    </div>
+                                    <div *ngIf="patient.prophylaxis" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Drug Prophylaxis</label>
+                                        <div class="well">
+                                            <div *ngFor="let prophylaxis of patient?.prophylaxis">{{prophylaxis.name}}</div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="patient.prophylaxis == 3">
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                            <div class="form-group">
+                                                <label>Isoniazid start date:</label>
+                                                <div class="input-group">
+                                                    <input type="text" name="enrollment_date" placeholder="Start date" class="form-control datepicker" [saUiDatepicker]="{ dateFormat: 'dd/mm/yy', maxDate: 'new Date()' }" (selectDate)='setDate($event,"isoniazid_start")' disabled>
+                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                            <label>Isoniazid end date:</label>
+                                            <div class="input-group">
+                                                <input type="text" name="enrollment_date" placeholder="End date" class="form-control datepicker" [saUiDatepicker]="{ dateFormat: 'dd/mm/yy' }" (selectDate)='setDate($event, "isoniazid_end")' disabled>
+                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="col-xs-48 col-sm-12 col-md-12 col-lg-12">
+                                    <div>
+                                        <!-- widget content -->
+                                        <div class="widget-body">
+                                            <hr class="simple">
+                                            <ul id="myTab3" class="nav nav-tabs">
+                                                <li class="active pull-right">
+                                                    <a data-toggle="modal" data-target="#viralLoadModal">Viral Load Data</a>
+                                                </li>
+                                                <li class="active pull-right">
+                                                    <a data-toggle="modal" data-target="#patientSummaryModal">Patient Info Report</a>
+                                                </li>
+                                                <li class="active pull-right">
+                                                    <a class="mdl-navigation__link" [routerLink]="['/patients/edit/',patient.id]">Edit Patient Record</a>
+                                                </li>
+                                                <li class="active pull-right">
+                                                        <a *ngIf="patient.current_status && patient.current_status[0] && patient.current_status[0].name=='active'" class="mdl-navigation__link" [routerLink]="['/patients/dispense/',patient.id]">Dispense to Patient</a>
+                                                </li>
+                                            </ul>
+                                            <tabset class="padding-5">
+                                                <sa-widget [editbutton]="false" color="darken">
+                                                    <header><span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                                                        <h2>Dispensing History</h2>
+                                                    </header>
+                                                    <div>
+                                                        <div class="widget-body no-padding">
+
+                                                        </div>
+                                                    </div>
+                                                </sa-widget>
+                                                <!--Viral load data Modal-->
+                                                <div id="viralLoadModal" class="modal fade" role="dialog">
+                                                    <div class="modal-dialog modal-lg">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                <h4 class="modal-title">Viral Load Summary</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <div class="form-group">
+                                                                            <div class="table-responsive">
+                                                                                <table class="table table-bordered">
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th [ngStyle]="{width:'60%'}">Date Tested</th>
+                                                                                            <th>Result</th>
+                                                                                            <th>Justification</th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        <tr *ngFor="let v_data of viral_load">
+                                                                                            <td>{{v_data.test_date}}</td>
+                                                                                            <td>{{v_data.result}}</td>
+                                                                                            <td>{{v_data.justification}}</td>
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--End of viralLoadModal-->
+                                                <!--Patient Summary Modal-->
+                                                <div id="patientSummaryModal" class="modal fade" role="dialog">
+                                                    <div class="modal-dialog modal-lg">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                <h4 class="modal-title">Patient Information Summary</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <h3 style="text-align: center;">Patient Information</h3>
+                                                                
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <div class="form-group">
+                                                                            <table class="table table-hover table-bordered table-striped table-condensed" style="zoom:90%;">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>Art Number</th>
+                                                                                        <th>First Name</th>
+                                                                                        <th>Surname</th>
+                                                                                        <th>Sex</th>
+                                                                                        <th>Age</th>
+                                                                                        <th>Date Therapy Started</th>
+                                                                                        <th>Current Status</th>
+                                                                                        <th>Last Viral Load Date</th>
+                                                                                        <th>Last Viral Load Result</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <td>{{patient.ccc_number}}</td>
+                                                                                        <td>{{patient.first_name}}</td>
+                                                                                        <td>{{patient.last_name}}</td>
+                                                                                        <td>{{patient.gender}}</td>
+                                                                                        <td>{{getAge(patient.birth_date)}}</td>
+                                                                                        <td>{{patient.enrollment_date}}</td>
+                                                                                        <td>{{patient.current_status && patient.current_status[0] != null && patient.current_status[0].name}}</td>
+                                                                                        <td>{{latest_viral_load?.test_date || 'n/a'}}</td>
+                                                                                        <td>{{latest_viral_load?.result || 'n/a'}}</td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                            <h3 style="text-align: center;">Patient Pill Count History</h3>
+                                                                            
+                                                                            <table class="table table-hover table-bordered table-striped table-condensed" style="zoom:90%;">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th rowspan="2">Date of Visit</th>
+                                                                                        <th rowspan="2">Drug Name</th>
+                                                                                        <th rowspan="2">Qty. Dispensed</th>
+                                                                                        <th rowspan="2">Pill Count</th>
+                                                                                        <th rowspan="2">Missed Pills</th>
+                                                                                        <th colspan="4" style="text-align:center;">Adherence Rates</th>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <th>Pill Count(%)</th>
+                                                                                        <th>Missed Pills(%)</th>
+                                                                                        <th>Appointment(%)</th>
+                                                                                        <th>Average(%)</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody></tbody>
+                                                                            </table>
+                                                                            <h3 style="text-align: center;">Patient Regimen Change Reason</h3>
+                                                                
+                                                                            <table class="table table-hover table-bordered table-striped table-condensed" style="zoom:90%;">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>Date of Visit</th>
+                                                                                        <th>Last Regimen Dispensed</th>
+                                                                                        <th>Current Regimen</th>
+                                                                                        <th>Reason for Change</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                </tbody>
+                                                                            </table>
+                                                                            <h3 style="text-align: center;">Patient Appointment History</h3>
+                                                                
+                                                                            <table class="table table-hover table-bordered table-striped table-condensed" style="zoom:90%;">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>Date of Next Appointment</th>
+                                                                                        <th>Days to Appointment</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <td>2016-08-10</td>
+                                                                                    <td>15</td>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--End Patient Summary Modal-->
+                                            </tabset>
+                                        </div>
+                                        <!-- end widget content -->
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </sa-widget>
+                </article>
+            </div>
+        </sa-widgets-grid>
+    </form>
+</div>

@@ -1,0 +1,108 @@
+<div id="content" *ngIf="source">
+   <div class="row">
+      <article class="col-sm-12">
+         <sa-widget [editbutton]="false" color="darken">
+            <header>
+               <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+               <h2>Facility Patient Sources</h2>
+               <div class="widget-toolbar">
+                  <a class="btn btn-primary" data-toggle="modal" data-target="#newPatientSource"><i class="fa fa-plus"></i> New Client Source</a>
+               </div>
+            </header>
+            <div>
+               <div class="widget-body no-padding">
+                  <div class="table-responsive">
+                     <div class="dt-toolbar">
+                        <div class="col-xs-12 col-sm-6 hidden-xs">
+                           <div id="datatable_fixed_column_filter" class="dataTables_filter">
+                              <label>
+                              <span class="input-group-addon">
+                              <i class="glyphicon glyphicon-search"></i>
+                              </span>
+                              <input type="search" class="form-control" [(ngModel)]="binding" placeholder="Search" aria-controls="datatable_fixed_column">
+                              </label>
+                           </div>
+                        </div>
+                     </div>
+                     <table class="table table-bordered table-striped">
+                        <thead>
+                           <tr>
+                              <th>Patient Source</th>
+                              <th style="width: 15%; text-align: center">Options</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr *ngFor="let source of sourcesList | facilityPatientSources: 'name':binding">
+                              <td>{{source.name}}</td>
+                              <td style="text-align: center">
+                                 <a class="btn btn-primary btn-xs" data-toggle="modal" attr.data-target="#edit{{source.id}}">Edit</a>
+                                 <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" attr.data-target="#disable{{source.id}}">Disable</button>
+                              </td>
+                              <!--Edit Modal-->
+                              <div class="modal fade" id="edit{{source.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                 <div class="modal-dialog">
+                                    <div class="modal-content">
+                                       <div class="modal-header">
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                          <h4 class="modal-title">Edit</h4>
+                                       </div>
+                                       <div class="modal-body">
+                                          <form #editForm="ngForm">
+                                             <label>Name</label>
+                                             <p><input type="text" class="form-control" style="width:100%" [(ngModel)]="source.name" name="name"></p>
+                                             <button class="btn btn-primary" type="submit" data-dismiss="modal" (click)="onUpdate(source)"><i class="fa fa-save"></i> Update	</button>
+                                             <button class="btn btn-primary" data-dismiss="modal"> Cancel	</button>
+                                          </form>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <!--Disable Modal-->
+                              <div class="modal fade" id="disable{{source.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                 <div class="modal-dialog modal-sm">
+                                    <div class="modal-content">
+                                       <div class="modal-header">
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                          <h4 class="modal-title">Disable</h4>
+                                       </div>
+                                       <div class="modal-body">
+                                          <form>
+                                             <h3>Are you sure you want to disable {{source.name}}?</h3>
+                                             <div style="text-align: right">
+                                                <button class="btn btn-primary" (click)="disable(source.id)" data-dismiss="modal"> Disable	</button>
+                                                <button class="btn btn-danger" data-dismiss="modal"> Cancel	</button>
+                                             </div>
+                                          </form>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
+                  <!--New Modal-->
+                  <div id="newPatientSource" class="modal fade" role="dialog">
+                     <div class="modal-dialog">
+                        <div class="modal-content">
+                           <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                              <h4 class="modal-title">New Patient Source</h4>
+                           </div>
+                           <div class="modal-body">
+                              <form (ngSubmit)="onSave()" #sourcesForm="ngForm">
+                              <label>Client Source Name</label>
+                              <input type="text" class="form-control" [(ngModel)]="source.name" name="name"><br>
+                              <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> Save	</button>
+                              <button class="btn btn-primary" data-dismiss="modal"> Cancel	</button>
+                              </form>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </sa-widget>
+      </article>
+   </div>
+</div>

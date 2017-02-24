@@ -1,0 +1,129 @@
+<!-- Only display after patients list has been pulled from server-->
+<div id="content" *ngIf="patients">
+    <sa-widgets-grid>
+        <article class="col-sm-12">
+            <sa-widget [editbutton]="false" [colorbutton]="false" [editbutton]="false" [togglebutton]="false" [deletebutton]="false"
+                [custombutton]="false" color="blueDark">
+                <header><span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                    <h2>Patients</h2>
+                    <div class="widget-toolbar">
+                    </div>
+                </header>
+                <div>
+                    <div class="widget-body no-padding">
+                        <div id="no_scroll" class="table-responsive">
+                            <div class="dt-toolbar">
+                                <div class="col-xs-12 col-sm-6 hidden-xs">
+                                    <div id="datatable_fixed_column_filter" class="dataTables_filter">
+                                        <label>
+                                            <span class="input-group-addon">
+                                                  <i class="glyphicon glyphicon-search"></i>
+                                            </span>
+                                            <input type="search" class="form-control" [(ngModel)]="binding" placeholder="Search" aria-controls="datatable_fixed_column">
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-6 hidden-xs">
+                                    <div class="pull-right form-inline">
+                                        <label for="status_binding">
+                                            Filter Patients Based on Status:
+                                        </label>
+                                        <select name="status_binding" class="form-control" [(ngModel)]="status_binding">
+                                            <option value="active">Active</option>
+                                            <option value="inactive">Inactive</option>
+                                            <option value="">All</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>CCC No</th>
+                                        <th>Patient Name</th>
+                                        <th>Next Appointment</th>
+                                        <th>Contact</th>
+                                        <th>Current Regimen</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    <tr>
+                                        <td id="complex_table">
+                                            <input id="input" class="form-control" [(ngModel)]="ccc_no" type="search" placeholder="Filter ccc">
+                                        </td>
+                                        <td id="complex_table">
+                                            <input id="input" class="form-control" [(ngModel)]="patient_name" type="search" placeholder="Filter name">
+                                        </td>
+                                        <td id="complex_table"></td>
+                                        <td id="complex_table">
+                                            <input id="input" class="form-control" [(ngModel)]="contact" type="search" placeholder="Filter contact">
+                                        </td>
+                                        <td id="complex_table">
+                                            <input id="input" class="form-control" [(ngModel)]="regimen" type="search" placeholder="Filter regimen ">
+                                        </td>
+                                        <td id="complex_table">
+                                            <td id="complex_table"></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let patient of patients.data| fieldFilter:'current_status[0]?.name':status_binding  | fieldFilter:'first_name':patient_name | fieldFilter:'phone_number':contact | fieldFilter:'ccc_number':ccc_no | fieldFilter:'service_id':regimen">
+                                        <td>{{patient.ccc_number }}</td>
+                                        <td>{{patient.first_name}}</td>
+                                        <td>{{patient.next_appointment != null && patient.next_appointment.appointment_date}}</td>
+                                        <td>{{patient.phone_number}}</td>
+                                        <td>{{patient.visit != null && patient.visit.current_regimen.name}}</td>
+                                        <td>{{patient.current_status[0] != null && patient.current_status[0].name}}</td>
+                                        <td>
+                                            <div class="btn-group" dropdown>
+                                                <button id="single-button" type="button" class="btn btn-xs btn-primary" dropdownToggle>
+                                                    Choose Status <span class="caret"></span>
+                                                </button>
+                                                <ul dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu-right">
+                                                    <li *ngIf="patient.current_status[0] != null && patient.current_status[0].name == 'active'" role="menuitem"><a href="" [routerLink]="['/patients/dispense',patient.id]">Dispense</a></li>
+                                                    <li role="menuitem"><a href="" [routerLink]="['/patients/detail',patient.id]">Detail</a></li>
+                                                    <li role="menuitem"><a href="" [routerLink]="['/patients/edit',patient.id]">Edit</a></li>
+                                                    <li role="menuitem"><a type="button" data-toggle="modal" attr.data-target="#confirmDelete{{patient.id}}">Disable</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="confirmDelete{{patient.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Are you sure you would like to disable {{patient.first_name}}
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                                        <button class="btn btn-primary" (click)="disable(patient.id)" data-dismiss="modal"> Yes I am</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="dt-toolbar-footer">
+                                <div class="col-sm-6 col-xs-12">
+                                    <div class="dataTables_info" id="DataTables_Table_1_info" role="status" aria-live="polite">
+                                        Showing {{patients.from}} to {{patients.to}} of {{patients.total}} entries
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-6">
+                                    <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_1_paginate">
+                                        <pagination class="dataTables_paginate paging_simple_numbers" [itemsPerPage]="patients.per_page" [totalItems]="patients.total"
+                                            [(ngModel)]="currentPage" (pageChanged)="pageChanged($event)"></pagination>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </sa-widget>
+        </article>
+    </sa-widgets-grid>
+</div>
