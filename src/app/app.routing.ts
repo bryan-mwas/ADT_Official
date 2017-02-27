@@ -15,7 +15,7 @@ export const routes: Routes = [
     data: {pageTitle: 'Home'},
     children: [
       {
-        path: '', redirectTo: 'dashboard/analytics', pathMatch: 'full'
+        path: '', redirectTo: 'home', pathMatch: 'full'
       },
       { path: 'home', loadChildren: 'app/+home/home.module#HomeModule', data: { pageTitle: 'CDF Kiriari Dispensary /  Dashboard' } },
       { path: 'patients', loadChildren: 'app/patients/patients.module#PatientsModule', data: { pageTitle: 'CDF Kiriari Dispensary /  Patients' } },
