@@ -1,24 +1,25 @@
-
-import {ModuleWithProviders} from "@angular/core"
 import {Routes, RouterModule} from "@angular/router";
-
+import {LoginComponent} from "./login/login.component";
+import {RegisterComponent} from "./register/register.component";
+import {ForgotComponent} from "./forgot/forgot.component";
+import {LockedComponent} from "./locked/locked.component";
 
 export const routes:Routes = [
   {
     path: 'login',
-    loadChildren: './+login/login.module#LoginModule'
+    component: LoginComponent
   },
   {
     path: 'register',
-    loadChildren: './+register/register.module#RegisterModule'
+    component: RegisterComponent
   },
   {
     path: 'forgot-password',
-    loadChildren: './+forgot/forgot.module#ForgotModule'
+    component: ForgotComponent
   },
   {
     path: 'locked',
-    loadChildren: './+locked/locked.module#LockedModule'
+    component: LockedComponent
   }
 ];
 
