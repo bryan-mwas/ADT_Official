@@ -1,7 +1,11 @@
+export class Types {
+    id: number;
+    name: string;
+    effect: number;
+}
 export class Transaction {
     id: number;
     name: string;
-    stock_item: StockItem[];
 }
 
 export class StockItem {
@@ -21,6 +25,15 @@ export class StockItem {
     drug: Drug;
 }
 
+export class StoreItem {
+    store_id: number;
+    drug_id: number;
+    batch_number: number;
+    expiry_date: string;
+    balance: number;
+    unit_cost: number;
+}
+
 export class Drug {
     id: number;
     name: string;
@@ -30,8 +43,8 @@ export class Drug {
     is_arv: number;
     is_tb: number;
     is_oi: number;
-    unit_id: number;
-    dose_id: number;
-    generic_id: number;
-    supporter_id: number; 
+    drug_generic: string;
+    drug_unit: string;
+    drug_dose: string;
+    drug_supporter: string;
 }

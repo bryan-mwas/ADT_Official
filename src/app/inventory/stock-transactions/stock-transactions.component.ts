@@ -1,6 +1,6 @@
 import { Component, OnInit, DoCheck } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
-import { Transaction, StockItem, Drug } from './transactions';
+import { Types, Transaction, StockItem, Drug, StoreItem } from './transactions';
 import { StockTransactionsService } from './stock-transactions.service';
 import 'rxjs/add/operator/switchMap';
 import { Observable } from 'rxjs/Observable';
@@ -18,6 +18,8 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
   private transactionTypes: Observable<string[]>;
   stockItem: Transaction;
   drugItem: Drug;
+  private drugsList: Observable<string[]>;
+  storeItems: StoreItem;
   //  Index Tracker
   i: number;
   individual_drug: any = null;
@@ -40,9 +42,11 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     });
     this._transactionService.getTransactionTypes().subscribe(data => this.transactionTypes = data);
     this.stockTransactionsForm.get('transaction_type').valueChanges.subscribe(
-      val => this._transactionService.getTransaction(+[val]).subscribe((val) => this.stockItem = val),
+      val => this._transactionService.getTransaction(+[val])
+        .subscribe((val) => this.stockItem = val),
       (err) => console.error(err)
-    )
+    );
+    this._transactionService.getDrugs().subscribe(d => this.drugsList = d);
     // console.log(this.rows.controls[0] + 'index: ' + this.index);
   }
 
@@ -70,7 +74,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
   setDate(value: any, val: string) {
     this.stockTransactionsForm.patchValue({
       transaction_date: value
-    })
+    });
   }
 
   addRow() {
@@ -82,15 +86,16 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     control.removeAt(i);
   }
 
-  drugRetrieval(val) {
-    this.stockTransactionsForm.get('drug').valueChanges.subscribe(
-      val => this._transactionService.getDrugDetails(val).subscribe((val) => this.drugItem = val),
-      (err) => console.error(err)
-    )
-    this.stockTransactionsForm.patchValue({
-      unit: this.drugItem[0].pack_size
-    })
-  }
+  // drugRetrieval(val) {
+  //   this.stockTransactionsForm.get('drug').valueChanges.subscribe(
+  //     val => this._transactionService.getDrugDetails(val).subscribe(
+  //       (val) => this.drugItem = val),
+  //     (err) => console.error(err)
+  //   );
+  //   this.stockTransactionsForm.patchValue({
+  //     unit: this.drugItem[0].pack_size
+  //   });
+  // }
 
   /**
    * Tracks the index of the rows being worked on.
@@ -102,10 +107,10 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     this.rows.controls[+val].valueChanges.subscribe(
       row => {
         this._transactionService.getDrugDetails(+[row.drug_id]).subscribe(
-          individual_drug => this.patchRow(individual_drug, array_index)
-        )
+          individualDrug => this.patchRow(individualDrug, array_index)
+        );
       }
-    )
+    );
   }
 
   patchRow(drug: any, val: number) {
@@ -114,11 +119,11 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     let ps = this.rows.controls[+[val]].get('pack_size').value;
     this.rows.controls[+[val]].patchValue(
       {
-        unit: drug.unit_id,
+        unit: drug.drug_unit,
         pack_size: drug.pack_size,
         total: (p * pc),
         quantity: (ps * p)
       }
     );
-  }  
+  }
 }
