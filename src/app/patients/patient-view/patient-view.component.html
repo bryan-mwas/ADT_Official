@@ -1,6 +1,6 @@
 <div id="content">
     <form action="">
-        <pre>{{diagnostic}}</pre>
+        <!--<pre>{{diagnostic}}</pre>-->
         <sa-widgets-grid>
             <div class="row">
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -181,7 +181,7 @@
                                     <div *ngIf="patient.illnesses" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>Does Patient have other Chronic illnesses</label>
                                         <div class="well">
-                                            <div *ngFor="let illness of patient?.illnesses">{{illness.illness_id}}</div>
+                                            <div *ngFor="let illness of patient?.illnesses">{{illness.illness_name}}</div>
                                         </div>
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -415,7 +415,44 @@
                                                     </header>
                                                     <div>
                                                         <div class="widget-body no-padding">
-
+                                                            <table class="table table-bordered">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <td>Date</td>
+                                                                        <td>Purpose of Visit</td>
+                                                                        <td>Dose</td>
+                                                                        <td>Duration</td>
+                                                                        <td>Action</td>
+                                                                        <td>Drug</td>
+                                                                        <td>Qty</td>
+                                                                        <td>Weight</td>
+                                                                        <td>Current Regimen</td>
+                                                                        <td>BatchNo</td>
+                                                                        <td>Pill Count</td>
+                                                                        <td>Adherence</td>
+                                                                        <td>Operator</td>
+                                                                        <td>Reasons For Change</td>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr *ngFor="let history of dispense_history">
+                                                                        <!--<td>{{history.visit_date}}</td>
+                                                                        <td>{{history.}}</td>
+                                                                        <td>{{history.}}</td>
+                                                                        <td>{{history.}}</td>-->
+                                                                        <!--<td>{{history.}}</td>-->
+                                                                        <!--<td>{{history.}}</td>
+                                                                        <td>{{history.}}</td>
+                                                                        <td>{{history.current_weight}}</td>
+                                                                        <td>{{history.}}</td>
+                                                                        <td>{{history.}}</td>
+                                                                        <td>{{history.}}</td>
+                                                                        <td>{{history.}}</td>
+                                                                        <td>{{history.}}</td>
+                                                                        <td>{{history.}}</td>-->
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
                                                         </div>
                                                     </div>
                                                 </sa-widget>

@@ -492,7 +492,7 @@
                                                 </div>
                                             </div>
                                             <div *ngSwitchDefault>
-                                                <ss-multiselect-dropdown [options]="patientProphylaxis | async" [texts]="myTexts" [settings]="mySettings" [(ngModel)]="a" [ngModelOptions]="{standalone: true}"></ss-multiselect-dropdown>
+                                                <ss-multiselect-dropdown id="multi_prophylaxis" [options]="patientProphylaxis | async" [texts]="myTexts" [settings]="mySettings" [(ngModel)]="prophylaxis_list" [ngModelOptions]="{standalone: true}"></ss-multiselect-dropdown>
                                             </div>
                                     </div>
                                     <div *ngIf="patientForm.get('prophylaxis').value == 3">

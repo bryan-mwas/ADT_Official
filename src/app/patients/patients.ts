@@ -73,6 +73,7 @@ export class Patient {
     tb: PatientTb;
     source = this.patient_source;
     visit: any;
+    next_appointment_date?: string;
 }
 
 export class Service {

@@ -163,6 +163,15 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
             days_to: [{ value: '', disabled: true }],
             ccc_notify: [{ value: '', disabled: true }]
         });
+        // Track for edit changes in appointment_date control
+            // this.patientForm.get('appointment_date').valueChanges.subscribe(
+            //     value => {
+            //         alert(value)
+            //         this.patientForm.patchValue({
+            //             days_to: this.dateDiff(value)
+            //         });
+            //     }
+            // )
         // Monitor the patient ccc_number
         if (!this.edit) {
             this.patientForm.get('ccc_number').valueChanges.subscribe(
@@ -235,31 +244,8 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
         console.log('prophy ' + this.prophylaxis_list)
     }
 
-    assignMultiselect(b: number[], c: any[]) {
-        for (let a of c) {
-            b.push(a['id']);
-        }
-        return b;
-    }
-
     patientValues(patient: Patient) {
         this.setDate(patient.birth_date, 'birthday');
-
-        if (patient.visit != null) {
-            this.patientForm.patchValue({
-                appointment_date: patient.visit.appointment['appointment_date'],
-                days_to: this.dateDiff(patient.visit.appointment['appointment_date'])
-            });
-            // Track for edit changes in appointment_date control
-            this.patientForm.get('appointment_date').valueChanges.subscribe(
-                value => {
-                    alert(value)
-                    this.patientForm.patchValue({
-                        days_to: this.dateDiff(value)
-                    });
-                }
-            )
-        }
         if (patient.tb != null) {
             this.patientForm.patchValue({
                 tb_category: patient.tb.category,
@@ -346,7 +332,8 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
             is_support: patient.is_support,
             is_illness: patient.is_illness,
             is_drugs: patient.is_drugs,
-            is_allergies: patient.is_allergies
+            is_allergies: patient.is_allergies,
+            appointment_date: patient.next_appointment_date,
         });
     }
 
