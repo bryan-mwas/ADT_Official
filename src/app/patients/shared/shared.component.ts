@@ -241,8 +241,10 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
             initial_bsa: Math.sqrt((height * weight) / 3600)
             // current_bsa: Math.sqrt((current_height * current_weight) / 3600),
         });
-        console.log('prophy ' + this.prophylaxis_list)
-    }
+        var pl = this.prophylaxis_list;
+        console.log(this.prophylaxis_list)
+        }
+
 
     patientValues(patient: Patient) {
         this.setDate(patient.birth_date, 'birthday');

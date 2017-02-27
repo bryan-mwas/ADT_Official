@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { PatientsService } from '../../patients.service';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { DispenseService } from '../dispense.service';
+import { FormGroup, FormBuilder, FormArray, Validators, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-dispense-edit',
@@ -6,10 +10,67 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dispense-edit.component.css']
 })
 export class DispenseEditComponent implements OnInit {
+  // Class properties
+  patient_visits: any;
+  regimenDrugs: any;
+  reason: any;
+  non_adherence: any;
+  purpose: any;
+  dispenseEditForm: FormGroup;
 
-  constructor() { }
+  constructor(
+    private _activeRoute: ActivatedRoute,
+    private _router: Router,
+    private _patientService: PatientsService,
+    private _dispenseService: DispenseService,
+    protected fb: FormBuilder
+  ) { }
 
   ngOnInit() {
+    this._activeRoute.params.switchMap((params: Params) => this._patientService.getPreviousVisits(+params['id'])).subscribe(
+      response => this.patient_visits = response
+    );
+    this._activeRoute.params
+      .switchMap((params: Params) => this._patientService.getLatestVisit(+params['id']))
+      .subscribe(appointment => {
+
+        if (appointment) {
+          if (appointment[0] != null) {
+            this.dispenseEditForm.patchValue({
+              current_regimen_id: appointment[0].current_regimen_id,
+              previous_visit: appointment[0].visit_date
+            })
+          }
+        }
+      });
+    this._dispenseService.getRegimenDrugs().subscribe(
+      regimen => this.regimenDrugs = regimen,
+      error => console.error(error)
+    );
+    this._dispenseService.getChangeReason().subscribe(
+      reason => this.reason = reason,
+      error => console.error(error)
+    );
+    this._dispenseService.getNonAdherence().subscribe(
+      reason => this.non_adherence = reason,
+      error => console.error(error)
+    );
+    this._dispenseService.getPurpose().subscribe(
+      p => this.purpose = p,
+      error => console.error(error)
+    );
+    this.dispenseEditForm = this.fb.group({
+      ccc_number: '',
+      patient_name: '',
+      latest_visit_date: '',
+      purpose_visit: '',
+      current_height: '',
+      current_weight: '',
+      last_regimen: '',
+      current_regimen: '',
+      appointment_adherence: '',
+      adherence_reason: ''
+    })
   }
 
 }
