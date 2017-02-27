@@ -9,11 +9,11 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class FacilityService {
 
-    private _apiUrl = 'http://197.232.32.34/adt/api/';
+    private _apiUrl = 'http://192.168.133.10/adt-core/lib/public/api/';
 
     private _faciltyApi = this._apiUrl + 'facility';
     private _countiesApi = this._apiUrl + 'lists/counties';
-    private _typesApi = this._apiUrl + 'lists/type';
+    private _typesApi = this._apiUrl + 'lists/facilty_type';
     private _subcountiesApi = this._apiUrl + 'lists/sub_county';
     private _servicesApi = this._apiUrl + 'lists/services';
     private _sourcesApi = this._apiUrl + 'lists/patientsources';
@@ -112,7 +112,7 @@ export class FacilityService {
         return this._http.put(`${this._sourcesApi}/${body['id']}`, bodyString, options)
             .map((res: Response) => res.json())
             .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
-    }   
+    }
 
     updateSupporter(body: Object): Observable<Supporters[]> {
         let bodyString = JSON.stringify(body);

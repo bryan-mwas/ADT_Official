@@ -6,7 +6,7 @@ export const profileRoutes:Routes = [
         path: '',
         component: ProfileComponent,
         data: {
-            pageTitle: 'Profile'
+            pageTitle: ''
         }
     }
 ]

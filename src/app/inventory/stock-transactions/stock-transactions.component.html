@@ -3,7 +3,8 @@
       <form (ngSubmit)="save()" novalidate [formGroup]="stockTransactionsForm">
       <div class="row">
          <div class="col-xs-2 col-md-2">
-            <sa-widget [colorbutton]="false" [editbutton]="false" [togglebutton]="false" [deletebutton]="false" [fullscreenbutton]="false" [custombutton]="false" [sortable]="false" color="blueDark">
+            <sa-widget [colorbutton]="false" [editbutton]="false" [togglebutton]="false" [deletebutton]="false" [fullscreenbutton]="false"
+            [custombutton]="false" [sortable]="false" color="blueDark">
             <header>
                <h2>Transaction Details</h2>
             </header>
@@ -15,17 +16,24 @@
                      </tr>
                      <tr>
                         <div class="input-group">
-                           <input type="text" formControlName="transaction_date" placeholder="Select a date" class="form-control datepicker" [saUiDatepicker]="{ dateFormat: 'mm/dd/yy' , changeMonth: true, changeYear: true, yearRange : 'c-65:c+0'}" (selectDate)='setDate($event,"transaction_date")'>
+                           <input type="text" formControlName="transaction_date" placeholder="Select a date" class="form-control datepicker" [saUiDatepicker]="{ dateFormat: 'mm/dd/yy' , changeMonth: true, changeYear: true, yearRange : 'c-65:c+0'}"
+                           (selectDate)='setDate($event,"transaction_date")'>
                         </div>
                      </tr>
                      <tr>
                         <th>Transaction Type</th>
                      </tr>
-                     <tr>
+                     <tr *ngIf="transactionTypes">
                         <select formControlName="transaction_type" class="form-control" id="select-1">
-                        <option value="null" selected> Select Transaction Type</option>
-                        <option *ngFor="let type of transactionTypes" value="{{type.id}}">{{type.name}}</option>
+                           <option value="null" disabled selected="selected"> Select Transaction Type</option>
+                           <option *ngFor="let type of transactionTypes" value="{{type.id}}">{{type.name}}</option>
                         </select>
+                     </tr>
+                     <tr *ngIf="!transactionTypes">
+                        <div class="form-group">
+                           <i class="fa fa-cog fa-spin fa-2x fa-fw"></i>
+                           <span>Loading...</span>
+                        </div>
                      </tr>
                      <tr>
                         <th>Ref./Order No</th>
@@ -38,9 +46,7 @@
                            <th>Destination</th>
                         </tr>
                         <tr>
-                           <select formControlName="destination" class="form-control" id="select-1">
-                              <option selected>--Select Type--</option>
-                           </select>
+                           <input type="text" formControlName="destination" placeholder="Destination" class="form-control">
                         </tr>
                      </div>
                      <div *ngIf="stockTransactionsForm.get('transaction_type').value == 1 || stockTransactionsForm.get('transaction_type').value == 8">
@@ -48,9 +54,7 @@
                            <th>Source</th>
                         </tr>
                         <tr>
-                           <select formControlName="source" class="form-control" id="select-1">
-                              <option selected>--Select Type--</option>
-                           </select>
+                           <input type="text" formControlName="source" placeholder="Source" class="form-control">
                         </tr>
                      </div>
                   </tbody>
@@ -59,15 +63,16 @@
             </sa-widget>
          </div>
          <div class="col-xs-10 col-md-10">
-            <sa-widget [colorbutton]="false" [editbutton]="false" [togglebutton]="false" [deletebutton]="false" [fullscreenbutton]="false" [custombutton]="false" [sortable]="false" color="blueDark">
+            <sa-widget [colorbutton]="false" [editbutton]="false" [togglebutton]="false" [deletebutton]="false" [fullscreenbutton]="false"
+            [custombutton]="false" [sortable]="false" color="blueDark">
             <header>
                <h2>Drug Details</h2>
                <div class="widget-toolbar">
-                   <button class="btn btn-primary" type="button" (click)="addRow()"><i class="fa fa-plus"></i> Add Another Drug </button>
+                  <button class="btn btn-primary" type="button" (click)="addRow()"><i class="fa fa-plus"></i> Add Another Drug </button>
                </div>
             </header>
             <!--<div class="form-group">-->
-               <!--<span>
+            <!--<span>
                <button class="btn btn-primary" type="button" (click)="addRow()">
                Add Another Drug
                </button>
@@ -93,44 +98,45 @@
                   </thead>
                   <tbody formArrayName="drugs" *ngFor="let row of rows.controls; let i=index">
                      <tr [formGroupName]="i" (click)="index(i)">
-                        <td id="complex_table">
-                           <select id="input" class="form-control" formControlName="drug_id">
-                              <option *ngFor="let drug of stockItem?.stock_item" value="{{drug.drug.id}}">{{drug.drug.name}}</option> 
-                           </select>
-                        </td>
-                        <td id="complex_table">
-                           <input id="input" class="form-control" formControlName="unit" type="text">
-                        </td>
-                        <td id="complex_table">
-                           <input id="input" class="form-control" formControlName="pack_size" type="text">
-                        </td>
-                        <td id="complex_table"> 
-                           <input id="input" class="form-control" formControlName="batch_number" type="text">
-                        </td>
-                        <td id="complex_table">
-                           <input id="input" class="form-control" formControlName="expiry_date" type="text">
-                        </td>
-                        <td id="complex_table">
-                           <input id="input" class="form-control" formControlName="packs" type="text">
-                        </td>
-                        <td id="complex_table">
-                           <input id="input" class="form-control" formControlName="quantity" type="text">
-                        </td>
-                        <td id="complex_table">
-                           <input id="input" class="form-control" formControlName="available_quantity" type="text">
-                        </td>
-                        <td id="complex_table">
-                           <input id="input" class="form-control" formControlName="pack_cost" type="text">
-                        </td>
-                        <td id="complex_table">
-                           <input id="input" class="form-control" formControlName="total" type="text">
-                        </td>
-                        <td id="complex_table">
-                           <input id="input" class="form-control" formControlName="comment" type="text">
-                        </td>
-                        <td id="complex_table">
-                           <button class="form-control" class="btn btn-danger btn-size" *ngIf="stockTransactionsForm.controls.drugs.controls.length > 1" (click)="removeRow(i)">Remove</button>
-                        </td>
+                     <td id="complex_table">
+                        <select id="input" class="form-control" formControlName="drug_id">
+                           <option *ngFor="let drug of drugsList?.data"  value="{{drug.id}}">{{drug.name}}</option>
+                        </select>
+                     </td>
+                     <td id="complex_table">
+                        <input id="input" class="form-control" formControlName="unit" type="text">
+                     </td>
+                     <td id="complex_table">
+                        <input id="input" class="form-control" formControlName="pack_size" type="text">
+                     </td>
+                     <td id="complex_table">
+                        <input id="input" class="form-control" formControlName="batch_number" type="text">
+                     </td>
+                     <td id="complex_table">
+                        <input id="input" class="form-control" formControlName="expiry_date" type="text">
+                     </td>
+                     <td id="complex_table">
+                        <input id="input" class="form-control" formControlName="packs" type="text">
+                     </td>
+                     <td id="complex_table">
+                        <input id="input" class="form-control" formControlName="quantity" type="text">
+                     </td>
+                     <td id="complex_table">
+                        <input id="input" class="form-control" formControlName="available_quantity" type="text">
+                     </td>
+                     <td id="complex_table">
+                        <input id="input" class="form-control" formControlName="pack_cost" type="text">
+                     </td>
+                     <td id="complex_table">
+                        <input id="input" class="form-control" formControlName="total" type="text">
+                     </td>
+                     <td id="complex_table">
+                        <input id="input" class="form-control" formControlName="comment" type="text">
+                     </td>
+                     <td id="complex_table">
+                        <button class="form-control" class="btn btn-danger btn-size" *ngIf="stockTransactionsForm.controls.drugs.controls.length > 1"
+                        (click)="removeRow(i)">Remove</button>
+                     </td>
                      </tr>
                   </tbody>
                </table>
