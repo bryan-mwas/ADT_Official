@@ -52,7 +52,14 @@ export class StockTransactionsService {
   getItems(): Observable<any> {
     return this._http.get(this._itemsApi)
       .map((response: Response) => <StoreItem[]>response.json())
-      .do(data=> console.log('Store Items: ' + JSON.stringify(data)))
+      .do(data => console.log('Store Items: ' + JSON.stringify(data)))
+      .catch(this.handleError);
+  }
+
+  getDrugBatches(storeId: number, drugId: number): Observable<any> {
+    return this._http.get(this._itemsApi + `/${storeId}` + '/drug/' + `${drugId}`)
+      .map((response: Response) => <StoreItem[]>response.json())
+      .do(data => console.log('Store Item by Drug ID: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
 

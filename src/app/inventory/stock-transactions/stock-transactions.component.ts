@@ -110,6 +110,9 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
         this._transactionService.getDrugDetails(+[row.drug_id]).subscribe(
           individualDrug => this.patchRow(individualDrug, array_index)
         );
+        this._transactionService.getDrugBatches(1, +[row.drug_id]).subscribe(
+          individualBatch => this. patchRow (individualBatch, array_index)
+        );
       }
     );
   }
