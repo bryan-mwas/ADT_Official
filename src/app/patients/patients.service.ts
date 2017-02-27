@@ -12,8 +12,8 @@ import 'rxjs/add/operator/map';
 export class PatientsService {
 
     // To be placed in a config file
-    private _apiUrl = 'http://197.232.32.34/adt/api/';
-    // private _apiUrl = 'http://192.168.33.10/adt-core/lib/public/api/';
+    // private _apiUrl = 'http://197.232.32.34/adt/api/';
+    private _apiUrl = 'http://192.168.33.10/adt-core/lib/public/api/';
 
     private _addPatientRoute = this._apiUrl + 'patients';
     private _illnessApi = this._apiUrl + 'lists/illnesses';
@@ -34,24 +34,30 @@ export class PatientsService {
     /**
      * GET Section
      */
-     getLatestVisit(id: number){
-          return this._http.get(`${this._apiUrl}patients/${id}/visit/latest`)
+    getPreviousVisits(id: number) {
+        return this._http.get(`${this._apiUrl}patients/${id}/visits`)
+            .map((response: Response) => <any[]>response.json())
+            .do(data => console.log('Dispense history: ' + JSON.stringify(data)))
+            .catch(this.handleError);
+    }
+    getLatestVisit(id: number) {
+        return this._http.get(`${this._apiUrl}patients/${id}/visit/latest`)
             .map((response: Response) => <any[]>response.json())
             .do(data => console.log('Visit: ' + JSON.stringify(data)))
             .catch(this.handleError);
-     }
-     getLatestAppointment(id: number){
-          return this._http.get(`${this._apiUrl}patients/${id}/appointment/latest`)
+    }
+    getLatestAppointment(id: number) {
+        return this._http.get(`${this._apiUrl}patients/${id}/appointment/latest`)
             .map((response: Response) => <any[]>response.json())
             .do(data => console.log('Appointment: ' + JSON.stringify(data)))
             .catch(this.handleError);
-     }
-     getViralLoad(id: number) {
-         return this._http.get(`${this._apiUrl}patients/${id}/viralload`)
+    }
+    getViralLoad(id: number) {
+        return this._http.get(`${this._apiUrl}patients/${id}/viralload`)
             .map((response: Response) => <any[]>response.json())
             .do(data => console.log('Viral Load Data: ' + JSON.stringify(data)))
             .catch(this.handleError);
-     }
+    }
 
     getStatus() {
         return this._http.get(this._statusApi)

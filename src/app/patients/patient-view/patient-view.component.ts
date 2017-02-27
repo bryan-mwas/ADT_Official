@@ -15,6 +15,7 @@ export class PatientViewComponent implements OnInit, DoCheck {
   errorMessage: string;
   days_to: number;
   latest_viral_load;
+  dispense_history;
 
   constructor(private route: ActivatedRoute,
     private _router: Router,
@@ -33,6 +34,9 @@ export class PatientViewComponent implements OnInit, DoCheck {
           }
         }
     });
+    this.route.params
+      .switchMap((params: Params) => this._patientService.getPreviousVisits(+params['id']))
+      .subscribe(a => this.dispense_history = a);
     this.route.params
       .switchMap((params: Params) => this._patientService.getViralLoad(+params['id']))
       .subscribe(vload => {
