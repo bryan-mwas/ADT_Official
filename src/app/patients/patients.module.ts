@@ -16,8 +16,6 @@ import { routing } from "./patients.routing";
 import { UtilsModule } from '../shared/utils/utils.module'; // For field filter pipe.
 import { PaginationModule } from 'ng2-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Ng2TableModule } from 'ng2-table/ng2-table';
-
 @NgModule({
   declarations: [
     PatientAddComponent,
@@ -35,8 +33,7 @@ import { Ng2TableModule } from 'ng2-table/ng2-table';
     ReactiveFormsModule,
     SharedModule,
     PaginationModule.forRoot(),
-    UtilsModule,
-    Ng2TableModule
+    UtilsModule
   ],
   providers: [PatientsService, DispenseService],
   entryComponents: []

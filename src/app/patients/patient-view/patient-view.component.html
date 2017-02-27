@@ -415,44 +415,46 @@
                                                     </header>
                                                     <div>
                                                         <div class="widget-body no-padding">
-                                                            <table class="table table-bordered">
+                                                            <div class="table-responsive">
+                                                            <table class="table table-bordered table-striped">
                                                                 <thead>
                                                                     <tr>
-                                                                        <td>Date</td>
-                                                                        <td>Purpose of Visit</td>
-                                                                        <td>Dose</td>
-                                                                        <td>Duration</td>
-                                                                        <td>Action</td>
-                                                                        <td>Drug</td>
-                                                                        <td>Qty</td>
-                                                                        <td>Weight</td>
-                                                                        <td>Current Regimen</td>
-                                                                        <td>BatchNo</td>
-                                                                        <td>Pill Count</td>
-                                                                        <td>Adherence</td>
-                                                                        <td>Operator</td>
-                                                                        <td>Reasons For Change</td>
+                                                                        <th style="width: 100%">Date</th>
+                                                                        <th style="width: 100%">Purpose of Visit</th>
+                                                                        <th style="width: 100%">Dose</th>
+                                                                        <th style="width: 100%">Duration</th>
+                                                                        <th style="width: 100%">Action</th>
+                                                                        <th style="width: 100%">Drug</th>
+                                                                        <th style="width: 100%">Qty</th>
+                                                                        <th style="width: 100%">Weight</th>
+                                                                        <th style="width: 100%">Current Regimen</th>
+                                                                        <th style="width: 100%">BatchNo</th>
+                                                                        <th style="width: 100%">Pill Count</th>
+                                                                        <th style="width: 100%">Adherence</th>
+                                                                        <th style="width: 100%">Operator</th>
+                                                                        <th style="width: 100%">Reasons For Change</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr *ngFor="let history of dispense_history">
-                                                                        <!--<td>{{history.visit_date}}</td>
-                                                                        <td>{{history.}}</td>
-                                                                        <td>{{history.}}</td>
-                                                                        <td>{{history.}}</td>-->
-                                                                        <!--<td>{{history.}}</td>-->
-                                                                        <!--<td>{{history.}}</td>
-                                                                        <td>{{history.}}</td>
-                                                                        <td>{{history.current_weight}}</td>
-                                                                        <td>{{history.}}</td>
-                                                                        <td>{{history.}}</td>
-                                                                        <td>{{history.}}</td>
-                                                                        <td>{{history.}}</td>
-                                                                        <td>{{history.}}</td>
-                                                                        <td>{{history.}}</td>-->
+                                                                        <td id="">{{history.visit_date}}</td>
+                                                                        <td id="">{{history.purpose_name}}</td>
+                                                                        <td id="">{{history.visit_item && history.visit_item[0] && history.visit_item[0].dose_id || 'N/A'}}</td>
+                                                                        <td id="">{{history.visit_item && history.visit_item[0] && history.visit_item[0].duration}}</td>
+                                                                        <td id=""><a class="btn btn-primary btn-xs" href="#" [routerLink]="['/patients/dispense-edit',patient_id]">EDIT</a></td>
+                                                                        <td id="">{{history.visit_item && history.visit_item[0] && history.visit_item[0].stock_item &&  history.visit_item[0].stock_item.drug_name || 'N/A'}}</td>
+                                                                        <td id="">{{history.visit_item && history.visit_item[0] && history.visit_item[0].stock_item &&  history.visit_item[0].stock_item.quantity_packs}}</td>
+                                                                        <td id="">{{history.current_weight}}</td>
+                                                                        <td id="">{{history.current_regimen_id}}</td>
+                                                                        <td id="">{{history.visit_item && history.visit_item[0] && history.visit_item[0].stock_item &&  history.visit_item[0].stock_item.batch_number || 'N/A'}}</td>
+                                                                        <td id="">{{history.visit_item && history.visit_item[0] && history.visit_item[0].stock_item &&  history.visit_item[0].actual_pill_count}}</td>
+                                                                        <td id="">{{history.appointment_adherence}}</td>
+                                                                        <td id="">{{history.user_id}}</td>
+                                                                        <td id="">{{history.change_reason_id}}</td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </sa-widget>

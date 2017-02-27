@@ -45,7 +45,7 @@ export const routes: Routes = [
         data: { pageTitle: 'Errors' }
     },
     {
-        path: 'dispense-edit',
+        path: 'dispense-edit/:id',
         component: DispenseEditComponent,
         data: { pageTitle: 'Dispense Edit'}
     }
