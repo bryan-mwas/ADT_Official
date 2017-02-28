@@ -10,8 +10,8 @@ import 'rxjs/add/observable/throw';
 @Injectable()
 export class StockTransactionsService {
 
-  // private _apiUrl = 'http://192.168.133.10/adt-core/lib/public/api/';
-  private _apiUrl = 'http://41.89.6.210/adt-core/lib/public/api/';
+  private _apiUrl = 'http://192.168.133.10/adt-core/lib/public/api/';
+  // private _apiUrl = 'http://41.89.6.210/adt-core/lib/public/api/';
   // private _apiUrl = 'http://197.232.32.34/adt/api/';
 
   private _transactionApi = this._apiUrl + 'stock';
@@ -38,21 +38,27 @@ export class StockTransactionsService {
   getDrugs() {
     return this._http.get(this._drugsApi)
       .map((response: Response) => <Drug[]>response.json())
-      .do(data => console.log('DrugsList: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
 
   getDrugDetails(id: number): Observable<any> {
     return this._http.get(this._drugsApi + `/${id}`)
       .map((response: Response) => <Drug[]>response.json())
-      // .do(data=> console.log('IndividualDrugDetails: ' + JSON.stringify(data)))
+      .do(data=> console.log('IndividualDrugDetails: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
 
   getItems(): Observable<any> {
     return this._http.get(this._itemsApi)
       .map((response: Response) => <StoreItem[]>response.json())
-      .do(data=> console.log('Store Items: ' + JSON.stringify(data)))
+      .do(data => console.log('Store Items: ' + JSON.stringify(data)))
+      .catch(this.handleError);
+  }
+
+  getDrugBatches(storeId: number, drugId: number): Observable<any> {
+    return this._http.get(this._itemsApi + `/${storeId}` + '/drug/' + `${drugId}`)
+      .map((response: Response) => <StoreItem[]>response.json())
+      .do(data => console.log('Store Item by Drug ID: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
 

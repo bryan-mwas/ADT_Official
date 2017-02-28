@@ -99,7 +99,7 @@
                   <tbody formArrayName="drugs" *ngFor="let row of rows.controls; let i=index">
                      <tr [formGroupName]="i" (click)="index(i)">
                      <td id="complex_table">
-                        <select id="input" class="form-control" formControlName="drug_id">
+                        <select #drug id="input" class="form-control" formControlName="drug_id" (change)="getIndividualDrug(drug.value, this.i)">
                            <option *ngFor="let drug of drugsList?.data"  value="{{drug.id}}">{{drug.name}}</option>
                         </select>
                      </td>
@@ -107,11 +107,16 @@
                         <input id="input" class="form-control" formControlName="unit" type="text">
                      </td>
                      <td id="complex_table">
-                        <input id="input" class="form-control" formControlName="pack_size" type="text">
+                        <input id="input" class="form-control" formControlName="pack_size" type="text" disabled>
                      </td>
-                     <td id="complex_table">
+                     <!--<td id="complex_table" *ngIf="!batchList">
                         <select id="input" class="form-control" formControlName="batch_number">
-                           <option *ngFor="let item of storeItems"  value="{{item.store_id}}">{{item.batch_number}}</option>
+                           <option>Loading...</option>
+                        </select>
+                     </td>-->
+                     <td id="complex_table" *ngIf="batchList">
+                        <select id="input" class="form-control" formControlName="batch_number">
+                           <option *ngFor="let item of batchList"  value="{{item.batch_number}}">{{item.batch_number}}</option>
                         </select>
                      </td>
                      <td id="complex_table">
