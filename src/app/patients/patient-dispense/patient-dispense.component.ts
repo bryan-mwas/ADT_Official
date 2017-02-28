@@ -89,7 +89,7 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
           }
         }
       });
-    this._dispenseService.getRegimenDrugs().subscribe(
+    this._dispenseService.getRegimens().subscribe(
       regimen => this.regimenDrugs = regimen,
       error => console.error(error)
     );
@@ -123,6 +123,9 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
       patient_id: '',
       previous_visit: [{ value: '', disabled: true }],
       last_appointment: [{ value: '', disabled: true }],
+      facility_id: 1,
+      appointment_id: 1,
+      user_id: 1 , // TODO: Remove
       drugs: this.fb.array([this.buildRow()]),
     });
 
@@ -225,10 +228,7 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
       stock_id: '',
       indication: '',
       comment: '',
-      missed_pills: '',
-      facility_id: 1,
-      appointment_id: 1,
-      user_id: 1 // TODO: Remove
+      missed_pills: ''
     });
   }
 

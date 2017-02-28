@@ -27,6 +27,16 @@ export class DispenseEditComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this._activeRoute.params
+      .switchMap((params: Params) => this._patientService.getPatient(+params['id']))
+      .subscribe(patient => {
+        this.dispenseEditForm.patchValue({
+          ccc_number: patient.ccc_number,
+          patient_name: patient.first_name,
+          current_height: patient.current_height,
+          current_weight: patient.current_weight
+        })
+      });
     this._activeRoute.params.switchMap((params: Params) => this._patientService.getPreviousVisits(+params['id'])).subscribe(
       response => this.patient_visits = response
     );
@@ -37,16 +47,19 @@ export class DispenseEditComponent implements OnInit {
         if (appointment) {
           if (appointment[0] != null) {
             this.dispenseEditForm.patchValue({
+              latest_visit_date: appointment[0].visit_date,
               current_regimen_id: appointment[0].current_regimen_id,
-              previous_visit: appointment[0].visit_date
+              last_regimen_id: appointment[0].last_regimen_id,
+              previous_visit: appointment[0].visit_date,
+              appointment_adherence: appointment[0].appointment_adherence
             })
           }
         }
       });
-    this._dispenseService.getRegimenDrugs().subscribe(
+    this._dispenseService.getRegimens().subscribe(
       regimen => this.regimenDrugs = regimen,
       error => console.error(error)
-    );
+    )
     this._dispenseService.getChangeReason().subscribe(
       reason => this.reason = reason,
       error => console.error(error)
@@ -66,10 +79,23 @@ export class DispenseEditComponent implements OnInit {
       purpose_visit: '',
       current_height: '',
       current_weight: '',
-      last_regimen: '',
-      current_regimen: '',
+      last_regimen_id: '',
+      current_regimen_id: '',
       appointment_adherence: '',
-      adherence_reason: ''
+      adherence_reason: '',
+      drug_id: '',
+      unit: '',
+      batch_id: '',
+      expiry_date: '',
+      dose_id: '',
+      duration: '',
+      dispense_quantity: '',
+      stock: '',
+      brand_name_id: '',
+      indication_id: '',
+      pill_count: '',
+      missed_pills: '',
+      comment: '',
     })
   }
 

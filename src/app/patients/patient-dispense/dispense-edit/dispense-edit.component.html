@@ -47,17 +47,16 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <label>Last Regimen Dispensed</label>
-                                    <select formControlName="last_regimen" class="form-control" id="select-1">
-                                        <option selected><span style="color: red">MISSING REGIMENS TO POPULATE</span></option>
-                                        <!--<option>Option 1</option>
-                                        <option>Option 2</option>-->
+                                    <select formControlName="last_regimen_id" class="form-control" id="select-1">
+                                        <option selected>--Select One--</option>
+                                        <option *ngFor="let regimen of regimenDrugs" style="color: red" value="{{regimen.id}}">{{regimen.name}}</option>
                                     </select>
                                 </div>
                                 <div class="col-sm-6">
                                     <label>Current Regimen</label>
-                                    <select formControlName="current_regimen" class="form-control" id="select-1">
-                                        <option selected><span style="color: red">MISSING REGIMENS TO POPULATE</span></option>
-                                        <!--<option *ngFor="let item of list" value=""></option>-->
+                                    <select formControlName="current_regimen_id" class="form-control" id="select-1">
+                                        <option selected></option>
+                                        <option *ngFor="let regimen of regimenDrugs" style="color: red" value="{{regimen.id}}">{{regimen.name}}</option>
                                     </select>
                                 </div>
                                 <div class="col-sm-6">
@@ -95,19 +94,45 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
+                                                <td id="complex_table">
+                                                    <select id="input" formControlName="drug_id" class="form-control"></select>
+                                                </td>
+                                                <td id="complex_table">
+                                                    <input id="input" formControlName="unit" class="form-control" type="text">
+                                                </td>
+                                                <td id="complex_table">
+                                                    <select id="input" formControlName="batch_id" class="form-control"></select>
+                                                </td>
+                                                <td id="complex_table">
+                                                    <input id="input" formControlName="expiry_date" class="form-control" type="text">
+                                                </td>
+                                                <td id="complex_table">
+                                                    <select id="input" formControlName="dose_id" class="form-control"></select>
+                                                </td>
+                                                <td id="complex_table">
+                                                    <input id="input" formControlName="duration" class="form-control" type="text">
+                                                </td>
+                                                <td id="complex_table">
+                                                    <input id="input" formControlName="dispense_quantity" class="form-control" type="text">
+                                                </td>
+                                                <td id="complex_table">
+                                                    <input id="input" formControlName="stock" class="form-control" type="text">
+                                                </td>
+                                                <td id="complex_table">
+                                                    <select id="input" formControlName="brand_name_id" class="form-control"></select>
+                                                </td>
+                                                <td id="complex_table">
+                                                    <select id="input" formControlName="indication_id" class="form-control"></select>
+                                                </td>
+                                                <td id="complex_table">
+                                                    <input id="input" formControlName="pill_count" class="form-control" type="text">
+                                                </td>
+                                                <td id="complex_table">
+                                                    <input id="input" formControlName="missed_pills" class="form-control" type="text">
+                                                </td>
+                                                <td id="complex_table">
+                                                    <input id="input" formControlName="comment" class="form-control" type="text">
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>

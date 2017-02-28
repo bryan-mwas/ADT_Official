@@ -441,7 +441,7 @@
                                                                         <td id="">{{history.purpose_name}}</td>
                                                                         <td id="">{{history.visit_item && history.visit_item[0] && history.visit_item[0].dose_id || 'N/A'}}</td>
                                                                         <td id="">{{history.visit_item && history.visit_item[0] && history.visit_item[0].duration}}</td>
-                                                                        <td id=""><a class="btn btn-primary btn-xs" href="#" [routerLink]="['/patients/dispense-edit',patient_id]">EDIT</a></td>
+                                                                        <td id=""><a class="btn btn-primary btn-xs" href="#" [routerLink]="['/patients/dispense-edit/',history.patient_id]">EDIT</a></td>
                                                                         <td id="">{{history.visit_item && history.visit_item[0] && history.visit_item[0].stock_item &&  history.visit_item[0].stock_item.drug_name || 'N/A'}}</td>
                                                                         <td id="">{{history.visit_item && history.visit_item[0] && history.visit_item[0].stock_item &&  history.visit_item[0].stock_item.quantity_packs}}</td>
                                                                         <td id="">{{history.current_weight}}</td>
@@ -558,7 +558,19 @@
                                                                                         <th>Average(%)</th>
                                                                                     </tr>
                                                                                 </thead>
-                                                                                <tbody></tbody>
+                                                                                <tbody>
+                                                                                    <tr *ngFor="let history of dispense_history">
+                                                                                        <td>{{history.visit_date}}</td>
+                                                                                        <td>{{history.visit_item && history.visit_item[0] && history.visit_item[0].stock_item &&  history.visit_item[0].stock_item.drug_name || 'N/A'}}</td>
+                                                                                        <td>{{history.visit_item && history.visit_item[0] && history.visit_item[0].stock_item &&  history.visit_item[0].stock_item.quantity_out}}</td>
+                                                                                        <td>{{history.visit_item && history.visit_item[0] && history.visit_item[0].actual_pill_count}}</td>
+                                                                                        <td>{{history.visit_item && history.visit_item[0] && history.visit_item[0].missed_pill_count}}</td>
+                                                                                        <td></td>
+                                                                                        <td></td>
+                                                                                        <td></td>
+                                                                                        <td></td>
+                                                                                    </tr>
+                                                                                </tbody>
                                                                             </table>
                                                                             <h3 style="text-align: center;">Patient Regimen Change Reason</h3>
                                                                 
@@ -572,10 +584,12 @@
                                                                                     </tr>
                                                                                 </thead>
                                                                                 <tbody>
-                                                                                    <td></td>
-                                                                                    <td></td>
-                                                                                    <td></td>
-                                                                                    <td></td>
+                                                                                    <tr *ngFor="let regimen_change of dispense_history">
+                                                                                        <td>{{regimen_change.visit_date}}</td>
+                                                                                        <td>{{regimen_change.last_regimen_id}} NAMES MISSING</td>
+                                                                                        <td>{{regimen_change.current_regimen_id}} NAMES MISSING</td>
+                                                                                        <td>{{regimen_change.change_reason_id}} NAMES MISSING</td>
+                                                                                    </tr>
                                                                                 </tbody>
                                                                             </table>
                                                                             <h3 style="text-align: center;">Patient Appointment History</h3>
@@ -588,8 +602,10 @@
                                                                                     </tr>
                                                                                 </thead>
                                                                                 <tbody>
-                                                                                    <td>2016-08-10</td>
-                                                                                    <td>15</td>
+                                                                                    <tr *ngFor="let app_history of appointment_history">
+                                                                                        <td>{{app_history.appointment_date}}</td>
+                                                                                        <td>{{daysToAppointment(app_history.appointment_date)}}</td>
+                                                                                    </tr>
                                                                                 </tbody>
                                                                             </table>
                                                                         </div>
