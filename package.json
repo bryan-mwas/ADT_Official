@@ -74,6 +74,7 @@
     "markdown": "^0.5.0",
     "morris.js": "^0.5.0",
     "ng2-bootstrap": "^1.1.16-9",
+    "ng2-pagination": "^2.0.1",
     "ng2-popover": "0.0.13",
     "ng2-redux": "4.2.1",
     "nouislider": "^8.5.1",
