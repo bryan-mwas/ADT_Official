@@ -14,15 +14,17 @@ import { Observable } from 'rxjs/Observable';
 export class StockTransactionsComponent implements OnInit, DoCheck {
 
   stockTransactionsForm: FormGroup;
-  transaction: Transaction;
-  private transactionTypes: Observable<string[]>;
-  stockItem: Transaction;
-  drugItem: Drug;
-  private drugsList: Observable<string[]>;
-  private storeItems: StoreItem;
   //  Index Tracker
   i: number;
   individual_drug: any = null;
+  transaction: Transaction;
+  stockItem: Transaction;
+  drugItem: Drug;
+  private transactionTypes: Observable<string[]>;
+  private drugsList: Observable<string[]>;
+  private storeItems: StoreItem;
+  private batchList: Observable<string[]>;
+
   get rows(): FormArray {
     return <FormArray>this.stockTransactionsForm.get('drugs');
   }
@@ -51,16 +53,11 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     // console.log(this.rows.controls[0] + 'index: ' + this.index);
   }
 
-  ngDoCheck() {
-    // let control = <FormArray>this.stockTransactionsForm.controls['drugs'];
-    // console.log(control[0]);
-  }
-
   buildRow(): FormGroup {
     return this.fb.group({
-      drug_id: [''],
+      drug_id: '',
       unit: [{ value: '', disabled: true }],
-      pack_size: [{ value: '', disabled: true }],
+      pack_size: '',
       batch_number: '',
       expiry_date: '',
       packs: '',
@@ -87,47 +84,37 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     control.removeAt(i);
   }
 
-  // drugRetrieval(val) {
-  //   this.stockTransactionsForm.get('drug').valueChanges.subscribe(
-  //     val => this._transactionService.getDrugDetails(val).subscribe(
-  //       (val) => this.drugItem = val),
-  //     (err) => console.error(err)
-  //   );
-  //   this.stockTransactionsForm.patchValue({
-  //     unit: this.drugItem[0].pack_size
-  //   });
-  // }
-
-  /**
-   * Tracks the index of the rows being worked on.
-   */
+  getIndividualDrug(id: number, index: number) {
+    this._transactionService.getDrugDetails(+[id]).subscribe(
+      individualDrug => this.patchRow(individualDrug, index)
+    );
+    this._transactionService.getDrugBatches(1, +[id]).subscribe(i => this.batchList = i);
+  }
 
   index(val: any) {
-    const array_index: number = +[val];
-    // Allows control to an indivual row [item] in a form array for better control
-    this.rows.controls[+val].valueChanges.subscribe(
-      row => {
-        this._transactionService.getDrugDetails(+[row.drug_id]).subscribe(
-          individualDrug => this.patchRow(individualDrug, array_index)
-        );
-        this._transactionService.getDrugBatches(1, +[row.drug_id]).subscribe(
-          individualBatch => this. patchRow (individualBatch, array_index)
-        );
-      }
-    );
+    this.i = +[val];
   }
 
   patchRow(drug: any, val: number) {
-    let p = this.rows.controls[+[val]].get('packs').value;
-    let pc = this.rows.controls[+[val]].get('pack_cost').value;
-    let ps = this.rows.controls[+[val]].get('pack_size').value;
     this.rows.controls[+[val]].patchValue(
       {
         unit: drug.drug_unit,
         pack_size: drug.pack_size,
-        total: (p * pc),
-        quantity: (ps * p)
       }
     );
+  }
+
+  ngDoCheck() {
+    if (this.i != null) {
+      let control = this.rows.controls[this.i].value;
+      console.log('Row: ' + JSON.stringify(control));
+      let p = control.packs;
+      let pc = control.pack_cost;
+      let ps = control.pack_size;
+      this.rows.controls[this.i].patchValue({
+        total: (p * pc),
+        quantity: (ps * p)
+      });
+    }
   }
 }
