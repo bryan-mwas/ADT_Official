@@ -16,6 +16,7 @@ export class PatientViewComponent implements OnInit, DoCheck {
   days_to: number;
   latest_viral_load;
   dispense_history;
+  appointment_history;
 
   constructor(private route: ActivatedRoute,
     private _router: Router,
@@ -43,6 +44,9 @@ export class PatientViewComponent implements OnInit, DoCheck {
         this.viral_load = vload;
         this.latest_viral_load = vload[vload.length - 1]
       });
+    this.route.params
+      .switchMap((params: Params) => this._patientService.getAppointments(+params['id']))
+      .subscribe(appointment => this.appointment_history = appointment);
   }
 
   ngDoCheck() {
@@ -85,7 +89,19 @@ export class PatientViewComponent implements OnInit, DoCheck {
         };
         this.days_to = Math.floor((diff / divideBy['d']) + 1);
     }
-
+    daysToAppointment(todate) {
+        let fromdate: any = new Date();
+        let to: any = new Date(todate)
+        var diff = to - fromdate;
+        var divideBy = {
+            w: 604800000,
+            d: 86400000,
+            h: 3600000,
+            n: 60000,
+            s: 1000
+        };
+        return Math.floor((diff / divideBy['d']) + 1);
+    }
     getAge(value: any): any {
         let dob: any = new Date(value);
         let today: any = new Date();

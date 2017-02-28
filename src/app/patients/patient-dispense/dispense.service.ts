@@ -18,6 +18,12 @@ export class DispenseService {
     /**
      * GET
      */
+    getRegimens() {
+        return this._http.get(this._url+'/regimen')
+                   .map((res: Response)=> <any[]>res.json()) // TODO: refactor this. Bad practice
+                   .do(data => console.log('Change Reasons: ' + JSON.stringify(data)))
+                   .catch(this.handleError);
+    } 
     getChangeReason() {
         return this._http.get(this._url+'/lists/changereason')
                    .map((res: Response)=> <any[]>res.json()) // TODO: refactor this. Bad practice
@@ -46,11 +52,11 @@ export class DispenseService {
     // Loops through the lists of services to get individual service properties
     // such as different regimens
 
-    getRegimen(id: number): Observable<any> {
-        return this.getRegimenDrugs()
-            .map((service: Regimen[]) => service.find(regimen => regimen.id === id))
-            .do(data => console.log('Service: ' + JSON.stringify(data)));
-    }
+    // getRegimen(id: number): Observable<any> {
+    //     return this.getRegimenDrugs()
+    //         .map((service: Regimen[]) => service.find(regimen => regimen.id === id))
+    //         .do(data => console.log('Service: ' + JSON.stringify(data)));
+    // }
 
     private handleError(error: Response) {
         // in a real world app, we may send the server to some remote logging infrastructure
