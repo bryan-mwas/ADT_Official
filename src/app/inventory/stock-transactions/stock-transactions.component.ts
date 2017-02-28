@@ -19,7 +19,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
   stockItem: Transaction;
   drugItem: Drug;
   private drugsList: Observable<string[]>;
-  storeItems: StoreItem;
+  private storeItems: StoreItem;
   //  Index Tracker
   i: number;
   individual_drug: any = null;
@@ -47,6 +47,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
       (err) => console.error(err)
     );
     this._transactionService.getDrugs().subscribe(d => this.drugsList = d);
+    this._transactionService.getItems().subscribe(i => this.storeItems = i);
     // console.log(this.rows.controls[0] + 'index: ' + this.index);
   }
 

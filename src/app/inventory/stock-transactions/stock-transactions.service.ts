@@ -10,13 +10,14 @@ import 'rxjs/add/observable/throw';
 @Injectable()
 export class StockTransactionsService {
 
-  private _apiUrl = 'http://192.168.133.10/adt-core/lib/public/api/';
+  // private _apiUrl = 'http://192.168.133.10/adt-core/lib/public/api/';
+  private _apiUrl = 'http://41.89.6.210/adt-core/lib/public/api/';
   // private _apiUrl = 'http://197.232.32.34/adt/api/';
 
   private _transactionApi = this._apiUrl + 'stock';
   private _drugsApi = this._apiUrl + 'drugs';
   private _typesApi = this._apiUrl + 'lists/transaction_type';
-  private _itemsApi = this._apiUrl + '/stock/store';
+  private _itemsApi = this._apiUrl + 'stock/store';
 
   constructor(private _http: Http) { }
 
@@ -51,7 +52,7 @@ export class StockTransactionsService {
   getItems(): Observable<any> {
     return this._http.get(this._itemsApi)
       .map((response: Response) => <StoreItem[]>response.json())
-      .do(data=> console.log('Store Items  ' + JSON.stringify(data)))
+      .do(data=> console.log('Store Items: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
 
