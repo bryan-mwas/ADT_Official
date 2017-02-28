@@ -8,7 +8,7 @@ export class FieldFilterPipe implements PipeTransform {
   transform(items: any[], field : string, value : string): any[] {
     if (!items) return [];
     if (!value) return items;
-    return items.filter(it => it[field].toLowerCase().indexOf(value.toLowerCase()) > -1);
+    return items.filter(it => it[field].toString().toLowerCase().indexOf(value.toLowerCase().toString()) > -1);
   }
 }
 
