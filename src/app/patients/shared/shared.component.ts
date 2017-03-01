@@ -134,18 +134,17 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
             who_stage_id: [''],
             prophylaxis: [''],
             source_id: [''],
-            status: [''],
             disclosure: [''],
             spouse_ccc: [''],
-            patient_status: '',
+            status: '',
             family_planning: [''],
             support_group: [''],
             alternate_number: [''],
-            other_drugs: [''],
+            drug_name: [''],
             other_illness: [''],
-            other_allergies: [''],
+            allergy_name: [''],
             illnesses: [''],
-            drug_allergies: [''],
+            drug_id: [''],
             tb_category: [''],
             tb_phase: [''],
             start_date: [''],
@@ -191,7 +190,7 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
             )
         }
 
-        this.patientForm.get('patient_status').valueChanges.subscribe(
+        this.patientForm.get('status').valueChanges.subscribe(
             value => {
                 if (value == 'concordant') {
                     this.patientForm.patchValue({
@@ -236,7 +235,7 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
         this.patientForm.patchValue({
             family_planning: this.family_planning_list,
             illnesses: this.chronic_illness_list,
-            drug_allergies: this.allergies_list,
+            drug_id: this.allergies_list,
             prophylaxis: this.prophylaxis_list,
             initial_bsa: Math.sqrt((height * weight) / 3600)
             // current_bsa: Math.sqrt((current_height * current_weight) / 3600),
@@ -263,12 +262,12 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
         }
         if (patient.other_drug != null) {
             this.patientForm.patchValue({
-                other_drugs: patient.other_drug.drug_name,
+                drug_name: patient.other_drug.drug_name,
             })
         }
         if (patient.other_drug_allergy != null) {
             this.patientForm.patchValue({
-                other_allergies: patient.other_drug_allergy.allergy_name,
+                allergy_name: patient.other_drug_allergy.allergy_name,
             })
         }
         if (patient.service != null) {
@@ -319,13 +318,13 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
             source_id: patient.source_id,
             disclosure: patient.disclosure,
             spouse_ccc: patient.tb,
-            patient_status: patient.status,
+            status: patient.status,
             family_planning: patient.family_planning,
             support_group: patient.support_group,
             alternate_number: patient.alternate_number,
             other_illness: patient.other_illness,
             illnesses: patient.illnesses,
-            drug_allergies: patient.drug_allergies,
+            drug_id: patient.drug_allergies,
             pep_reason: patient.pep_reason,
             isoniazid_start: patient.isoniazid_start,
             isoniazid_end: patient.isoniazid_end,
