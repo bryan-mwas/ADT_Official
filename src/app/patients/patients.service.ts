@@ -13,7 +13,7 @@ export class PatientsService {
 
     // To be placed in a config file
     // private _apiUrl = 'http://197.232.32.34/adt/api/';
-    private _apiUrl = 'http://192.168.33.10/adt-core/lib/public/api/';
+    private _apiUrl = 'http://192.168.133.10/adt-core/lib/public/api/';
 
     private _addPatientRoute = this._apiUrl + 'patients';
     private _illnessApi = this._apiUrl + 'lists/illnesses';

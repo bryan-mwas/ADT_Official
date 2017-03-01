@@ -11,12 +11,15 @@ import { SmartadminDatatableModule } from "../shared/ui/datatable/smartadmin-dat
 import { PaginationModule } from 'ng2-bootstrap';
 import { UtilsModule } from '../shared/utils/utils.module'; // For field filter pipe.
 
+import { KeyPipe } from './stock-transactions/key.pipe';
+
 import { InventoryService } from './inventory.service';
 @NgModule({
     declarations: [
         BinCardComponent,
         InventoryManagementComponent,
-        StockTransactionsComponent
+        StockTransactionsComponent,
+        KeyPipe
     ],
     imports: [
         CommonModule,

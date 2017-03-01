@@ -114,11 +114,11 @@
                      </td>
                      <td id="complex_table" *ngIf="batchList">
                         <select id="input" class="form-control" formControlName="batch_number">
-                           <option *ngFor="let item of batchList"  value="{{item.batch_number}}">{{item.batch_number}}</option>
+                           <option *ngFor="let item of batchList | keys" value="{{item.key}}">{{item.key}}</option>
                         </select>
                      </td>
-                     <td id="complex_table">
-                        <input id="input" class="form-control" formControlName="expiry_date" type="text">
+                     <td id="complex_table" *ngIf="batchList">
+                        <input id="input" class="form-control" formControlName="expiry_date" type="text" value="{{item?.value.expiry_date}}">
                      </td>
                      <td id="complex_table">
                         <input id="input" class="form-control" formControlName="packs" type="text">
@@ -155,6 +155,9 @@
       </div>
       </form>
    </sa-widgets-grid>
+   <pre *ngIf="batchList">
+       {{ batchList | keys | json }}
+   </pre>
    <pre>
        {{ stockTransactionsForm.value | json}}
    </pre>
