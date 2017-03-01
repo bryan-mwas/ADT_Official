@@ -104,16 +104,14 @@
                         </select>
                      </td>
                      <td id="complex_table">
-                        <input id="input" class="form-control" formControlName="unit" type="text">
+                        <input id="input" class="form-control" formControlName="unit" type="text" readonly>
                      </td>
                      <td id="complex_table">
-                        <input id="input" class="form-control" formControlName="pack_size" type="text" disabled>
+                        <input id="input" class="form-control" formControlName="pack_size" type="text" readonly>
                      </td>
-                     <!--<td id="complex_table" *ngIf="!batchList">
-                        <select id="input" class="form-control" formControlName="batch_number">
-                           <option>Loading...</option>
-                        </select>
-                     </td>-->
+                     <td id="complex_table" *ngIf="!batchList">
+                        <input id="input" class="form-control" formControlName="batch_number" type="text" readonly>
+                     </td>
                      <td id="complex_table" *ngIf="batchList">
                         <select id="input" class="form-control" formControlName="batch_number">
                            <option *ngFor="let item of batchList"  value="{{item.batch_number}}">{{item.batch_number}}</option>
@@ -129,13 +127,13 @@
                         <input id="input" class="form-control" formControlName="quantity" type="text">
                      </td>
                      <td id="complex_table">
-                        <input id="input" class="form-control" formControlName="available_quantity" type="text">
+                        <input id="input" class="form-control" formControlName="available_quantity" type="text" readonly>
                      </td>
                      <td id="complex_table">
                         <input id="input" class="form-control" formControlName="pack_cost" type="text">
                      </td>
                      <td id="complex_table">
-                        <input id="input" class="form-control" formControlName="total" type="text">
+                        <input id="input" class="form-control" formControlName="total" type="text" readonly>
                      </td>
                      <td id="complex_table">
                         <input id="input" class="form-control" formControlName="comment" type="text">

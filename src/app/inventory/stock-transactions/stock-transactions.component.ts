@@ -56,15 +56,15 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
   buildRow(): FormGroup {
     return this.fb.group({
       drug_id: '',
-      unit: [{ value: '', disabled: true }],
+      unit: '',
       pack_size: '',
       batch_number: '',
       expiry_date: '',
       packs: '',
       quantity: '',
-      available_quantity: [{ value: '', disabled: true }],
+      available_quantity: '',
       pack_cost: '',
-      total: [{ value: '', disabled: true }],
+      total: '',
       comment: ''
     });
   }
@@ -80,8 +80,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
   }
 
   removeRow(i: number) {
-    const control = <FormArray>this.stockTransactionsForm.controls['drugs'];
-    control.removeAt(i);
+    this.rows.removeAt(i);
   }
 
   getIndividualDrug(id: number, index: number) {
@@ -106,11 +105,11 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
 
   ngDoCheck() {
     if (this.i != null) {
-      let control = this.rows.controls[this.i].value;
-      console.log('Row: ' + JSON.stringify(control));
-      let p = control.packs;
-      let pc = control.pack_cost;
-      let ps = control.pack_size;
+      let currentRow = this.rows.controls[this.i].value;
+      console.log('Row: ' + JSON.stringify(currentRow));
+      let p = currentRow.packs;
+      let pc = currentRow.pack_cost;
+      let ps = currentRow.pack_size;
       this.rows.controls[this.i].patchValue({
         total: (p * pc),
         quantity: (ps * p)
