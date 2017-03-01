@@ -113,18 +113,18 @@
                         <input id="input" class="form-control" formControlName="batch_number" type="text" readonly>
                      </td>
                      <td id="complex_table" *ngIf="batchList">
-                        <select id="input" class="form-control" formControlName="batch_number">
+                        <select #batch id="input" class="form-control" formControlName="batch_number" (change)="getBatchDetails(batch.value, this.i)">
                            <option *ngFor="let item of batchList | keys" value="{{item.key}}">{{item.key}}</option>
                         </select>
                      </td>
                      <td id="complex_table" *ngIf="batchList">
-                        <input id="input" class="form-control" formControlName="expiry_date" type="text" value="{{item?.value.expiry_date}}">
+                        <input id="input" class="form-control" formControlName="expiry_date" type="text" readonly>
                      </td>
                      <td id="complex_table">
                         <input id="input" class="form-control" formControlName="packs" type="text">
                      </td>
                      <td id="complex_table">
-                        <input id="input" class="form-control" formControlName="quantity" type="text">
+                        <input id="input" class="form-control" formControlName="quantity" type="text" readonly>
                      </td>
                      <td id="complex_table">
                         <input id="input" class="form-control" formControlName="available_quantity" type="text" readonly>
@@ -155,9 +155,6 @@
       </div>
       </form>
    </sa-widgets-grid>
-   <pre *ngIf="batchList">
-       {{ batchList | keys | json }}
-   </pre>
    <pre>
        {{ stockTransactionsForm.value | json}}
    </pre>

@@ -24,6 +24,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
   private drugsList: Observable<string[]>;
   private storeItems: StoreItem;
   private batchList: Observable<string[]>;
+  private indiv: Observable<string[]>;
 
   get rows(): FormArray {
     return <FormArray>this.stockTransactionsForm.get('drugs');
@@ -90,6 +91,12 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     this._transactionService.getDrugBatches(1, +[id]).subscribe(i => this.batchList = i);
   }
 
+  getBatchDetails(batchNo: string, index: number) {
+    this._transactionService.getDrugBatchDetails(1, batchNo).subscribe(
+      individualBatch => this.patchBatch(individualBatch, index)
+    );
+  }
+
   index(val: any) {
     this.i = +[val];
   }
@@ -99,6 +106,16 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
       {
         unit: drug.drug_unit,
         pack_size: drug.pack_size,
+      }
+    );
+  }
+
+  patchBatch(batch: any, val: number) {
+    this.rows.controls[+[val]].patchValue(
+      {
+        expiry_date: batch.expiry_date,
+        available_quantity: batch.balance,
+        comment: batch.comment
       }
     );
   }
