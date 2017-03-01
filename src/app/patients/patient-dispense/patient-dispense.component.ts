@@ -30,8 +30,8 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
   }
 
   setdate: Date;
-
-  regimenDrugs: Regimen[];
+  drug_regimen: any[];
+  regimens: Regimen[];
   regimen: any;
   reason: any[];
   purpose: any[];
@@ -90,7 +90,7 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
         }
       });
     this._dispenseService.getRegimens().subscribe(
-      regimen => this.regimenDrugs = regimen,
+      regimen => this.regimens = regimen,
       error => console.error(error)
     );
     this._dispenseService.getChangeReason().subscribe(
@@ -372,4 +372,13 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
     confirm('Are you sure you would like to reset the fields');
   }
 
+  /**
+   * Sets the drugs for a respective regimen
+   */
+  setRegimenDrugs(regimen_id: number) {
+    this._dispenseService.getRegimenDrugs(regimen_id).subscribe(
+      drug => this.drug_regimen = drug
+    )
+  }
+ 
 }

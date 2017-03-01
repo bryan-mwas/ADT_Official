@@ -10,7 +10,7 @@ import { Regimen } from '../patients';
 @Injectable()
 export class DispenseService {
 
-    private _apiUrl = 'assets/api/patients/dispense.dummy.json';
+    // private _apiUrl = 'assets/api/patients/dispense.dummy.json';
     private _url = 'http://192.168.33.10/adt-core/lib/public/api'
 
     constructor(private _http: Http) { }
@@ -42,10 +42,10 @@ export class DispenseService {
                    .do(data => console.log('Non Adherance: ' + JSON.stringify(data)))
                    .catch(this.handleError);
     }
-    getRegimenDrugs() {
-        return this._http.get(this._apiUrl)
+    getRegimenDrugs(id: number) {
+        return this._http.get(this._url+`/regimen/${id}/drugs`)
                    .map((res: Response)=> <any[]>res.json()) // TODO: refactor this. Bad practice
-                //    .do(data => console.log('Service: ' + JSON.stringify(data)))
+                   .do(data => console.log('Regimen Drugs: ' + JSON.stringify(data)))
                    .catch(this.handleError);
     }
 
