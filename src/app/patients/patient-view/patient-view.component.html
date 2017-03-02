@@ -586,9 +586,9 @@
                                                                                 <tbody>
                                                                                     <tr *ngFor="let regimen_change of dispense_history">
                                                                                         <td>{{regimen_change.visit_date}}</td>
-                                                                                        <td>{{regimen_change.last_regimen_id}} NAMES MISSING</td>
+                                                                                        <td>{{regimen_change.regimen_change && regimen_change.regimen_change[0] && regimen_change.regimen_change[0].last_regimen_name || 'N/A'}}</td>
                                                                                         <td>{{regimen_change.current_regimen_id}} NAMES MISSING</td>
-                                                                                        <td>{{regimen_change.change_reason_id}} NAMES MISSING</td>
+                                                                                        <td>{{regimen_change.regimen_change && regimen_change.regimen_change[0] && regimen_change.regimen_change[0].change_reason_name || 'N/A'}}</td>
                                                                                     </tr>
                                                                                 </tbody>
                                                                             </table>
