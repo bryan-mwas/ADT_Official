@@ -28,7 +28,7 @@ export class StockItem {
 export class StoreItem {
     store_id: number;
     drug_id: number;
-    batch_number: number;
+    batch_number: string;
     expiry_date: string;
     balance: number;
     unit_cost: number;
