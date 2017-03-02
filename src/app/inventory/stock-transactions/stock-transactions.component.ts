@@ -5,6 +5,8 @@ import { StockTransactionsService } from './stock-transactions.service';
 import 'rxjs/add/operator/switchMap';
 import { Observable } from 'rxjs/Observable';
 
+declare var $: any;
+
 @Component({
   selector: 'app-stock-transactions',
   templateUrl: './stock-transactions.component.html',
@@ -16,7 +18,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
   stockTransactionsForm: FormGroup;
   //  Index Tracker
   i: number;
-  individual_drug: any = null;
+  individualDrug: any = null;
   transaction: Transaction;
   stockItem: Transaction;
   drugItem: Drug;
@@ -46,7 +48,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     this._transactionService.getTransactionTypes().subscribe(data => this.transactionTypes = data);
     this.stockTransactionsForm.get('transaction_type').valueChanges.subscribe(
       val => this._transactionService.getTransaction(+[val])
-        .subscribe((val) => this.stockItem = val),
+        .subscribe((p) => this.stockItem = p),
       (err) => console.error(err)
     );
     this._transactionService.getDrugs().subscribe(d => this.drugsList = d);
@@ -56,12 +58,12 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
 
   buildRow(): FormGroup {
     return this.fb.group({
-      drug_id: '',
+      drug_id: ['', Validators.required],
       unit: '',
       pack_size: '',
       batch_number: '',
       expiry_date: '',
-      packs: '',
+      packs: ['', Validators.required],
       quantity: '',
       available_quantity: '',
       pack_cost: '',
@@ -123,14 +125,42 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
   ngDoCheck() {
     if (this.i != null) {
       let currentRow = this.rows.controls[this.i].value;
-      console.log('Row: ' + JSON.stringify(currentRow));
       let p = currentRow.packs;
       let pc = currentRow.pack_cost;
       let ps = currentRow.pack_size;
+      let aq = currentRow.quantity;
+      let q = currentRow.available_quantity;
       this.rows.controls[this.i].patchValue({
         total: (p * pc),
         quantity: (ps * p)
       });
     }
+  }
+
+  // VALIDATORS
+
+  quantityValidator(packs: number, val: number){
+    let q = this.rows.controls[+[val]].value.quantity;
+    let aq = this.rows.controls[+[val]].value.available_quantity;
+    if ((packs * q) > aq){
+      this.errorAlert('Quantity entered is greater than Available Quantity');
+    }
+  }
+
+  errorAlert(value: string){
+    $.smallBox({
+      title: 'Error Alert',
+      content: value,
+      color: '#C46A69',
+      icon: 'fa fa-warning shake animated',
+      timeout: 6000
+    });
+  }
+
+  onSubmit(): void{
+    this._transactionService.addTransaction(this.stockTransactionsForm.value, 1).subscribe(
+       (error) => { console.log('Error happened: ' + JSON.stringify(error));
+       }
+    );
   }
 }
