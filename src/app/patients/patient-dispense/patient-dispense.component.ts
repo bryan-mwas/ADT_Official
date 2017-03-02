@@ -30,8 +30,8 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
   }
 
   setdate: Date;
-
-  regimenDrugs: Regimen[];
+  drug_regimen: any[];
+  regimens: Regimen[];
   regimen: any;
   reason: any[];
   purpose: any[];
@@ -41,6 +41,8 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
   current_regimen: number;
   dispenseForm: FormGroup;
   index: number;
+  dispense_history: any[];
+  batch_details: string[];
 
   get rows(): FormArray {
     return <FormArray>this.dispenseForm.get('drugs');
@@ -89,8 +91,11 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
           }
         }
       });
+    this._route.params
+      .switchMap((params: Params) => this._patientService.getPreviousVisits(+params['id']))
+      .subscribe(a => this.dispense_history = a);
     this._dispenseService.getRegimens().subscribe(
-      regimen => this.regimenDrugs = regimen,
+      regimen => this.regimens = regimen,
       error => console.error(error)
     );
     this._dispenseService.getChangeReason().subscribe(
@@ -125,7 +130,7 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
       last_appointment: [{ value: '', disabled: true }],
       facility_id: 1,
       appointment_id: 1,
-      user_id: 1 , // TODO: Remove
+      user_id: 1, // TODO: Remove
       drugs: this.fb.array([this.buildRow()]),
     });
 
@@ -173,10 +178,6 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
         this.appointmentAdherenceCalculator(visit, appointment, dispense);
       }
     }
-
-    if(this.rows.get(`${this.rows.length - 1}.dispensed_qty`).errors) {
-      this.errorAlert('Negative values are not allowed.');
-    }
   }
   /**
    * Calculates the appointment adherence based on:
@@ -196,7 +197,14 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
       this.dispenseForm.patchValue({
         appointment_adherance: percentage.toFixed(2) + "%"
       })
-    } else {
+    }
+    else if (percentage < 0) {
+      percentage = 0.1
+      this.dispenseForm.patchValue({
+        appointment_adherance: percentage.toFixed(2) + "%"
+      })
+    }
+    else {
       this.dispenseForm.patchValue({
         appointment_adherance: percentage.toFixed(2) + "%"
       })
@@ -370,6 +378,42 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
 
   confirm() {
     confirm('Are you sure you would like to reset the fields');
+  }
+
+  /**
+   * Sets the drugs for a respective regimen
+   */
+  setRegimenDrugs(regimen_id: number) {
+    this._dispenseService.getRegimenDrugs(regimen_id).subscribe(
+      drug => this.drug_regimen = drug
+    )
+  }
+
+  /**
+   * Check Validation for an individual element at a particular row.
+   */
+  checkValidation(value: any, index: number) {
+    if (this.rows.get(`${index}.dispensed_qty`).errors) {
+      this.errorAlert('Negative values are not allowed.');
+    }
+  }
+
+  getIndividualAndBatch(id: number, index: number) {
+    //
+    console.log('Hello' + index);
+    this._dispenseService.getDrugDetails(id).subscribe(
+      val => {
+        this.rows.controls[+[index]].patchValue({
+          unit: val.drug_unit,
+          duration: val.duration
+        })
+      }
+    );
+    this._dispenseService.getDrugBatch(1, id).subscribe(
+      val => {
+        this.batch_details = val;
+      }
+    );
   }
 
 }

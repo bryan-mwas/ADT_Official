@@ -86,9 +86,9 @@
                                         </div>
                                         <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                             <label><span style="color:red; font-weight:bold">*</span> Current Regimen</label>
-                                            <select class="form-control" id="select-1" formControlName="current_regimen_id">
+                                            <select class="form-control" id="select-1" #regimen formControlName="current_regimen_id" (change)="setRegimenDrugs(regimen.value)">
                                                 <option selected>--Select One--</option>
-                                                <option *ngFor="let regimenDrug of regimenDrugs" value={{regimenDrug.id}}>{{regimenDrug.name}}</option>
+                                                <option *ngFor="let regimen of regimens" value="{{regimen.id}}">{{regimen.name}}</option>
                                             </select>
                                         </div>
                                     </div>
@@ -145,9 +145,9 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr>
-                                                                <td>Bang Bang</td>
-                                                                <td>50mg</td>
+                                                            <tr *ngFor="let item of dispense_history">
+                                                                <td>{{item.visit_item && item.visit_item[0] && item.visit_item[0].stock_item &&  item.visit_item[0].stock_item.drug_name || 'N/A'}}</td>
+                                                                <td>{{item.visit_item && item.visit_item[0] && item.visit_item[0].stock_item &&  item.visit_item[0].stock_item.quantity_out || 'nil'}}</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -191,15 +191,17 @@
                                                         <tbody formArrayName="drugs" *ngFor="let row of rows.controls; let i=index">
                                                             <tr [formGroupName]="i" (click)="getIndex(i)">
                                                                 <td id="complex_table">
-                                                                    <select class="form-control" id="input" *ngIf="regimen" formControlName="drug_id" id="">
-                                                                        <option value="" *ngFor="let drug of regimen.drugs" value="{{drug.id}}">{{drug.name}}</option>
+                                                                    <select #drug class="form-control" id="input" *ngIf="drug_regimen" formControlName="drug_id" id="" (change)="getIndividualAndBatch(drug.value, this.i)">
+                                                                        <option value="" *ngFor="let regimen of drug_regimen" value="{{regimen.drug.id}}">{{regimen.drug.name}}</option>
                                                                     </select>
                                                                 </td>
                                                                 <td id="complex_table">
                                                                     <input class="form-control" id="input" type="text" formControlName="unit">
                                                                 </td>
                                                                 <td id="complex_table">
-                                                                    <select class="form-control" formControlName="batch_no" id=""></select>
+                                                                    <select class="form-control" formControlName="batch_no" id="">
+                                                                        <option *ngFor="let batch of batch_details" value="{{batch.batch_number}}">{{batch.batch_number}}</option>
+                                                                    </select>
                                                                 </td>
                                                                 <td id="complex_table">
                                                                     <input class="form-control" id="input" type="text" formControlName="expiry_date">
@@ -217,15 +219,15 @@
                                                                     <input class="form-control" id="input" type="text" formControlName="duration">
                                                                 </td>
                                                                 <td id="complex_table">
-                                                                    <input class="form-control" id="input" type="text" formControlName="dispensed_qty">
+                                                                    <input class="form-control" #qty id="input" type="text" formControlName="dispensed_qty" (keyup)="checkValidation(qty.value, this.i)">
                                                                 </td>
                                                                 <td id="complex_table">
                                                                     <input class="form-control" id="input" type="text" formControlName="stock_id">
                                                                 </td>
                                                                 <td id="complex_table">
-                                                                    <select class="form-control" id="input" *ngIf="regimen" formControlName="indication" id="">
+                                                                    <!--<select class="form-control" id="input" *ngIf="regimen" formControlName="indication" id="">
                                                                         <option *ngFor="let indication of regimen.drugs['indication']" value="{{indication.id}}">{{indication.name}}</option>
-                                                                    </select>
+                                                                    </select>-->
                                                                 </td>
                                                                 <td id="complex_table">
                                                                     <input class="form-control" id="input" type="text" formControlName="comment">
@@ -234,7 +236,7 @@
                                                                     <input class="form-control" id="input" type="text" formControlName="missed_pills">
                                                                 </td>
                                                                 <td id="complex_table">
-                                                                    <button type="button" class="btn btn-danger" (click)="smartAlert('Are you sure?','delete_row',i)">Remove</button>
+                                                                    <button *ngIf="dispenseForm.controls.drugs.controls.length > 1" type="button" class="btn btn-danger" (click)="smartAlert('Are you sure?','delete_row',i)">Remove</button>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
