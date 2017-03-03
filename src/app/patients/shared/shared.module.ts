@@ -5,7 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SmartadminModule } from "../../shared/smartadmin.module";
 import { SmartadminInputModule } from "../../shared/forms/input/smartadmin-input.module";
 import { SmartadminDatatableModule } from "../../shared/ui/datatable/smartadmin-datatable.module";
-import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect/src/multiselect-dropdown';
+import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 
 import { SharedComponent }   from './shared.component';
 

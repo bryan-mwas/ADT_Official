@@ -50,7 +50,7 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
 
   get today() {
     let today = new Date();
-    return this._datePipe.transform(today, 'y/MM/dd')
+    return this._datePipe.transform(today, 'y-MM-dd')
   }
   constructor(
     private _datePipe: DatePipe,
@@ -284,7 +284,7 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
     }
     else {
       this.setdate = date_to_set;
-      let a = this._datePipe.transform(this.setdate, 'MM/dd/y'); // using angular's built in date pipe to format date object.
+      let a = this._datePipe.transform(this.setdate, 'MM-dd-y'); // using angular's built in date pipe to format date object.
       this.dispenseForm.patchValue({
         appointment_date: a
       });

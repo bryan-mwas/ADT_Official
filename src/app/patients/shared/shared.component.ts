@@ -4,7 +4,7 @@ import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { PatientsService } from '../patients.service';
 import { Patient, Service, Status, Regimen, Prophylaxis, Who_stage, Source, Illness, Allergies, FamilyPlanning, PlaceOfBirth } from '../patients';
-import { IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts } from 'angular-2-dropdown-multiselect/src/multiselect-dropdown';
+import { IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts } from 'angular-2-dropdown-multiselect';
 import { Observable } from 'rxjs/Observable';
 
 declare var $: any;
@@ -30,14 +30,12 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
     service = new Service
     regimen = new Regimen;
     who_stage = new Who_stage;
-    prophylaxis = new Prophylaxis;
     errorMessage: string;
     patientServices: Service[];
     patientSources: Source[];
     patientRegimen: Observable<Regimen[]>;
     patientWhostage: Observable<Who_stage[]>;
-    patientProphylaxis: Observable<IMultiSelectOption[]>;
-    familyPlanning: Observable<FamilyPlanning[]>;
+    familyPlanning: Observable<IMultiSelectOption[]>;
     birth_place: Observable<PlaceOfBirth[]>;
     // Variables to multiselect controls
     family_planning_list: string[];
@@ -48,13 +46,14 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
 
     ccc_number_warning: string = null;
 
-    private selectedOptions: string[]; // Default selection
+    selectedOptions: string[]; // Default selection
 
-    private chronicIllness: Observable<IMultiSelectOption[]>;
+    chronicIllness: Observable<IMultiSelectOption[]>;
 
-    private allergiesList: Observable<IMultiSelectOption[]>;
+    allergiesList: Observable<IMultiSelectOption[]>;
+    prophylaxisOptions: Observable<IMultiSelectOption[]>;
 
-    private mySettings: IMultiSelectSettings = {
+    mySettings: IMultiSelectSettings = {
         pullRight: false,
         enableSearch: true,
         checkedStyle: 'checkboxes',
@@ -63,11 +62,11 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
         closeOnSelect: false,
         showCheckAll: true,
         showUncheckAll: true,
-        dynamicTitleMaxItems: 3,
+        dynamicTitleMaxItems: 1,
         maxHeight: '300px',
     };
 
-    private myTexts: IMultiSelectTexts = {
+    myTexts: IMultiSelectTexts = {
         checkAll: 'Check all',
         uncheckAll: 'Uncheck all',
         checked: 'checked',
@@ -86,16 +85,16 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
     ) { }
 
     ngOnInit(): void {
+        this.patientWhostage = this._patientService.getWho_stage();
+        this.status = this._patientService.getStatus();
         this.birth_place = this._patientService.getLocation();
         this.familyPlanning = this._patientService.getFamilyPlan();
         this.chronicIllness = this._patientService.getIllness();
         this.allergiesList = this._patientService.getAllergies();
+        this.prophylaxisOptions = this._patientService.getProphylaxis();
         this._patientService.getSource().subscribe(source => this.patientSources = source);
         this._patientService.getServices().subscribe(service => { this.patientServices = service });
-        this.patientRegimen = this._patientService.getRegimen();
-        this.patientWhostage = this._patientService.getWho_stage();
-        this.patientProphylaxis = this._patientService.getProphylaxis();
-        this.status = this._patientService.getStatus();
+        this._patientService.getRegimen().subscribe(regimen => this.patientRegimen = regimen);
         // Form Builder Logic
         const form = this.patientForm;
         this.patientForm = this.fb.group({
@@ -132,19 +131,19 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
             facility_id: 1,
             supporter_id: 1,
             who_stage_id: [''],
-            prophylaxis: [''],
+            prophylaxis: [{ value: [], disabled: false }],
             source_id: [''],
             disclosure: [''],
             spouse_ccc: [''],
             status: '',
-            family_planning: [''],
+            family_planning: [{ value: [], disabled: false }],
             support_group: [''],
             alternate_number: [''],
             drug_name: [''],
             other_illness: [''],
             allergy_name: [''],
-            illnesses: [''],
-            drug_id: [''],
+            illnesses: [{ value: [], disabled: false }],
+            drug_id: [{ value: [], disabled: false }],
             tb_category: [''],
             tb_phase: [''],
             start_date: [''],
@@ -162,15 +161,24 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
             days_to: [{ value: '', disabled: true }],
             ccc_notify: [{ value: '', disabled: true }]
         });
-        // Track for edit changes in appointment_date control
-            // this.patientForm.get('appointment_date').valueChanges.subscribe(
-            //     value => {
-            //         alert(value)
-            //         this.patientForm.patchValue({
-            //             days_to: this.dateDiff(value)
-            //         });
-            //     }
-            // )
+        // Track for edit changes in prophylaxis control
+        this.patientForm.get('prophylaxis').valueChanges.subscribe(
+            value => {
+                // Check if the user selects dapsone which has an id of 2
+                if (value[value.length - 1] == 2) {
+                    if (value.indexOf(1) !== -1) {
+                        this.smartWarning('dapsone', 'cotrimoxazole');
+                        value.splice(value.indexOf(1), 1);
+                    }
+                }
+                if (value[value.length - 1] == 1) {
+                    if (value.indexOf(2) !== -1) {
+                        this.smartWarning('cotrimoxazole', 'dapsone');
+                        value.splice(value.indexOf(2), 1);
+                    }
+                }
+            }
+        )
         // Monitor the patient ccc_number
         if (!this.edit) {
             this.patientForm.get('ccc_number').valueChanges.subscribe(
@@ -222,7 +230,7 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
 
     today(): string {
         let date = new Date();
-        return this._datePipe.transform(date, 'y/MM/dd'); // using angular's built in date pipe to format date object.
+        return this._datePipe.transform(date, 'y-MM-dd'); // using angular's built in date pipe to format date object.
     }
 
     ngDoCheck(): void {
@@ -233,10 +241,6 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
         let current_height = this.patientForm.get('current_height').value;
         let current_weight = this.patientForm.get('current_weight').value;
         this.patientForm.patchValue({
-            family_planning: this.family_planning_list,
-            illnesses: this.chronic_illness_list,
-            drug_id: this.allergies_list,
-            prophylaxis: this.prophylaxis_list,
             initial_bsa: Math.sqrt((height * weight) / 3600)
             // current_bsa: Math.sqrt((current_height * current_weight) / 3600),
         });
@@ -279,14 +283,6 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
             this.patientForm.patchValue({
                 county_sub_id: patient.place_of_birth.id,
             })
-        }
-        if (patient.prophylaxis != null) {
-            let b: number[] = [];
-            for (let a of patient.prophylaxis) {
-                b.push(a.id);
-            }
-            console.log('Trial and Error: ' + b);
-            this.prophylaxis_list = b;
         }
         this.patientForm.patchValue({
             id: patient.id,
@@ -517,9 +513,11 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
         console.log(value);
     }
 
-    // TODO: Remove this when done
-    get diagnostic() {
-        return JSON.stringify(this.patient);
+    smartWarning(current: string, previous: string) {
+        $.SmartMessageBox({
+            title: "Warning!! You cannot select Dapsone and Cotrimoxazole at the same time",
+            content: `You have currently selected ${current}, ${previous} will be disabled`,
+            buttons: '[OK]'
+        });
     }
-
 }
