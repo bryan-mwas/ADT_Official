@@ -84,7 +84,8 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
   }
 
   removeRow(i: number) {
-    this.rows.removeAt(i);
+    const control = <FormArray>this.stockTransactionsForm.controls['drugs'];
+    control.removeAt(i);
   }
 
   getIndividualDrug(id: number, index: number) {
@@ -101,7 +102,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
   }
 
   index(val: any) {
-    this.i = +[val];
+    this.i = val;
   }
 
   patchRow(drug: any, val: number) {
