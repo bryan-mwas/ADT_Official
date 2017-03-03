@@ -20,21 +20,21 @@ export class PatientViewComponent implements OnInit, DoCheck {
 
   constructor(private route: ActivatedRoute,
     private _router: Router,
-    private _patientService: PatientsService) {}
+    private _patientService: PatientsService) { }
 
   ngOnInit() {
     this.route.params
       .switchMap((params: Params) => this._patientService.getPatient(+params['id']))
       .subscribe(patient => {
         this.patient = patient;
-        if(patient.current_status != null){
-          if(patient.current_status[0]){
-            if(patient.current_status[0].name !== 'active') {
+        if (patient.current_status != null) {
+          if (patient.current_status[0]) {
+            if (patient.current_status[0].name !== 'active') {
               this.smartModEg3();
             }
           }
         }
-    });
+      });
     this.route.params
       .switchMap((params: Params) => this._patientService.getPreviousVisits(+params['id']))
       .subscribe(a => this.dispense_history = a);
@@ -50,7 +50,7 @@ export class PatientViewComponent implements OnInit, DoCheck {
   }
 
   ngDoCheck() {
-    if(this.patient.visit){
+    if (this.patient.visit) {
       this.dateDiff(this.patient.visit.appointment.appointment_date);
     }
     console.log(this.latest_viral_load)
@@ -68,51 +68,50 @@ export class PatientViewComponent implements OnInit, DoCheck {
       content: "Cannot Dispense to Patient",
       buttons: '[OK]'
     });
-
   }
 
   // TODO: Remove this when done
-    get diagnostic () {
-        return JSON.stringify(this.patient);
-    }
+  get diagnostic() {
+    return JSON.stringify(this.patient);
+  }
 
-    dateDiff(todate) {
-        let fromdate: any = new Date();
-        let to: any = new Date(todate)
-        var diff = to - fromdate;
-        var divideBy = {
-            w: 604800000,
-            d: 86400000,
-            h: 3600000,
-            n: 60000,
-            s: 1000
-        };
-        this.days_to = Math.floor((diff / divideBy['d']) + 1);
-    }
-    daysToAppointment(todate) {
-        let fromdate: any = new Date();
-        let to: any = new Date(todate)
-        var diff = to - fromdate;
-        var divideBy = {
-            w: 604800000,
-            d: 86400000,
-            h: 3600000,
-            n: 60000,
-            s: 1000
-        };
-        return Math.floor((diff / divideBy['d']) + 1);
-    }
-    getAge(value: any): any {
-        let dob: any = new Date(value);
-        let today: any = new Date();
-        let age_in_years: number;
-        let age_in_months: number;
+  dateDiff(todate) {
+    let fromdate: any = new Date();
+    let to: any = new Date(todate)
+    var diff = to - fromdate;
+    var divideBy = {
+      w: 604800000,
+      d: 86400000,
+      h: 3600000,
+      n: 60000,
+      s: 1000
+    };
+    this.days_to = Math.floor((diff / divideBy['d']) + 1);
+  }
+  daysToAppointment(todate) {
+    let fromdate: any = new Date();
+    let to: any = new Date(todate)
+    var diff = to - fromdate;
+    var divideBy = {
+      w: 604800000,
+      d: 86400000,
+      h: 3600000,
+      n: 60000,
+      s: 1000
+    };
+    return Math.floor((diff / divideBy['d']) + 1);
+  }
+  getAge(value: any): any {
+    let dob: any = new Date(value);
+    let today: any = new Date();
+    let age_in_years: number;
+    let age_in_months: number;
 
-        age_in_years = Math.floor((today - dob) / (365.25 * 24 * 60 * 60 * 1000));
-        var y1 = today.getFullYear();
-        var y2 = dob.getFullYear();
-        age_in_months = (today.getMonth() + y1 * 12) - (dob.getMonth() + y2 * 12);
+    age_in_years = Math.floor((today - dob) / (365.25 * 24 * 60 * 60 * 1000));
+    var y1 = today.getFullYear();
+    var y2 = dob.getFullYear();
+    age_in_months = (today.getMonth() + y1 * 12) - (dob.getMonth() + y2 * 12);
 
-        return age_in_years;
-    }
+    return age_in_years;
+  }
 }

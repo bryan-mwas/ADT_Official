@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
+import { CONFIG } from '../../core/config';
 
 import { Regimen } from '../patients';
 
@@ -11,7 +12,7 @@ import { Regimen } from '../patients';
 export class DispenseService {
 
     // private _apiUrl = 'assets/api/patients/dispense.dummy.json';
-    private _url = 'http://192.168.33.10/adt-core/lib/public/api'
+    private _url = CONFIG.baseUrl;
 
     constructor(private _http: Http) { }
 

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { CONFIG } from '../core/config'
 
 import { Patient, Illness, Allergies, Source, Service, date, PlaceOfBirth, FamilyPlanning } from './patients';
 
@@ -11,9 +12,7 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class PatientsService {
 
-    // To be placed in a config file
-    // private _apiUrl = 'http://197.232.32.34/adt/api/';
-    private _apiUrl = 'http://192.168.133.10/adt-core/lib/public/api/';
+    private _apiUrl = CONFIG.baseUrl;
 
     private _addPatientRoute = this._apiUrl + 'patients';
     private _illnessApi = this._apiUrl + 'lists/illnesses';
@@ -105,16 +104,6 @@ export class PatientsService {
             .catch(this.handleError);
     }
 
-    /**
-     * Testing Purposes
-     */
-    // getDummyPatient() {
-    //     return this._http.get('assets/api/patients/patient.json')
-    //         .map((res: Response) => <Patient>res.json())
-    //         .do(data => console.log('Dummy:' + JSON.stringify(data)))
-    //         .catch(this.handleError);
-    // }
-
     getLocation() {
         return this._http.get(this._locationsApi)
             .map((response: Response) => <PlaceOfBirth[]>response.json())
@@ -158,8 +147,6 @@ export class PatientsService {
             .do(data => console.log('All: ' + JSON.stringify(data)))
             .catch(this.handleError);
     }
-
-
 
     getIllness(): Observable<Illness[]> {
         return this._http.get(this._illnessApi)
