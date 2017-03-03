@@ -48,3 +48,9 @@ export class Drug {
     drug_dose: string;
     drug_supporter: string;
 }
+
+export class Store {
+    id: number;
+    name: string;
+    type: string;
+}

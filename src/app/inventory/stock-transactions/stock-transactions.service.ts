@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { Transaction, StockItem, Drug, Types, StoreItem } from './transactions';
+import { Transaction, StockItem, Drug, Types, StoreItem, Store } from './transactions';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
@@ -18,6 +18,8 @@ export class StockTransactionsService {
   private _drugsApi = this._apiUrl + 'drugs';
   private _typesApi = this._apiUrl + 'lists/transaction_type';
   private _itemsApi = this._apiUrl + 'stock/store';
+  private _addTransactionURL = this._apiUrl + 'stock_transactions';
+  private _storesApi = this._apiUrl + 'stores';
 
   constructor(private _http: Http) { }
 
@@ -72,14 +74,21 @@ export class StockTransactionsService {
       .catch(this.handleError);
   }
 
+  getStores(){
+    return this._http.get(this._storesApi)
+      .map((response: Response) => <Store[]>response.json())
+      .do(data => console.log('stores: ' + JSON.stringify(data)))
+      .catch(this.handleError);
+  }
+
   // POST
 
-  addTransaction(body: Object, id: number): Observable<StockItem[]> {
+  addTransaction(body: Object): Observable<StockItem[]> {
     let bodyString = JSON.stringify(body); // Stringify payload
     let headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
     let options = new RequestOptions({ headers: headers }); // Create a request option
 
-    return this._http.post(this._transactionApi + `/${id}` + '/items', body, options)
+    return this._http.post(this._addTransactionURL, body, options)
       .map(() => body) // ...and calling .json() on the response to return data
       .catch(this.handleError); // ...errors if any
   }
