@@ -41,7 +41,7 @@ export class FacilityPatientSourcesComponent implements OnInit {
   onSaveComplete() {
     console.log('Created a new patient source...');
     this.successNotification('created');
-    jQuery("#newPatientSource").modal("hide");
+    jQuery('#newPatientSource').modal('hide');
     this._facilityService.getSources().subscribe(data => this.sourcesList = data);
   }
 

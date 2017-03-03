@@ -1,9 +1,11 @@
 import { Component, OnInit, DoCheck } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
-import { Types, Transaction, StockItem, Drug, StoreItem } from './transactions';
+import { Types, Transaction, StockItem, Drug, StoreItem, Store } from './transactions';
 import { StockTransactionsService } from './stock-transactions.service';
 import 'rxjs/add/operator/switchMap';
 import { Observable } from 'rxjs/Observable';
+
+declare var $: any;
 
 @Component({
   selector: 'app-stock-transactions',
@@ -16,10 +18,11 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
   stockTransactionsForm: FormGroup;
   //  Index Tracker
   i: number;
-  individual_drug: any = null;
+  individualDrug: any = null;
   transaction: Transaction;
   stockItem: Transaction;
   drugItem: Drug;
+  private storesList: Observable<string[]>;
   private transactionTypes: Observable<string[]>;
   private drugsList: Observable<string[]>;
   private storeItems: StoreItem;
@@ -36,35 +39,35 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
 
   ngOnInit() {
     this.stockTransactionsForm = this.fb.group({
-      transaction_date: ['', Validators.required],
-      transaction_type: ['', Validators.required],
-      ref_no: ['', Validators.required],
-      destination: [''],
-      source: [''],
+      transaction_time: ['', Validators.required],
+      transaction_type_id: ['', Validators.required],
+      ref_number: ['', Validators.required],
+      store_id: '',
       drugs: this.fb.array([this.buildRow()]),
     });
     this._transactionService.getTransactionTypes().subscribe(data => this.transactionTypes = data);
-    this.stockTransactionsForm.get('transaction_type').valueChanges.subscribe(
+    this.stockTransactionsForm.get('transaction_type_id').valueChanges.subscribe(
       val => this._transactionService.getTransaction(+[val])
-        .subscribe((val) => this.stockItem = val),
+        .subscribe((p) => this.stockItem = p),
       (err) => console.error(err)
     );
     this._transactionService.getDrugs().subscribe(d => this.drugsList = d);
     this._transactionService.getItems().subscribe(i => this.storeItems = i);
+    this._transactionService.getStores().subscribe(z => this.storesList = z);
     // console.log(this.rows.controls[0] + 'index: ' + this.index);
   }
 
   buildRow(): FormGroup {
     return this.fb.group({
-      drug_id: '',
+      drug_id: ['', Validators.required],
       unit: '',
       pack_size: '',
       batch_number: '',
       expiry_date: '',
-      packs: '',
+      quantity_packs: ['', Validators.required],
       quantity: '',
-      available_quantity: '',
-      pack_cost: '',
+      balance_before: '',
+      unit_cost: '',
       total: '',
       comment: ''
     });
@@ -72,7 +75,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
 
   setDate(value: any, val: string) {
     this.stockTransactionsForm.patchValue({
-      transaction_date: value
+      transaction_time: value
     });
   }
 
@@ -114,7 +117,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     this.rows.controls[+[val]].patchValue(
       {
         expiry_date: batch.expiry_date,
-        available_quantity: batch.balance,
+        balance_before: batch.balance,
         comment: batch.comment
       }
     );
@@ -123,14 +126,42 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
   ngDoCheck() {
     if (this.i != null) {
       let currentRow = this.rows.controls[this.i].value;
-      console.log('Row: ' + JSON.stringify(currentRow));
-      let p = currentRow.packs;
-      let pc = currentRow.pack_cost;
+      let p = currentRow.quantity_packs;
+      let pc = currentRow.unit_cost;
       let ps = currentRow.pack_size;
+      let aq = currentRow.quantity;
+      let q = currentRow.balance_before;
       this.rows.controls[this.i].patchValue({
         total: (p * pc),
         quantity: (ps * p)
       });
     }
+  }
+
+  // VALIDATORS
+
+  quantityValidator(packs: number, val: number){
+    let q = this.rows.controls[+[val]].value.quantity;
+    let aq = this.rows.controls[+[val]].value.balance_before;
+    if ((packs * q) > aq){
+      this.errorAlert('Quantity entered is greater than Available Quantity');
+    }
+  }
+
+  errorAlert(value: string){
+    $.smallBox({
+      title: 'Error Alert',
+      content: value,
+      color: '#C46A69',
+      icon: 'fa fa-warning shake animated',
+      timeout: 6000
+    });
+  }
+
+  onSubmit(): void{
+    this._transactionService.addTransaction(this.stockTransactionsForm.value).subscribe(
+       (error) => { console.log('Error happened: ' + JSON.stringify(error));
+       }
+    );
   }
 }

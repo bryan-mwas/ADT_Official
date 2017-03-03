@@ -1,6 +1,6 @@
 <div id="content">
    <sa-widgets-grid>
-      <form (ngSubmit)="save()" novalidate [formGroup]="stockTransactionsForm">
+      <form (ngSubmit)="onSubmit()" novalidate [formGroup]="stockTransactionsForm">
       <div class="row">
          <div class="col-xs-2 col-md-2">
             <sa-widget [colorbutton]="false" [editbutton]="false" [togglebutton]="false" [deletebutton]="false" [fullscreenbutton]="false"
@@ -16,16 +16,16 @@
                      </tr>
                      <tr>
                         <div class="input-group">
-                           <input type="text" formControlName="transaction_date" placeholder="Select a date" class="form-control datepicker" [saUiDatepicker]="{ dateFormat: 'mm/dd/yy' , changeMonth: true, changeYear: true, yearRange : 'c-65:c+0'}"
-                           (selectDate)='setDate($event,"transaction_date")'>
+                           <input type="text" formControlName="transaction_time" placeholder="Select a date" class="form-control datepicker" [saUiDatepicker]="{ dateFormat: 'mm/dd/yy' , changeMonth: true, changeYear: true, yearRange : 'c-65:c+0'}"
+                           (selectDate)='setDate($event,"transaction_time")'>
                         </div>
                      </tr>
                      <tr>
                         <th>Transaction Type</th>
                      </tr>
                      <tr *ngIf="transactionTypes">
-                        <select formControlName="transaction_type" class="form-control" id="select-1">
-                           <option value="null" disabled selected="selected"> Select Transaction Type</option>
+                        <select formControlName="transaction_type_id" class="form-control" id="select-1">
+                           <option value="null" disabled selected> Select Transaction Type</option>
                            <option *ngFor="let type of transactionTypes" value="{{type.id}}">{{type.name}}</option>
                         </select>
                      </tr>
@@ -35,26 +35,28 @@
                            <span>Loading...</span>
                         </div>
                      </tr>
+                     <div *ngIf="stockTransactionsForm.controls['transaction_type_id'].hasError('required') && stockTransactionsForm.controls['transaction_type_id'].touched" class="alert alert-danger">You must select a Transaction Type</div>
                      <tr>
                         <th>Ref./Order No</th>
                      </tr>
                      <tr>
-                        <input type="text" formControlName="ref_no" placeholder="Ref No" class="form-control">
+                        <input type="text" formControlName="ref_number" placeholder="Ref No" class="form-control">
                      </tr>
-                     <div *ngIf="stockTransactionsForm.get('transaction_type').value == 3 || stockTransactionsForm.get('transaction_type').value == 4 || stockTransactionsForm.get('transaction_type').value == 6 || stockTransactionsForm.get('transaction_type').value == 7">
+                     <div *ngIf="stockTransactionsForm.get('transaction_type_id').value == 3 || stockTransactionsForm.get('transaction_type_id').value == 4 || stockTransactionsForm.get('transaction_type_id').value == 6 || stockTransactionsForm.get('transaction_type_id').value == 7">
                         <tr>
                            <th>Destination</th>
                         </tr>
                         <tr>
-                           <input type="text" formControlName="destination" placeholder="Destination" class="form-control">
+                           <input type="text" formControlName="store_id" placeholder="Destination" class="form-control" list="list">
+                           <datalist id="list"><option *ngFor="let store of storesList" value="{{store.id}}">{{store.name}}</option></datalist>
                         </tr>
                      </div>
-                     <div *ngIf="stockTransactionsForm.get('transaction_type').value == 1 || stockTransactionsForm.get('transaction_type').value == 8">
+                     <div *ngIf="stockTransactionsForm.get('transaction_type_id').value == 1 || stockTransactionsForm.get('transaction_type_id').value == 8">
                         <tr>
                            <th>Source</th>
                         </tr>
                         <tr>
-                           <input type="text" formControlName="source" placeholder="Source" class="form-control">
+                           <input type="text" formControlName="store_id" placeholder="Source" class="form-control">
                         </tr>
                      </div>
                   </tbody>
@@ -88,8 +90,8 @@
                         <th>Batch No.</th>
                         <th>Expiry Date</th>
                         <th>Packs</th>
-                        <th>Qty</th>
-                        <th>Available Qty</th>
+                        <th>Quantity</th>
+                        <th>Available Quantity</th>
                         <th>Pack Cost</th>
                         <th>Total</th>
                         <th>Comment</th>
@@ -121,16 +123,16 @@
                         <input id="input" class="form-control" formControlName="expiry_date" type="text" readonly>
                      </td>
                      <td id="complex_table">
-                        <input id="input" class="form-control" formControlName="packs" type="text">
+                        <input #packs id="input" class="form-control" formControlName="quantity_packs" type="text" (change)="quantityValidator(packs.value, this.i)">
                      </td>
                      <td id="complex_table">
                         <input id="input" class="form-control" formControlName="quantity" type="text" readonly>
                      </td>
                      <td id="complex_table">
-                        <input id="input" class="form-control" formControlName="available_quantity" type="text" readonly>
+                        <input id="input" class="form-control" formControlName="balance_before" type="text" readonly>
                      </td>
                      <td id="complex_table">
-                        <input id="input" class="form-control" formControlName="pack_cost" type="text">
+                        <input id="input" class="form-control" formControlName="unit_cost" type="text">
                      </td>
                      <td id="complex_table">
                         <input id="input" class="form-control" formControlName="total" type="text" readonly>
