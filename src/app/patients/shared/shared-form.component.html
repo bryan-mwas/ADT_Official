@@ -403,7 +403,7 @@
                                             </div>
                                         </div>
                                         <div *ngSwitchDefault>
-                                            <select class="form-control" id="select-1" formControlName="status_id">
+                                            <select style="color:red; font-weight:bold" class="form-control" id="select-1" formControlName="status_id">
                                                 <option *ngFor="let 'stata' of status | async" value="{{stata.id}}">{{stata.name}}</option>
                                             </select>
                                         </div>
@@ -424,7 +424,7 @@
                                             </div>
                                         </div>
                                         <div *ngSwitchDefault>
-                                            <select class="form-control" id="select-1" formControlName="source_id">
+                                            <select style="color:red; font-weight:bold" class="form-control" id="select-1" formControlName="source_id">
                                                 <option *ngFor="let source of patientSources" value="{{source.id}}">{{source.name}}</option>
                                                 <input type="hidden" value="{{source.name}}">
                                             </select>
@@ -439,14 +439,14 @@
                                             </div>
                                         </div>
                                         <div *ngSwitchDefault>
-                                            <select class="form-control" id="select-1" formControlName="service_id" (click)="setService(patientForm.get('service_id').value)">
+                                            <select style="color:red; font-weight:bold" class="form-control" id="select-1" formControlName="service_id" (click)="setService(patientForm.get('service_id').value)">
                                                 <option *ngFor="let service of patientServices" value="{{service.id}}">{{service.name}}</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div *ngIf="regimen?.regimen" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>Start Regimen</label>
-                                        <select class="form-control" id="select-1" formControlName="initial_regimen_id">
+                                        <select style="color:red; font-weight:bold" class="form-control" id="select-1" formControlName="initial_regimen_id">
                                             <option *ngFor="let regimens of regimen.regimen" value="{{regimens.id}}">{{regimens.name}}</option>
                                         </select>
                                     </div>
