@@ -77,7 +77,7 @@ export class StockTransactionsService {
   getStores(){
     return this._http.get(this._storesApi)
       .map((response: Response) => <Store[]>response.json())
-      .do(data => console.log('stores: ' + JSON.stringify(data)))
+      // .do(data => console.log('stores: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
 
