@@ -405,7 +405,7 @@
                                                     <a class="mdl-navigation__link" [routerLink]="['/patients/edit/',patient.id]">Edit Patient Record</a>
                                                 </li>
                                                 <li class="active pull-right">
-                                                        <a *ngIf="patient.current_status && patient.current_status[0] && patient.current_status[0].name=='active'" class="mdl-navigation__link" [routerLink]="['/patients/dispense/',patient.id]">Dispense to Patient</a>
+                                                        <a *ngIf="patient.current_status_name=='active'" class="mdl-navigation__link" [routerLink]="['/patients/dispense/',patient.id]">Dispense to Patient</a>
                                                 </li>
                                             </ul>
                                             <tabset class="padding-5">

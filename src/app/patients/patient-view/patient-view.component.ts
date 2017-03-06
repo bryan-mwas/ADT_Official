@@ -30,13 +30,11 @@ export class PatientViewComponent implements OnInit, DoCheck {
       .switchMap((params: Params) => this._patientService.getPatient(+params['id']))
       .subscribe(patient => {
         this.patient = patient;
-        if (patient.current_status != null) {
-          if (patient.current_status[0]) {
-            if (patient.current_status[0].name !== 'active') {
+          if (patient.current_status_name) {
+            if (patient.current_status_name !== 'active') {
               this.smartModEg3();
             }
           }
-        }
         if (patient.first_visit) {
           let a = patient.first_visit.current_weight;
           let b = patient.first_visit.current_height
