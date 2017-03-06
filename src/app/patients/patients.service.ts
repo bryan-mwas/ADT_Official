@@ -79,7 +79,7 @@ export class PatientsService {
     getPaginatedPatients(id: number) {
         return this._http.get(this._patientsList + id)
             .map((response: Response) => <Patient[]>response.json())
-            // .do(data => console.log('All: ' + JSON.stringify(data)))z
+            // .do(data => console.log('All: ' + JSON.stringify(data)))
             .catch(this.handleError);
     }
 
