@@ -94,7 +94,7 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
         this.prophylaxisOptions = this._patientService.getProphylaxis();
         this._patientService.getSource().subscribe(source => this.patientSources = source);
         this._patientService.getServices().subscribe(service => { this.patientServices = service });
-        this._patientService.getRegimen().subscribe(regimen => this.patientRegimen = regimen);
+        // this._patientService.getRegimen().subscribe(regimen => this.patientRegimen = regimen);
         // Form Builder Logic
         const form = this.patientForm;
         this.patientForm = this.fb.group({
@@ -159,7 +159,9 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
             user_id: '1',
             appointment_date: '',
             days_to: [{ value: '', disabled: true }],
-            ccc_notify: [{ value: '', disabled: true }]
+            ccc_notify: [{ value: '', disabled: true }],
+            start_age: [{ value: '', disabled: true }],
+            current_age: [{ value: '', disabled: true }]
         });
         // Track for edit changes in prophylaxis control
         this.patientForm.get('prophylaxis').valueChanges.subscribe(
@@ -242,19 +244,29 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
         let current_weight = this.patientForm.get('current_weight').value;
         this.patientForm.patchValue({
             initial_bsa: Math.sqrt((height * weight) / 3600)
-            // current_bsa: Math.sqrt((current_height * current_weight) / 3600),
         });
+        if (current_height && current_weight) {
+            this.patientForm.patchValue({
+                current_bsa: Math.sqrt((current_height * current_weight) / 3600),
+            });
+        }
     }
 
 
     patientValues(patient: Patient) {
         this.setDate(patient.birth_date, 'birthday');
+        this.setDate(patient.next_appointment_date,'appointment');
+        if(patient.next_appointment_date) {
+            this.patientForm.patchValue({
+                days_to: this.dateDiff(patient.next_appointment_date)
+            })
+        }
         if (patient.tb != null) {
+            // Added this on 6th March. I anticipate no need for tb_end
+            this.setDate(patient.tb.start_date,'tb_start');
             this.patientForm.patchValue({
                 tb_category: patient.tb.category,
-                tb_phase: patient.tb.phase,
-                start_date: patient.tb.start_date,
-                end_date: patient.tb.end_date
+                tb_phase: patient.tb.phase
             })
         }
         if (patient.current_status != null) {
@@ -284,6 +296,64 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
                 county_sub_id: patient.place_of_birth.id,
             })
         }
+        if (patient.prophylaxis != null) {
+            let selectedOptions: number[] = [];
+            for (let item of patient.prophylaxis) {
+                selectedOptions.push(item.id);
+            }
+            this.patientForm.patchValue({
+                prophylaxis: selectedOptions,
+            })
+        }
+        if (patient.drug_allergy != null) {
+            let selectedOptions: number[] = [];
+            for (let item of patient.drug_allergy) {
+                selectedOptions.push(item.drug_id);
+            }
+            this.patientForm.patchValue({
+                drug_id: selectedOptions,
+            })
+        }
+        if (patient.birth_date != null) {
+            let dob: any = new Date(patient.birth_date);
+            let today: any = new Date();
+            let age_in_years: number;
+            let age_in_months: number;
+
+            age_in_years = Math.floor((today - dob) / (365.25 * 24 * 60 * 60 * 1000));
+            var y1 = today.getFullYear();
+            var y2 = dob.getFullYear();
+            age_in_months = (today.getMonth() + y1 * 12) - (dob.getMonth() + y2 * 12);
+
+            this.patientForm.patchValue({
+                start_age: age_in_years,
+                current_age: age_in_years
+            });
+        }
+        if (patient.illnesses != null) {
+            let selectedOptions: number[] = [];
+            for (let item of patient.illnesses) {
+                selectedOptions.push(item.id);
+            }
+            this.patientForm.patchValue({
+                illnesses: selectedOptions,
+            })
+        }
+        if (patient.family_planning != null) {
+            let selectedOptions: number[] = [];
+            for (let item of patient.drug_allergy) {
+                selectedOptions.push(item.id);
+            }
+            this.patientForm.patchValue({
+                family_planning: selectedOptions,
+            })
+        }
+        if (patient.first_visit != null) {
+            this.patientForm.patchValue({
+                initial_weight: patient.first_visit['current_weight'],
+                initial_height: patient.first_visit['current_height']
+            })
+        }
         this.patientForm.patchValue({
             id: patient.id,
             ccc_number: patient.ccc_number,
@@ -310,9 +380,9 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
             facility_id: 1,
             supporter_id: 1,
             who_stage_id: patient.who_stage_id,
-            // prophylaxis: patient.prophylaxis,
+            status_id: patient.current_status_id,
             source_id: patient.source_id,
-            disclosure: patient.disclosure,
+            disclosure: patient.is_disclosure,
             spouse_ccc: patient.tb,
             status: patient.status,
             family_planning: patient.family_planning,
@@ -320,15 +390,13 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
             alternate_number: patient.alternate_number,
             other_illness: patient.other_illness,
             illnesses: patient.illnesses,
-            drug_id: patient.drug_allergies,
             pep_reason: patient.pep_reason,
             isoniazid_start: patient.isoniazid_start,
             isoniazid_end: patient.isoniazid_end,
             is_support: patient.is_support,
             is_illness: patient.is_illness,
             is_drugs: patient.is_drugs,
-            is_allergies: patient.is_allergies,
-            appointment_date: patient.next_appointment_date,
+            is_allergies: patient.is_allergies
         });
     }
 
@@ -505,8 +573,14 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
         if (this.formType == 'edit') {
             this.edit = true;
         }
-        this._patientService.getPatient(id).subscribe(
-            val => this.patientValues(val));
+        this._patientService.getPatient(id).subscribe(val => this.patientValues(val));
+        this._patientService.getLatestVisit(id).subscribe(val => {
+            let latest_visit = val[val.length - 1]; // Access the only property in the array
+            this.patientForm.patchValue({
+                current_weight: latest_visit.current_weight,
+                current_height: latest_visit.current_height
+            })
+        })
     }
 
     onChange(value: any): void {

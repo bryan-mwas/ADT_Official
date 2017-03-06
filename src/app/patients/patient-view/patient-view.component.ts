@@ -17,6 +17,9 @@ export class PatientViewComponent implements OnInit, DoCheck {
   latest_viral_load;
   dispense_history;
   appointment_history;
+  latest_visit;
+  latest_bsa;
+  start_bsa;
 
   constructor(private route: ActivatedRoute,
     private _router: Router,
@@ -34,6 +37,22 @@ export class PatientViewComponent implements OnInit, DoCheck {
             }
           }
         }
+        if (patient.first_visit) {
+          let a = patient.first_visit.current_weight;
+          let b = patient.first_visit.current_height
+          if (a && b) {
+            this.start_bsa = Math.sqrt((a * b) / 3600);
+          }
+        }
+      });
+    this.route.params
+      .switchMap((params: Params) => this._patientService.getLatestVisit(+params['id']))
+      .subscribe(a => {
+        let latest = a[a.length - 1]
+        this.latest_visit = latest
+        if (latest.current_weight && latest.current_height) {
+          this.latest_bsa = Math.sqrt((latest.current_height * latest.current_weight) / 3600);
+        }
       });
     this.route.params
       .switchMap((params: Params) => this._patientService.getPreviousVisits(+params['id']))
@@ -50,8 +69,8 @@ export class PatientViewComponent implements OnInit, DoCheck {
   }
 
   ngDoCheck() {
-    if (this.patient.visit) {
-      this.dateDiff(this.patient.visit.appointment.appointment_date);
+    if (this.patient.next_appointment_date) {
+      this.dateDiff(this.patient.next_appointment_date);
     }
     console.log(this.latest_viral_load)
   }

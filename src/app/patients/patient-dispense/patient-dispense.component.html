@@ -192,16 +192,16 @@
                                                             <tr [formGroupName]="i" (click)="getIndex(i)">
                                                                 <td id="complex_table">
                                                                     <select #drug class="form-control" id="input" *ngIf="drug_regimen" formControlName="drug_id" id="" (change)="getIndividualAndBatch(drug.value, this.i)">
-                                                                        <option value="" *ngFor="let regimen of drug_regimen" value="{{regimen.drug.id}}">{{regimen.drug.name}}</option>
+                                                                        <option *ngFor="let regimen of drug_regimen" value="{{regimen.drug.id}}">{{regimen.drug.name}}</option>
                                                                     </select>
                                                                 </td>
                                                                 <td id="complex_table">
                                                                     <input class="form-control" id="input" type="text" formControlName="unit">
                                                                 </td>
                                                                 <td id="complex_table">
-                                                                    <select class="form-control" formControlName="batch_no" id="">
+                                                                    <!--<select class="form-control" formControlName="batch_no" id="">
                                                                         <option *ngFor="let batch of batch_details" value="{{batch.batch_number}}">{{batch.batch_number}}</option>
-                                                                    </select>
+                                                                    </select>-->
                                                                 </td>
                                                                 <td id="complex_table">
                                                                     <input class="form-control" id="input" type="text" formControlName="expiry_date">

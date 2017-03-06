@@ -15,6 +15,7 @@ export class Patient {
     other_name: string;
     birth_date: string;
     place_of_birth = this.birth_place;
+    is_disclosure: any;
     age_in_years: number;
     age_in_months: number;
     initial_weight: number;
@@ -53,8 +54,9 @@ export class Patient {
     other_drug: any;
     other_illness?: string;
     other_drug_allergy: any;
-    illnesses: Illness;
-    drug_allergy: Allergies;
+    illnesses: Illness[];
+    drug_allergy: any[];
+    current_status_id: number;
     tb_category?: string;
     tb_phase?: string;
     start_date?: string;
@@ -64,6 +66,7 @@ export class Patient {
     isoniazid_end?: string;
     patient_status: string;
     who_stage = new Who_stage;
+    first_visit: Object;
     // toggle
     is_support: boolean;
     is_illness: boolean;
@@ -73,7 +76,7 @@ export class Patient {
     tb: PatientTb;
     source = this.patient_source;
     visit: any;
-    next_appointment_date?: string;
+    next_appointment_date: string;
 }
 
 export class Service {

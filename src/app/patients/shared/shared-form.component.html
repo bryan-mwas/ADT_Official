@@ -94,11 +94,11 @@
                                     </div>
                                     <div *ngIf="edit" class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                         <label>Start Age (Years)</label>
-                                        <input class="form-control" placeholder="Start Age (Years)" type="text" name="start_age">
+                                        <input class="form-control" placeholder="Start Age (Years)" type="text" formControlName="start_age">
                                     </div>
                                     <div *ngIf="edit" class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                         <label>Current Age (Years)</label>
-                                        <input class="form-control" placeholder="Current Age (Years)" type="text" name="current_age">
+                                        <input class="form-control" placeholder="Current Age (Years)" type="text" formControlName="current_age">
                                     </div>
                                     <div *ngIf="patientForm.get('gender').value !== 'female'" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label><span style="color:red; font-weight:bold">*</span> Gender</label>

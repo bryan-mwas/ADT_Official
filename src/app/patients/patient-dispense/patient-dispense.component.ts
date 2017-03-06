@@ -385,7 +385,10 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
    */
   setRegimenDrugs(regimen_id: number) {
     this._dispenseService.getRegimenDrugs(regimen_id).subscribe(
-      drug => this.drug_regimen = drug
+      drug => {
+        this.drug_regimen = drug
+        console.log(drug)
+    }
     )
   }
 

@@ -72,27 +72,27 @@
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                         <label>Start weight (KG)</label>
-                                        <input class="form-control" placeholder="Weight" type="text" [(ngModel)]="patient.initial_weight" name="start_weight" disabled>
+                                        <input class="form-control" placeholder="Weight" type="text" value="{{patient.first_visit != null && patient.first_visit.current_weight}}" name="start_weight" disabled>
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                         <label><span style="color:red; font-weight:bold">*</span> Current Weight (KG)</label>
-                                        <input class="form-control" placeholder="Weight" type="text" [(ngModel)]="patient.current_weight" name="current_weight" disabled>
+                                        <input class="form-control" placeholder="Weight" type="text" [(ngModel)]="latest_visit && latest_visit.current_weight" name="current_weight" disabled>
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                         <label>Start height (KG)</label>
-                                        <input class="form-control" placeholder="Weight" type="text" [(ngModel)]="patient.initial_height" name="weight" disabled>
+                                        <input class="form-control" placeholder="Weight" type="text" value="{{patient.first_visit != null && patient.first_visit.current_height}}" name="weight" disabled>
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                         <label><span style="color:red; font-weight:bold">*</span>Current Height (CM)</label>
-                                        <input class="form-control" placeholder="Height" type="text" [(ngModel)]="patient.current_height" name="height" disabled>
+                                        <input class="form-control" placeholder="Height" type="text" [(ngModel)]="latest_visit && latest_visit.current_height" name="height" disabled>
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>Start Body Surface Area (MSQ)</label>
-                                        <input class="form-control" placeholder="<<auto generate>>" [(ngModel)]="patient.initial_bsa" type="text" disabled="disabled " name="initial_bsa" disabled />
+                                        <input class="form-control" placeholder="<<auto generate>>" [(ngModel)]="start_bsa" type="text" disabled="disabled " name="initial_bsa" disabled />
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>Current Body Surface Area (MSQ)</label>
-                                        <input class="form-control" placeholder="<<auto generate>>" [(ngModel)]="patient.current_bsa" type="text" disabled="disabled " name="current_bsa" disabled />
+                                        <input class="form-control" placeholder="<<auto generate>>" [(ngModel)]="latest_bsa" type="text" disabled="disabled " name="current_bsa" disabled />
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-5 col-md-5 col-lg-5">
                                         <label>Phone Contact</label>
@@ -155,11 +155,11 @@
                                             <div class="row">
                                                 <div class="col-sm-12 col-md-10">
                                                     <label class="radio radio-inline no-margin">
-                                                        <input type="radio" value="1" class="radiobox style-2" [(ngModel)]="patient.disclosure" name="disclosure" disabled/>
+                                                        <input type="radio" value="1" class="radiobox style-2" [(ngModel)]="patient.is_disclosure" name="disclosure" disabled/>
                                                         <span>Yes</span>
                                                     </label>
                                                     <label class="radio radio-inline">
-                                                        <input type="radio" value="0" class="radiobox style-2" [(ngModel)]="patient.disclosure" name="disclosure" disabled/>
+                                                        <input type="radio" value="0" class="radiobox style-2" [(ngModel)]="patient.is_disclosure" name="disclosure" disabled/>
                                                         <span>No</span>
                                                     </label>
                                                 </div>
@@ -298,7 +298,7 @@
                                         <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                         <label>Date of next appointment:</label>
                                         <div class="input-group">
-                                            <input  type="text" name="appointment_date" placeholder="Select a date" class="form-control" value="{{patient.next_appointment != null && patient.next_appointment.appointment_date}}" disabled>
+                                            <input  type="text" name="appointment_date" placeholder="Select a date" class="form-control" value="{{patient.next_appointment_date}}" disabled>
                                         </div>
                                     </div>
                                     <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
