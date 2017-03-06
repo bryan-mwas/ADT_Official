@@ -1,5 +1,6 @@
 import { Component, OnInit, DoCheck } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Types, Transaction, StockItem, Drug, StoreItem, Store } from './transactions';
 import { StockTransactionsService } from './stock-transactions.service';
 import 'rxjs/add/operator/switchMap';
@@ -35,7 +36,8 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
 
   constructor(
     private fb: FormBuilder,
-    private _transactionService: StockTransactionsService) { }
+    private _transactionService: StockTransactionsService,
+    private router: Router) { }
 
   ngOnInit() {
     this.stockTransactionsForm = this.fb.group({
@@ -185,6 +187,6 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
 
   onSaveComplete() {
     console.log('Created a new Transaction');
-    this.stockTransactionsForm.reset();
+    this.router.navigateByUrl('/inventory/inventory-management');
   }
 }

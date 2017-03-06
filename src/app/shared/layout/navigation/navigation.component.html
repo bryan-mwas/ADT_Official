@@ -32,30 +32,28 @@
          <li>
             <a  title="Inventory"><i class="fa fa-lg fa-fw fa-bank"></i> <span class="menu-item-parent"> INVENTORY</span></a>
             <ul>
-                <li>
-                    <a [routerLink]="['/inventory/inventory-management']"><span class="menu-item-parent">Inventory Management</span></a>
-               </li>
                <li>
-                  <a><span class="menu-item-parent">Stock transactions</span></a>
+                  <a><span class="menu-item-parent">Main Store</span></a>
                   <ul>
                      <li>
-                        <a><span class="menu-item-parent"> Main Store</span></a>
-                        <ul>
-                           <li>
-                              <a [routerLink]="['/inventory/stock-transactions']"><span class="menu-item-parent">Receive/Issue</span></a>
-                           </li>
-                        </ul>
+                        <a [routerLink]="['/inventory/inventory-management']"><span class="menu-item-parent">Inventory</span></a>
                      </li>
                      <li>
-                        <a><span class="menu-item-parent"> Main Pharmacy</span></a>
-                        <ul>
-                           <li>
-                              <a [routerLink]="['/inventory/stock-transactions']"><span class="menu-item-parent">Receive/Issue</span></a>
-                           </li>
-                        </ul>
+                        <a [routerLink]="['/inventory/stock-transactions']"><span class="menu-item-parent">Receive/Issue</span></a>
                      </li>
                   </ul>
-               </li>               
+               </li>
+               <li>
+                  <a><span class="menu-item-parent">Main Pharmacy</span></a>
+                  <ul>
+                     <li>
+                        <a [routerLink]="['/inventory/inventory-management']"><span class="menu-item-parent">Inventory</span></a>
+                     </li>
+                     <li>
+                        <a [routerLink]="['/inventory/stock-transactions']"><span class="menu-item-parent">Receive/Issue</span></a>
+                     </li>
+                  </ul>
+               </li> 
             </ul>
          </li>
          <!-- !! Inventory Zone End !! -->
