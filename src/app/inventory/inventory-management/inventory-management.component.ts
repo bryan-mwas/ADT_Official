@@ -21,14 +21,4 @@ export class InventoryManagementComponent implements OnInit {
       error => console.error(error)
     )
   }
-
-   public setPage(pageNo: number): void {
-    this.currentPage = pageNo;
-  }
- 
-  public pageChanged(event: any): void {
-    console.log('Page changed to: ' + event.page);
-    this.service.getPaginatedDrugs(event.page).subscribe(p => this.drugs = p); // TODO: Error handling
-    console.log('Number items per page: ' + event.itemsPerPage);
-  }
 }

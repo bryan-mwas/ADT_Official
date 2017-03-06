@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { IDrugs, IStockDrug } from './drugs';
+import { CONFIG } from '../core/config';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
@@ -9,18 +10,18 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class InventoryService {
-    protected apiUrl = 'http://197.232.32.34/adt/api/';
+    protected apiUrl = CONFIG.baseUrl;
     constructor(private http: Http) { }
 
     getPaginatedDrugs(id: number) {
-        return this.http.get(`${this.apiUrl}/drugs?page=${id}`)
+        return this.http.get(`${this.apiUrl}drugs?page=${id}`)
             .map((response: Response) => <IDrugs[]>response.json())
             // .do(data => console.log('All: ' + JSON.stringify(data)))z
             .catch(this.handleError);
     }
 
     getDrugs(): Observable<IDrugs[]> {
-        return this.http.get(this.apiUrl)
+        return this.http.get(this.apiUrl+'drugs')
             .map((response: Response) => <IDrugs[]>response.json())
             .do(data => console.log('getDrugs: ' + JSON.stringify(data)))
             .catch(this.handleError);

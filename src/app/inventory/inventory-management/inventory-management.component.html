@@ -35,29 +35,27 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let drug of drugs.data | fieldFilter:'name':binding">
+                                        <tr *ngFor="let drug of drugs | fieldFilter:'name':binding | paginate: { itemsPerPage: 10, currentPage: p }">
                                             <td>{{ drug.name }}</td>
-                                            <td>{{ drug.generic.name}}</td>
+                                            <td>{{ drug.drug_generic}}</td>
                                             <td>{{ drug.quantity}}</td>
-                                            <td>{{ drug.unit_id}}</td>
+                                            <td>{{ drug.drug_unit}}</td>
                                             <td>{{ drug.pack_size}}</td>
                                             <!-- TODO: Use the supplier -->
-                                            <td>{{ drug.supporter_id}}</td>
-                                            <td>{{ drug.dose_id}}</td>
+                                            <td>{{ drug.drug_supporter}}</td>
+                                            <td>{{ drug.drug_dose}}</td>
                                             <td><a href="" [routerLink]="['/inventory/bin-card',drug.id]">View Bin Card</a></td>
                                         </tr>
                                     </tbody>
                                 </table>
                                 <div class="dt-toolbar-footer">
                                     <div class="col-sm-6 col-xs-12">
-                                        <div class="dataTables_info" id="DataTables_Table_1_info" role="status" aria-live="polite">
+                                        <!--<div class="dataTables_info" id="DataTables_Table_1_info" role="status" aria-live="polite">
                                             Showing <> to <> of <> entries
-                                        </div>
+                                        </div>-->
                                     </div>
                                     <div class="col-xs-12 col-sm-6">
-                                        <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_1_paginate">
-                                            <pagination class="dataTables_paginate paging_simple_numbers" [itemsPerPage]="drugs.per_page" [totalItems]="drugs.total" [(ngModel)]="currentPage" (pageChanged)="pageChanged($event)"></pagination>
-                                        </div>
+                                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
                                     </div>
                                 </div>
                             </div>
