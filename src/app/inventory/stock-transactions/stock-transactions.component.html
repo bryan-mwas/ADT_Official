@@ -48,7 +48,9 @@
                         </tr>
                         <tr>
                            <input #store type="text" formControlName="store" placeholder="Destination" class="form-control" list="list" (change)="setStore(store.value)">
-                           <datalist id="list"><option *ngFor="let store of storesList"  data-id="{{store.id}}" value="{{store.name}}">{{store.name}}</option></datalist>
+                           <datalist id="list">
+                              <option *ngFor="let store of storesList" value="{{store.name}}">{{store.name}}</option>
+                           </datalist>
                         </tr>
                      </div>
                      <div *ngIf="stockTransactionsForm.get('transaction_type_id').value == 1 || stockTransactionsForm.get('transaction_type_id').value == 8">
@@ -56,8 +58,10 @@
                            <th>Source</th>
                         </tr>
                         <tr>
-                            <input #store type="text" formControlName="store" placeholder="Destination" class="form-control" list="list" (change)="setStore(store.value)">
-                           <datalist id="list"><option *ngFor="let store of storesList"  data-id="{{store.id}}" value="{{store.name}}">{{store.name}}</option></datalist>
+                           <input #store type="text" formControlName="store" placeholder="Source" class="form-control" list="list" (change)="setStore(store.value)">
+                           <datalist id="list">
+                              <option *ngFor="let store of storesList"  data-id="{{store.id}}" value="{{store.name}}">{{store.name}}</option>
+                           </datalist>
                         </tr>
                      </div>
                   </tbody>
@@ -103,7 +107,7 @@
                      <tr [formGroupName]="i" (click)="index(i)">
                      <td id="complex_table">
                         <select #drug id="input" class="form-control" *ngIf="drugsList" formControlName="drug_id" (change)="getIndividualDrug(drug.value, this.i)">
-                           <option *ngFor="let drug of drugsList"  value="{{drug.id}}">{{drug.name}}</option>
+                        <option *ngFor="let drug of drugsList"  value="{{drug.id}}">{{drug.name}}</option>
                         </select>
                      </td>
                      <td id="complex_table">
@@ -117,7 +121,7 @@
                      </td>
                      <td id="complex_table" *ngIf="batchList">
                         <select #batch id="input" class="form-control" formControlName="batch_number" (change)="getBatchDetails(batch.value, this.i)">
-                           <option *ngFor="let item of batchList | keys" value="{{item.key}}">{{item.key}}</option>
+                        <option *ngFor="let item of batchList | keys" value="{{item.key}}">{{item.key}}</option>
                         </select>
                      </td>
                      <td id="complex_table" *ngIf="batchList">

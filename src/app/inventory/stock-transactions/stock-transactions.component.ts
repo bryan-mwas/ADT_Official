@@ -187,6 +187,16 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     });
   }
 
+  successNotification() {
+    $.smallBox({
+      title: 'Success',
+      // content: 'Your data was successfully saved',
+      color: '#296191',
+      iconSmall: 'fa fa-thumbs-up shake animated',
+      timeout: 4000
+    });
+  }
+
   onSubmit(): void {
     this._transactionService.addTransaction(this.stockTransactionsForm.value).subscribe(
       () => this.onSaveComplete(),
@@ -198,6 +208,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
 
   onSaveComplete() {
     console.log('Created a new Transaction');
+    this.successNotification();
     this.router.navigateByUrl('/inventory/inventory-management');
   }
 }
