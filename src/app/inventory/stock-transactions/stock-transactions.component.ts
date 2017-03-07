@@ -81,6 +81,15 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     });
   }
 
+  setStore(value: any) {
+    var val = value;
+    var option = this.storesList.find(["value='" + val + "']")
+    if (option.length > 0) {
+      let id = option.data('id');
+      // do stuff with the id
+    }
+  }
+
   addRow() {
     this.rows.push(this.buildRow());
   }
@@ -143,10 +152,10 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
 
   // VALIDATORS
 
-  quantityValidator(packs: number, val: number){
+  quantityValidator(packs: number, val: number) {
     let q = this.rows.controls[+[val]].value.quantity;
     let aq = this.rows.controls[+[val]].value.balance_before;
-    if ((packs * q) > aq){
+    if ((packs * q) > aq) {
       this.errorAlert('Quantity entered is greater than Available Quantity');
     }
   }
@@ -167,7 +176,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     });
   }
 
-  errorAlert(value: string){
+  errorAlert(value: string) {
     $.smallBox({
       title: 'Error Alert',
       content: value,
@@ -177,11 +186,12 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     });
   }
 
-  onSubmit(): void{
+  onSubmit(): void {
     this._transactionService.addTransaction(this.stockTransactionsForm.value).subscribe(
-       () => this.onSaveComplete(),
-       (error) => { console.log('Error happened: ' + JSON.stringify(error));
-       }
+      () => this.onSaveComplete(),
+      (error) => {
+        console.log('Error happened: ' + JSON.stringify(error));
+      }
     );
   }
 

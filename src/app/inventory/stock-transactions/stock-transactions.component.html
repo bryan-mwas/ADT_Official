@@ -47,8 +47,8 @@
                            <th>Destination</th>
                         </tr>
                         <tr>
-                           <input type="text" formControlName="store_id" placeholder="Destination" class="form-control" list="list">
-                           <datalist id="list"><option *ngFor="let store of storesList" value="{{store.id}}">{{store.name}}</option></datalist>
+                           <input #store type="text" formControlName="store_id" placeholder="Destination" class="form-control" list="list" (change)="setStore(store)">
+                           <datalist id="list"><option *ngFor="let store of storesList"  data-id="{{store.id}}" value="{{store.name}}">{{store.name}}</option></datalist>
                         </tr>
                      </div>
                      <div *ngIf="stockTransactionsForm.get('transaction_type_id').value == 1 || stockTransactionsForm.get('transaction_type_id').value == 8">
@@ -159,7 +159,7 @@
       </div>
       </form>
    </sa-widgets-grid>
-   <!--<pre>
+   <pre>
        {{ stockTransactionsForm.value | json}}
-   </pre>-->
+   </pre>
 </div>
