@@ -170,14 +170,14 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
                 let selectedOptions = this.prophylaxisOptions.filter(option => value.indexOf(option.id) >= 0); // Returns an array with details of selected options
                 let latestSelection = selectedOptions.find(val => val.id === last); // Get id and name of the recent selection
                 if (typeof latestSelection !== 'undefined') {
-                    if (latestSelection.name === 'Dapsone') {
+                    if (latestSelection.name.toLowerCase() === 'dapsone') {
                         let cotrimoxazole = selectedOptions.find(val => val.name.toLowerCase() === 'cotrimoxazole');
                         // Checks if cotrimoxazole is present and removes it from the selected options
                         if (typeof cotrimoxazole !== 'undefined') {
                             value.splice(value.indexOf(cotrimoxazole.id), 1);
                         }
                     }
-                    if (latestSelection.name === 'cotrimoxazole') {
+                    if (latestSelection.name.toLowerCase() === 'cotrimoxazole') {
                         let dapsone = selectedOptions.find(val => val.name.toLowerCase() === "dapsone");
                         // Checks if dapsone is present and removes it from the selected options
                         if (typeof dapsone !== 'undefined') {

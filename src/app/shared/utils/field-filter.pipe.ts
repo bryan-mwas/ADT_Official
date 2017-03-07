@@ -18,6 +18,8 @@ export class FieldFilterPipe implements PipeTransform {
       return items.filter(it =>
         it['ccc_number'].toString().toLowerCase().indexOf(value.toLowerCase().toString()) > -1 ||
         it['first_name'].toString().toLowerCase().indexOf(value.toLowerCase().toString()) > -1 ||
+        it['other_name'].toString().toLowerCase().indexOf(value.toLowerCase().toString()) > -1 ||
+        it['last_name'].toString().toLowerCase().indexOf(value.toLowerCase().toString()) > -1 ||
         it['phone_number'].toString().toLowerCase().indexOf(value.toLowerCase().toString()) > -1
       );
     }
