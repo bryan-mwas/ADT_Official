@@ -66,9 +66,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let patient of patients | fieldFilter:'first_name':patient_name | fieldFilter:'phone_number':contact | fieldFilter:'ccc_number':ccc_no | fieldFilter:'service_id':regimen | fieldFilter:'current_status_name':status_binding | fieldFilter:'all':binding | paginate: { itemsPerPage: 10, currentPage: p }">
+                                    <tr *ngFor="let patient of patients | fieldFilter:'patient_name':patient_name | fieldFilter:'phone_number':contact | fieldFilter:'ccc_number':ccc_no | fieldFilter:'service_id':regimen | fieldFilter:'current_status_name':status_binding | fieldFilter:'all':binding | paginate: { itemsPerPage: 10, currentPage: p }">
                                         <td>{{patient.ccc_number }}</td>
-                                        <td>{{patient.first_name}}</td>
+                                        <td>{{patient.first_name+' '+patient.other_name+' '+patient.last_name}}</td>
                                         <td>{{patient.next_appointment != null && patient.next_appointment.appointment_date}}</td>
                                         <td>{{patient.phone_number}}</td>
                                         <td>{{patient.visit != null && patient.visit.current_regimen.name}}</td>

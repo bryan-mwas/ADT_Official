@@ -21,6 +21,13 @@ export class FieldFilterPipe implements PipeTransform {
         it['phone_number'].toString().toLowerCase().indexOf(value.toLowerCase().toString()) > -1
       );
     }
+    if(field == 'patient_name') {
+      return items.filter(it =>
+        it['first_name'].toString().toLowerCase().indexOf(value.toLowerCase().toString()) > -1 ||
+        it['other_name'].toString().toLowerCase().indexOf(value.toLowerCase().toString()) > -1 ||
+        it['last_name'].toString().toLowerCase().indexOf(value.toLowerCase().toString()) > -1
+      );
+    }
     if (field == 'current_status_name' && value == 'inactive') {
       return items.filter(this.filterByStatus);
     }
