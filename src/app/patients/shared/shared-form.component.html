@@ -484,7 +484,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div *ngIf="regimen && patientForm.get('service_id').value != 2" [ngSwitch]="prophylaxisOptions | async" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div *ngIf="regimen && patientForm.get('service_id').value != 2" [ngSwitch]="prophylaxisOptions" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>Drug Prophylaxis</label>
                                         <div *ngSwitchCase="null">
                                             <div class="form-group">
@@ -493,7 +493,7 @@
                                             </div>
                                         </div>
                                         <div *ngSwitchDefault>
-                                            <ss-multiselect-dropdown [options]="prophylaxisOptions | async" [texts]="myTexts" [settings]="mySettings" formControlName="prophylaxis"></ss-multiselect-dropdown>
+                                            <ss-multiselect-dropdown [options]="prophylaxisOptions" [texts]="myTexts" [settings]="mySettings" formControlName="prophylaxis"></ss-multiselect-dropdown>
                                         </div>
                                     </div>
                                     <div *ngIf="patientForm.get('prophylaxis').value == 3">

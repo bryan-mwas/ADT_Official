@@ -51,7 +51,7 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
     chronicIllness: Observable<IMultiSelectOption[]>;
 
     allergiesList: Observable<IMultiSelectOption[]>;
-    prophylaxisOptions: Observable<IMultiSelectOption[]>;
+    prophylaxisOptions: IMultiSelectOption[];
 
     mySettings: IMultiSelectSettings = {
         pullRight: false,
@@ -91,7 +91,7 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
         this.familyPlanning = this._patientService.getFamilyPlan();
         this.chronicIllness = this._patientService.getIllness();
         this.allergiesList = this._patientService.getAllergies();
-        this.prophylaxisOptions = this._patientService.getProphylaxis();
+        this._patientService.getProphylaxis().subscribe(prophy => this.prophylaxisOptions = prophy);
         this._patientService.getSource().subscribe(source => this.patientSources = source);
         this._patientService.getServices().subscribe(service => { this.patientServices = service });
         // this._patientService.getRegimen().subscribe(regimen => this.patientRegimen = regimen);
@@ -166,17 +166,23 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
         // Track for edit changes in prophylaxis control
         this.patientForm.get('prophylaxis').valueChanges.subscribe(
             value => {
-                // Check if the user selects dapsone which has an id of 2
-                if (value[value.length - 1] == 2) {
-                    if (value.indexOf(1) !== -1) {
-                        this.smartWarning('dapsone', 'cotrimoxazole');
-                        value.splice(value.indexOf(1), 1);
+                let last = value[value.length - 1]; // Recent value selected by the user
+                let selectedOptions = this.prophylaxisOptions.filter(option => value.indexOf(option.id) >= 0); // Returns an array with details of selected options
+                let latestSelection = selectedOptions.find(val => val.id === last); // Get id and name of the recent selection
+                if (typeof latestSelection !== 'undefined') {
+                    if (latestSelection.name === 'Dapsone') {
+                        let cotrimoxazole = selectedOptions.find(val => val.name.toLowerCase() === 'cotrimoxazole');
+                        // Checks if cotrimoxazole is present and removes it from the selected options
+                        if (typeof cotrimoxazole !== 'undefined') {
+                            value.splice(value.indexOf(cotrimoxazole.id), 1);
+                        }
                     }
-                }
-                if (value[value.length - 1] == 1) {
-                    if (value.indexOf(2) !== -1) {
-                        this.smartWarning('cotrimoxazole', 'dapsone');
-                        value.splice(value.indexOf(2), 1);
+                    if (latestSelection.name === 'cotrimoxazole') {
+                        let dapsone = selectedOptions.find(val => val.name.toLowerCase() === "dapsone");
+                        // Checks if dapsone is present and removes it from the selected options
+                        if (typeof dapsone !== 'undefined') {
+                            value.splice(value.indexOf(dapsone.id), 1);
+                        }
                     }
                 }
             }
@@ -252,18 +258,21 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
         }
     }
 
-
+    /**
+     * Patches the patient details to the form
+     * @param patient 
+     */
     patientValues(patient: Patient) {
         this.setDate(patient.birth_date, 'birthday');
-        this.setDate(patient.next_appointment_date,'appointment');
-        if(patient.next_appointment_date) {
+        this.setDate(patient.next_appointment_date, 'appointment');
+        if (patient.next_appointment_date) {
             this.patientForm.patchValue({
                 days_to: this.dateDiff(patient.next_appointment_date)
             })
         }
         if (patient.tb != null) {
             // Added this on 6th March. I anticipate no need for tb_end
-            this.setDate(patient.tb.start_date,'tb_start');
+            this.setDate(patient.tb.start_date, 'tb_start');
             this.patientForm.patchValue({
                 tb_category: patient.tb.category,
                 tb_phase: patient.tb.phase
