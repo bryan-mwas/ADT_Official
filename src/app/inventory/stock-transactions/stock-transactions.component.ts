@@ -45,6 +45,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
       transaction_type_id: ['', Validators.required],
       ref_number: ['', Validators.required],
       store_id: '',
+      store: '',
       drugs: this.fb.array([this.buildRow()]),
     });
     this._transactionService.getTransactionTypes().subscribe(data => this.transactionTypes = data);
@@ -82,11 +83,11 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
   }
 
   setStore(value: any) {
-    var val = value;
-    var option = this.storesList.find(["value='" + val + "']")
-    if (option.length > 0) {
-      let id = option.data('id');
-      // do stuff with the id
+    let a = this.storesList.find(val => val['name'] === value);
+    if (a) {
+      this.stockTransactionsForm.patchValue({
+        store_id: a['id']
+      });
     }
   }
 

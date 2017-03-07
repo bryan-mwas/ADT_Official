@@ -34,7 +34,7 @@ export class StockTransactionsService {
   getTransaction(id: number): Observable<any> {
     return this.getTransactionTypes()
       .map((transaction: Transaction[]) => transaction.find(p => p.id === id))
-      .do(data => console.log('transaction: ' + JSON.stringify(data)))
+      // .do(data => console.log('transaction: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
 

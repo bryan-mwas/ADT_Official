@@ -47,7 +47,7 @@
                            <th>Destination</th>
                         </tr>
                         <tr>
-                           <input #store type="text" formControlName="store_id" placeholder="Destination" class="form-control" list="list" (change)="setStore(store)">
+                           <input #store type="text" formControlName="store" placeholder="Destination" class="form-control" list="list" (change)="setStore(store.value)">
                            <datalist id="list"><option *ngFor="let store of storesList"  data-id="{{store.id}}" value="{{store.name}}">{{store.name}}</option></datalist>
                         </tr>
                      </div>
@@ -56,10 +56,8 @@
                            <th>Source</th>
                         </tr>
                         <tr>
-                            <select formControlName="store_id" class="form-control" id="select-1">
-                                <option value="null" disabled selected> Select Store</option>
-                                <option *ngFor="let store of storesList" value="{{store.id}}">{{store.name}}</option>
-                            </select>
+                            <input #store type="text" formControlName="store" placeholder="Destination" class="form-control" list="list" (change)="setStore(store.value)">
+                           <datalist id="list"><option *ngFor="let store of storesList"  data-id="{{store.id}}" value="{{store.name}}">{{store.name}}</option></datalist>
                         </tr>
                      </div>
                   </tbody>
