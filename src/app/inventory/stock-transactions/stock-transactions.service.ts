@@ -6,19 +6,19 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
+import { CONFIG } from '../../core/config';
 
 @Injectable()
 export class StockTransactionsService {
 
-  private _apiUrl = 'http://192.168.33.10/adt-core/lib/public/api/';
-  // private _apiUrl = 'http://41.89.6.210/adt-core/lib/public/api/';
-  // private _apiUrl = 'http://197.232.32.34/adt/api/';
+  private _apiUrl = CONFIG.baseUrl;
+  // private _apiUrl = CONFIG.alternateUrl;
 
   private _transactionApi = this._apiUrl + 'stock';
   private _drugsApi = this._apiUrl + 'drugs';
   private _typesApi = this._apiUrl + 'lists/transaction_type';
   private _itemsApi = this._apiUrl + 'stock/store';
-  private _addTransactionURL = this._apiUrl + 'stock_transactions';
+  // private _addTransactionURL = this._apiUrl + 'stock_transactions';
   private _storesApi = this._apiUrl + 'stores';
 
   constructor(private _http: Http) { }
@@ -88,7 +88,7 @@ export class StockTransactionsService {
     let headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
     let options = new RequestOptions({ headers: headers }); // Create a request option
 
-    return this._http.post(this._addTransactionURL, body, options)
+    return this._http.post(this._transactionApi, body, options)
       .map(() => body) // ...and calling .json() on the response to return data
       .catch(this.handleError); // ...errors if any
   }

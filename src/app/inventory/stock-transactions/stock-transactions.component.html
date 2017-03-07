@@ -56,7 +56,10 @@
                            <th>Source</th>
                         </tr>
                         <tr>
-                           <input type="text" formControlName="store_id" placeholder="Source" class="form-control">
+                            <select formControlName="store_id" class="form-control" id="select-1">
+                                <option value="null" disabled selected> Select Store</option>
+                                <option *ngFor="let store of storesList" value="{{store.id}}">{{store.name}}</option>
+                            </select>
                         </tr>
                      </div>
                   </tbody>
@@ -101,8 +104,8 @@
                   <tbody formArrayName="drugs" *ngFor="let row of rows.controls; let i=index">
                      <tr [formGroupName]="i" (click)="index(i)">
                      <td id="complex_table">
-                        <select #drug id="input" class="form-control" *ngIf="drugsList?.data" formControlName="drug_id" (change)="getIndividualDrug(drug.value, this.i)">
-                           <option *ngFor="let drug of drugsList?.data"  value="{{drug.id}}">{{drug.name}}</option>
+                        <select #drug id="input" class="form-control" *ngIf="drugsList" formControlName="drug_id" (change)="getIndividualDrug(drug.value, this.i)">
+                           <option *ngFor="let drug of drugsList"  value="{{drug.id}}">{{drug.name}}</option>
                         </select>
                      </td>
                      <td id="complex_table">
@@ -141,7 +144,7 @@
                         <input id="input" class="form-control" formControlName="comment" type="text">
                      </td>
                      <td id="complex_table">
-                        <button class="form-control" class="btn btn-danger btn-size" (click)="removeRow(i)">Remove</button>
+                        <button *ngIf="stockTransactionsForm.controls.drugs.controls.length > 1" class="form-control" class="btn btn-danger btn-size" (click)="smartAlert('Are you sure?','delete_row',i)">Remove</button>
                      </td>
                      </tr>
                   </tbody>
@@ -149,14 +152,14 @@
             </div>
             </sa-widget>
             <div align="right">
-               <input type="reset" class="btn btn-danger btn-size" id="reset" value="Reset Fields">
+               <input type="reset" class="btn btn-danger btn-size" id="reset" value="Reset Fields" (click)="smartAlert('You are about to reset the fields are you sure?','reset')">
                <button class="btn btn-primary" type="submit" [disabled]="!stockTransactionsForm.valid"><i class="fa fa-save"></i> Submit </button>
             </div>
          </div>
       </div>
       </form>
    </sa-widgets-grid>
-   <pre>
+   <!--<pre>
        {{ stockTransactionsForm.value | json}}
-   </pre>
+   </pre>-->
 </div>

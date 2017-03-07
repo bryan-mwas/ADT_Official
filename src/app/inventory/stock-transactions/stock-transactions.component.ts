@@ -1,5 +1,6 @@
 import { Component, OnInit, DoCheck } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Types, Transaction, StockItem, Drug, StoreItem, Store } from './transactions';
 import { StockTransactionsService } from './stock-transactions.service';
 import 'rxjs/add/operator/switchMap';
@@ -35,7 +36,8 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
 
   constructor(
     private fb: FormBuilder,
-    private _transactionService: StockTransactionsService) { }
+    private _transactionService: StockTransactionsService,
+    private router: Router) { }
 
   ngOnInit() {
     this.stockTransactionsForm = this.fb.group({
@@ -149,6 +151,22 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     }
   }
 
+  smartAlert(content: string, type: string, optional: number = null) {
+    $.SmartMessageBox({
+      title: `webADT Alert: ${content} `,
+      buttons: '[No][Yes]'
+    }, (buttonPressed) => {
+      if (buttonPressed === 'Yes') {
+        if (type === 'delete_row' && optional) {
+          this.removeRow(optional);
+        }
+        else if (type === 'reset') {
+          this.stockTransactionsForm.reset();
+        }
+      }
+    });
+  }
+
   errorAlert(value: string){
     $.smallBox({
       title: 'Error Alert',
@@ -161,8 +179,14 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
 
   onSubmit(): void{
     this._transactionService.addTransaction(this.stockTransactionsForm.value).subscribe(
+       () => this.onSaveComplete(),
        (error) => { console.log('Error happened: ' + JSON.stringify(error));
        }
     );
+  }
+
+  onSaveComplete() {
+    console.log('Created a new Transaction');
+    this.router.navigateByUrl('/inventory/inventory-management');
   }
 }
