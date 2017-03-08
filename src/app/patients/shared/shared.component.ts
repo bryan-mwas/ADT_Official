@@ -163,6 +163,14 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
             start_age: [{ value: '', disabled: true }],
             current_age: [{ value: '', disabled: true }]
         });
+        // Track appointment_date
+        this.patientForm.get('appointment_date').valueChanges.subscribe(
+            date => {
+                this.patientForm.patchValue({
+                    days_to: this.dateDiff(date)
+                })
+            }
+        )
         // Track for edit changes in prophylaxis control
         this.patientForm.get('prophylaxis').valueChanges.subscribe(
             value => {

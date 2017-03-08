@@ -371,7 +371,7 @@
                                         <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                             <label>Date of next appointment:</label>
                                             <div class="input-group">
-                                                <input type="text" formControlName="appointment_date" placeholder="Select a date" class="form-control datepicker" [saUiDatepicker]="{ dateFormat: 'yy-mm-dd', maxDate: 'new Date()' }" (selectDate)='setDate($event,"appointment")'>
+                                                <input type="text" formControlName="appointment_date" placeholder="Select a date" class="form-control datepicker" [saUiDatepicker]="{ dateFormat: 'yy-mm-dd', minDate: 'new Date()' }" (selectDate)='setDate($event,"appointment")'>
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                             </div>
                                         </div>
