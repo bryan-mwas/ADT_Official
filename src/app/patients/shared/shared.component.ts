@@ -339,7 +339,7 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
         if (patient.illnesses != null || []) {
             let selectedOptions: number[] = [];
             for (let item of patient.illnesses) {
-                selectedOptions.push(item.id);
+                selectedOptions.push(item['illness_id']);
             }
             this.patientForm.patchValue({
                 illnesses: selectedOptions,
@@ -347,8 +347,8 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
         }
         if (patient.family_planning != null || []) {
             let selectedOptions: number[] = [];
-            for (let item of patient.drug_allergy) {
-                selectedOptions.push(item.id);
+            for (let item of patient.family_planning) {
+                selectedOptions.push(item['family_planning_id']);
             }
             this.patientForm.patchValue({
                 family_planning: selectedOptions,
@@ -391,11 +391,9 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
             disclosure: patient.is_disclosure,
             spouse_ccc: patient.tb,
             status: patient.status,
-            family_planning: patient.family_planning,
             support_group: patient.support_group,
             alternate_number: patient.alternate_number,
             other_illness: patient.other_illness,
-            illnesses: patient.illnesses,
             pep_reason: patient.pep_reason,
             isoniazid_start: patient.isoniazid_start,
             isoniazid_end: patient.isoniazid_end,

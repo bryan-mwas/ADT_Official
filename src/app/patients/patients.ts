@@ -48,7 +48,7 @@ export class Patient {
     status?: string;
     disclosure?: number;
     spouse_ccc?: number;
-    family_planning: FamilyPlanning;
+    family_planning: string[];
     support_group?: string;
     alternate_number?: number;
     other_drug: any;
