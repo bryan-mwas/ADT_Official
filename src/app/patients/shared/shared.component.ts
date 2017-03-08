@@ -413,8 +413,6 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
     tbEndCalculator(val, tb_category = null, tb_phase = null) {
         tb_category = this.patientForm.get('tb_category').value;
         tb_phase = this.patientForm.get('tb_phase').value;
-        alert(tb_category);
-        alert(`I tb_phase ${tb_phase}`)
         let tbRange: number;
 
         if (tb_category == 1 && tb_phase == 'intensive') {
@@ -429,10 +427,6 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
         else if (tb_category == 2 && tb_phase == 'continuation') {
             tbRange = 150
         }
-        if (this.formType == 'edit') {
-            alert(`I found ${tbRange}`)
-        }
-        // alert(tb_category)
         this.patientForm.patchValue({
             end_date: this.dateCalc(val, tbRange)
         })
@@ -441,12 +435,6 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
      * 
      */
     tbEndEditCalculator(val, tb_category = null, tb_phase = null) {
-        if (this.formType !== 'edit') {
-            tb_category = this.patientForm.get('tb_category').value;
-            tb_phase = this.patientForm.get('tb_phase').value;
-        }
-        alert(tb_category);
-        alert(`I tb_phase ${tb_phase}`)
         let tbRange: number;
 
         if (tb_category == 1 && tb_phase == 'intensive') {
@@ -461,10 +449,6 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
         else if (tb_category == 2 && tb_phase == 'continuation') {
             tbRange = 150
         }
-        if (this.formType == 'edit') {
-            alert(`I found ${tbRange}`)
-        }
-        // alert(tb_category)
         this.patientForm.patchValue({
             end_date: this.dateCalc(val, tbRange)
         })
