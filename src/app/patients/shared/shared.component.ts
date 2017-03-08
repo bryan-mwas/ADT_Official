@@ -221,17 +221,21 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
             }
         );
 
-        this.patientForm.get('start_date').valueChanges.subscribe(
-            value => {
-                this.tbEndCalculator(value);
-            }
-        );
+        if (this.formType !== 'edit') {
+            this.patientForm.get('start_date').valueChanges.subscribe(
+                value => {
+                    this.tbEndCalculator(value);
+                }
+            );
+        }
 
         this.patientForm.get('isoniazid_start').valueChanges.subscribe(
             value => {
-                this.patientForm.patchValue({
-                    isoniazid_end: this.dateCalc(value, 168)
-                })
+                if (typeof value !== 'undefined') {
+                    this.patientForm.patchValue({
+                        isoniazid_end: this.dateCalc(value, 168)
+                    })
+                }
             }
         );
     }
@@ -243,7 +247,6 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
 
     ngDoCheck(): void {
         // Dynamically sets the multiselect values to the form.
-        console.log(this.chronic_illness_list)
         let height = this.patientForm.get('initial_height').value;
         let weight = this.patientForm.get('initial_weight').value;
         let current_height = this.patientForm.get('current_height').value;
@@ -278,13 +281,6 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
                 tb_phase: patient.tb.phase
             })
         }
-        if (patient.current_status != null) {
-            if (patient.current_status[0]) {
-                this.patientForm.patchValue({
-                    status: patient.current_status[0].id
-                })
-            }
-        }
         if (patient.other_drug != null) {
             this.patientForm.patchValue({
                 drug_name: patient.other_drug.drug_name,
@@ -305,7 +301,7 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
                 county_sub_id: patient.place_of_birth.id,
             })
         }
-        if (patient.prophylaxis != null) {
+        if (patient.prophylaxis != null || []) {
             let selectedOptions: number[] = [];
             for (let item of patient.prophylaxis) {
                 selectedOptions.push(item.id);
@@ -314,7 +310,7 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
                 prophylaxis: selectedOptions,
             })
         }
-        if (patient.drug_allergy != null) {
+        if (patient.drug_allergy != null || []) {
             let selectedOptions: number[] = [];
             for (let item of patient.drug_allergy) {
                 selectedOptions.push(item.drug_id);
@@ -339,7 +335,7 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
                 current_age: age_in_years
             });
         }
-        if (patient.illnesses != null) {
+        if (patient.illnesses != null || []) {
             let selectedOptions: number[] = [];
             for (let item of patient.illnesses) {
                 selectedOptions.push(item.id);
@@ -348,7 +344,7 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
                 illnesses: selectedOptions,
             })
         }
-        if (patient.family_planning != null) {
+        if (patient.family_planning != null || []) {
             let selectedOptions: number[] = [];
             for (let item of patient.drug_allergy) {
                 selectedOptions.push(item.id);
@@ -379,7 +375,7 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
             is_pregnant: patient.is_pregnant,
             is_tb: patient.is_tb,
             is_tb_tested: patient.is_tb_tested,
-            is_sms: '0',
+            is_sms: patient.is_sms,
             is_smoke: patient.is_smoke,
             is_alcohol: patient.is_alcohol,
             enrollment_date: patient.enrollment_date,
@@ -416,6 +412,8 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
     tbEndCalculator(val) {
         const tb_category = this.patientForm.get('tb_category').value;
         const tb_phase = this.patientForm.get('tb_phase').value;
+        alert(tb_category);
+        alert(`I tb_phase ${tb_phase}`)
         let tbRange: number;
 
         if (tb_category == 1) {
@@ -434,6 +432,10 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
                 tbRange = 150
             }
         }
+        if (this.formType == 'edit') {
+            alert(`I found ${tbRange}`)
+        }
+        // alert(tb_category)
         this.patientForm.patchValue({
             end_date: this.dateCalc(val, tbRange)
         })
@@ -444,9 +446,13 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
      */
     dateCalc(value, days_to_add) {
         let new_date = new Date(value);
+        // console.log(new_date)
         let start_date = new Date(new_date.getFullYear(), new_date.getMonth(), new_date.getDate()).getTime();
+        console.log(start_date)
+        console.log('Days to add ' + days_to_add);
         let expected_end_date = new Date((1000 * 60 * 60 * 24 * days_to_add) + start_date);
-        return this._datePipe.transform(expected_end_date, 'y/MM/dd');
+        console.log(expected_end_date)
+        return this._datePipe.transform(expected_end_date, 'y-MM-dd');
     }
 
     dateDiff(todate) {
@@ -585,10 +591,15 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
         this._patientService.getPatient(id).subscribe(val => this.patientValues(val));
         this._patientService.getLatestVisit(id).subscribe(val => {
             let latest_visit = val[val.length - 1]; // Access the only property in the array
-            this.patientForm.patchValue({
-                current_weight: latest_visit.current_weight,
-                current_height: latest_visit.current_height
-            })
+            if (typeof latest_visit !== 'undefined') {
+                this.patientForm.patchValue({
+                    current_weight: latest_visit.current_weight,
+                    current_height: latest_visit.current_height
+                })
+            }
+            else {
+                console.log('Patient is yet to visit')
+            }
         })
     }
 

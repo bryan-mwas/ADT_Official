@@ -27,11 +27,11 @@ export class Patient {
     phone_number: number;
     physical_address: string;
     gender: string;
-    is_pregnant: boolean;
-    is_tb: boolean;
-    is_tb_tested?: boolean;
-    is_sms: boolean;
-    is_smoke: boolean;
+    is_pregnant: number;
+    is_tb: number;
+    is_tb_tested?: number;
+    is_sms: number;
+    is_smoke: number;
     is_alcohol: number;
     current_status: any;
     enrollment_date: string;
