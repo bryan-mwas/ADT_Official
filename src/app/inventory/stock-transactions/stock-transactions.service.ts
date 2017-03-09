@@ -35,7 +35,7 @@ export class StockTransactionsService {
   getTransaction(id: number): Observable<any> {
     return this.getTransactionTypes()
       .map((transaction: Transaction[]) => transaction.find(p => p.id === id))
-      // .do(data => console.log('transaction: ' + JSON.stringify(data)))
+      .do(data => console.log('transaction: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
 
@@ -48,6 +48,14 @@ export class StockTransactionsService {
   getDrugDetails(id: number): Observable<any> {
     return this._http.get(this._drugsApi + `/${id}`)
       .map((response: Response) => <Drug[]>response.json())
+      // .do(data => console.log('lol: ' + JSON.stringify(data)))
+      .catch(this.handleError);
+  }
+
+  getDrugsbyStore(storeId: number): Observable<any> {
+    return this._http.get(this._addTransactionURL + `/${storeId}` + '/stock/drug')
+      .map((response: Response) => <StockItem[]>response.json())
+      .do(data => console.log('drugs in store: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
 
@@ -75,7 +83,14 @@ export class StockTransactionsService {
       .catch(this.handleError);
   }
 
-  getStores(){
+  thisStore(id: number) {
+    return this._http.get(this._storesApi + `/${id}`)
+      .map((response: Response) => <Store[]>response.json())
+      // .do(data => console.log('HERE : ' + JSON.stringify(data)))
+      .catch(this.handleError);
+  }
+
+  getStores() {
     return this._http.get(this._storesApi)
       .map((response: Response) => <Store[]>response.json())
       // .do(data => console.log('stores: ' + JSON.stringify(data)))

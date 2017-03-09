@@ -24,7 +24,7 @@
                         <th>Transaction Type</th>
                      </tr>
                      <tr *ngIf="transactionTypes">
-                        <select formControlName="transaction_type_id" class="form-control" id="select-1">
+                        <select #transaction formControlName="transaction_type_id" class="form-control" id="select-1" (change)="getStoreDrugs(transaction.value, this.i)" (change)="getSDDetails()">
                            <option value="null" disabled selected> Select Transaction Type</option>
                            <option *ngFor="let type of transactionTypes" value="{{type.id}}">{{type.name}}</option>
                         </select>
@@ -105,27 +105,32 @@
                   </thead>
                   <tbody formArrayName="drugs" *ngFor="let row of rows.controls; let i=index">
                      <tr [formGroupName]="i" (click)="index(i)">
-                     <td id="complex_table">
+                     <td id="complex_table" *ngIf="drugsList">
                         <select #drug id="input" class="form-control" *ngIf="drugsList" formControlName="drug_id" (change)="getIndividualDrug(drug.value, this.i)">
                         <option *ngFor="let drug of drugsList"  value="{{drug.id}}">{{drug.name}}</option>
                         </select>
                      </td>
+                     <!--<td id="complex_table" *ngIf="storeDrugs">
+                        <select #drug id="input" class="form-control" *ngIf="storeDrugs" formControlName="drug_id" (change)="getIndividualDrug(drug.value, this.i)">
+                        <option *ngFor="let drug of storeDrugs"  value="{{drug.drug_id}}">{{drug.name}}</option>
+                        </select>
+                     </td>-->
                      <td id="complex_table">
                         <input id="input" class="form-control" formControlName="unit" type="text" readonly>
                      </td>
                      <td id="complex_table">
                         <input id="input" class="form-control" formControlName="pack_size" type="text" readonly>
                      </td>
-                     <td id="complex_table" *ngIf="!batchList">
+                     <!--<td id="complex_table" *ngIf="!batchList">
                         <input id="input" class="form-control" formControlName="batch_number" type="text" readonly>
-                     </td>
+                     </td>-->
                      <!--<td id="complex_table" *ngIf="batchList">
                         <select #batch id="input" class="form-control" formControlName="batch_number" (change)="getBatchDetails(batch.value, this.i)">
                         <option *ngFor="let item of batchList | keys" value="{{item.key}}">{{item.key}}</option>
                         </select>
                      </td>-->
-                     <td id="complex_table" *ngIf="batchList">
-                         <input #batch id="input" type="text" formControlName="batch_number" class="form-control" list="batchlist" (change)="getBatchDetails(batch.value, this.i)">
+                     <td id="complex_table">
+                         <input #batch id="input" type="text" formControlName="batch_number" class="form-control" list="batchlist"> <!--(change)="getBatchDetails(batch.value, this.i)">-->
                          <datalist id="batchlist">
                              <option *ngFor="let item of batchList | keys" value="{{item.key}}">{{item.key}}</option>                             
                          </datalist>

@@ -15,7 +15,7 @@ export const routes: Routes = [
         data: { pageTitle: 'Drug Bin Card' }
     },
     {
-        path: 'stock-transactions',
+        path: 'stock-transactions/:id',
         component: StockTransactionsComponent,
         data: { pageTitle: 'Stock Transactions' }
     }

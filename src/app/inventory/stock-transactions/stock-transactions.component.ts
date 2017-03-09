@@ -17,45 +17,43 @@ declare var $: any;
 export class StockTransactionsComponent implements OnInit, DoCheck {
 
   stockTransactionsForm: FormGroup;
-  //  Index Tracker
-  i: number;
+  i: number; // Index Tracker
+  store = new Store();
   individualDrug: any = null;
   transaction: Transaction;
-  stockItem: Transaction;
+  // stockItem: Transaction;
   drugItem: Drug;
   private storesList: Observable<string[]>;
-  private transactionTypes: Observable<string[]>;
+  private transactionTypes: Transaction[];
   private drugsList: Observable<string[]>;
+  private storeDrugs: Observable<string[]>;
   private storeItems: StoreItem;
   private batchList: Observable<string[]>;
   private indiv: Observable<string[]>;
 
-  get rows(): FormArray {
-    return <FormArray>this.stockTransactionsForm.get('drugs');
-  }
-
   constructor(
-    private fb: FormBuilder,
+    private _fb: FormBuilder,
     private _transactionService: StockTransactionsService,
     private _route: ActivatedRoute,
-    private router: Router) { }
+    private _router: Router) { }
 
   ngOnInit() {
-    // this._route.params
-    this.stockTransactionsForm = this.fb.group({
+    this._route.params
+      .switchMap((params: Params) => this._transactionService.thisStore(+params['id']))
+      .subscribe(store => this.store = store);
+    this.stockTransactionsForm = this._fb.group({
       transaction_date: ['', Validators.required],
       transaction_type_id: ['', Validators.required],
       ref_number: ['', Validators.required],
       store_id: '',
       store: '',
-      drugs: this.fb.array([this.buildRow()]),
+      drugs: this._fb.array([this.buildRow()]),
     });
     this._transactionService.getTransactionTypes().subscribe(data => this.transactionTypes = data);
-    this.stockTransactionsForm.get('transaction_type_id').valueChanges.subscribe(
-      val => this._transactionService.getTransaction(+[val])
-        .subscribe((p) => this.stockItem = p),
-      (err) => console.error(err)
-    );
+    // this.stockTransactionsForm.get('transaction_type_id').valueChanges.subscribe(
+    //   val => this._transactionService.getTransaction(+[val]).subscribe((p) => this.transaction = p),
+    //   (err) => console.error(err),
+    // );
     this._transactionService.getDrugs().subscribe(d => this.drugsList = d);
     this._transactionService.getItems().subscribe(i => this.storeItems = i);
     this._transactionService.getStores().subscribe(z => this.storesList = z);
@@ -63,7 +61,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
   }
 
   buildRow(): FormGroup {
-    return this.fb.group({
+    return this._fb.group({
       drug_id: ['', Validators.required],
       unit: '',
       pack_size: '',
@@ -78,6 +76,27 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     });
   }
 
+  // FormGroup Methods
+
+  get rows(): FormArray {
+    return <FormArray>this.stockTransactionsForm.get('drugs');
+  }
+
+  addRow() {
+    this.rows.push(this.buildRow());
+  }
+
+  removeRow(i: number) {
+    const control = <FormArray>this.stockTransactionsForm.controls['drugs'];
+    control.removeAt(i);
+  }
+
+  index(val: any) {
+    this.i = val;
+  }
+
+  // DatePicker Methods
+
   setDate(value: any, val: string) {
     this.stockTransactionsForm.patchValue({
       transaction_date: value
@@ -89,6 +108,8 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
       expiry_date: value
     });
   }
+
+  // Source/Destination Method
 
   setStore(value: any) {
     let a = this.storesList.find(val => val['name'] === value);
@@ -102,13 +123,26 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     }
   }
 
-  addRow() {
-    this.rows.push(this.buildRow());
+  // List Changers
+
+  getStoreDrugs(value: number, index: number) {
+    let e = this.transactionTypes.find(val => val.id === +[value]);
+    if (+[e['effect']] === 0) {
+      // alert(e);
+      this._route.params
+        .switchMap((params: Params) => this._transactionService.getDrugsbyStore(+params['id']))
+        .subscribe(z => this.storeDrugs = z);
+    } else {
+      this.rows.controls[+[index]].reset();
+      this._transactionService.getDrugs().subscribe(d => this.storeDrugs = d);
+    }
   }
 
-  removeRow(i: number) {
-    const control = <FormArray>this.stockTransactionsForm.controls['drugs'];
-    control.removeAt(i);
+  getSDDetails() {
+    if (this.storeDrugs != undefined) {
+      let b: any = this.storeDrugs.find(val => val['drug_id']);
+      console.log(JSON.stringify(b));
+    }
   }
 
   getIndividualDrug(id: number, index: number) {
@@ -118,22 +152,20 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     this._transactionService.getDrugBatches(1, +[id]).subscribe(i => this.batchList = i);
   }
 
-  getBatchDetails(batchNo: string, index: number) {
-    let b = this.batchList.find(val => val[''] === batchNo);
-    if (b) {
-      this._transactionService.getDrugBatchDetails(1, batchNo).subscribe(
-        individualBatch => this.patchBatch(individualBatch, index)
-      );
-    } else {
-      this.rows.controls[+[index]].patchValue({
-        batch_number: batchNo
-      });
-    }
-  }
+  // getBatchDetails(batchNo: string, index: number) {
+  //   let b = this.batchList.find(val => val[''] === batchNo);
+  //   if (b) {
+  //     this._transactionService.getDrugBatchDetails(1, batchNo).subscribe(
+  //       individualBatch => this.patchBatch(individualBatch, index)
+  //     );
+  //   } else {
+  //     this.rows.controls[+[index]].patchValue({
+  //       batch_number: batchNo
+  //     });
+  //   }
+  // }
 
-  index(val: any) {
-    this.i = val;
-  }
+  // Patch Methods
 
   patchRow(drug: any, val: number) {
     this.rows.controls[+[val]].patchValue(
@@ -154,22 +186,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     );
   }
 
-  ngDoCheck() {
-    if (this.i != null) {
-      let currentRow = this.rows.controls[this.i].value;
-      let p = currentRow.quantity_packs;
-      let pc = currentRow.unit_cost;
-      let ps = currentRow.pack_size;
-      let aq = currentRow.quantity;
-      let q = currentRow.balance_before;
-      this.rows.controls[this.i].patchValue({
-        total: (p * pc),
-        quantity: (ps * p)
-      });
-    }
-  }
-
-  // VALIDATORS
+  // Validators and Notifications
 
   quantityValidator(packs: number, val: number) {
     let q = this.rows.controls[+[val]].value.quantity;
@@ -215,18 +232,50 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     });
   }
 
+  // Posting
+
   onSubmit(): void {
-    this._transactionService.addTransaction(this.stockTransactionsForm.value, 1).subscribe(
+    this._route.params
+      .switchMap((params: Params) => this._transactionService.addTransaction(this.stockTransactionsForm.value, +params['id'])).subscribe(
       () => this.onSaveComplete(),
       (error) => {
         console.log('Error happened: ' + JSON.stringify(error));
       }
-    );
+      );
   }
 
   onSaveComplete() {
     console.log('Created a new Transaction');
     this.successNotification();
-    this.router.navigateByUrl('/inventory/inventory-management');
+    this._router.navigateByUrl('/inventory/inventory-management');
   }
+
+  // Yucky Zone
+
+  ngDoCheck() {
+    if (this.i != null) {
+      let currentRow = this.rows.controls[this.i].value;
+      let p = currentRow.quantity_packs;
+      let pc = currentRow.unit_cost;
+      let ps = currentRow.pack_size;
+      let aq = currentRow.quantity;
+      let q = currentRow.balance_before;
+      this.rows.controls[this.i].patchValue({
+        total: (p * pc),
+        quantity: (ps * p)
+      });
+    }
+    // if (this.stockTransactionsForm.get('transaction_type_id').valueChanges) {
+    //   console.log(JSON.stringify(this.transaction));
+    //   if (this.transaction) {
+    //     if (this.transaction['effect'] === 0) {
+    //       this._route.params
+    //         .switchMap((params: Params) => this._transactionService.getDrugsbyStore(+params['id']))
+    //         .subscribe(z => this.storeDrugs = z);
+    //       this._transactionService.getDrugDetails(this.storeDrugs['drug_id']).subscribe(p => this.drugsList = p);
+    //     }
+    //   }
+    // }
+  }
+
 }
