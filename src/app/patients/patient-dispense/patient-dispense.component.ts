@@ -1,4 +1,4 @@
-import { Component, OnInit, DoCheck } from '@angular/core';
+import { Component, OnInit, DoCheck, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Patient, Regimen } from '../patients';
@@ -6,6 +6,7 @@ import { PatientsService } from '../patients.service';
 import { DispenseService } from './dispense.service';
 import { FormGroup, FormBuilder, FormArray, Validators, AbstractControl } from '@angular/forms';
 import { DrugsTable } from './dispense';
+import { ModalDirective } from "ng2-bootstrap";
 import 'rxjs/add/operator/switchMap';
 
 declare var $: any;
@@ -19,7 +20,15 @@ declare var $: any;
 export class PatientDispenseComponent implements OnInit, DoCheck {
 
   patient = new Patient();
+  @ViewChild('lgModal') public lgModal: ModalDirective;
 
+  public showChildModal(): void {
+    this.lgModal.show();
+  }
+
+  public hideChildModal(): void {
+    this.lgModal.hide();
+  }
   // Datepicker properties
   date_options: Object = {
     dateFormat: 'mm/dd/yy',
@@ -43,6 +52,9 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
   index: number;
   dispense_history: any[];
   batch_details: any[] = null;
+  dose_list: Object[];
+  indications: Object[];
+  is_greater: boolean = false;
 
   get rows(): FormArray {
     return <FormArray>this.dispenseForm.get('drugs');
@@ -81,12 +93,13 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
     this._route.params
       .switchMap((params: Params) => this._patientService.getLatestVisit(+params['id']))
       .subscribe(appointment => {
-
         if (appointment) {
           if (appointment[0] != null) {
             this.dispenseForm.patchValue({
               current_regimen_id: appointment[0].current_regimen_id,
-              previous_visit: appointment[0].visit_date
+              previous_visit: appointment[0].visit_date,
+              current_height: appointment[0].current_height,
+              current_weight: appointment[0].current_weight
             })
           }
         }
@@ -97,6 +110,12 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
     this._dispenseService.getRegimens().subscribe(
       regimen => this.regimens = regimen,
       error => console.error(error)
+    );
+    this._dispenseService.getDoseList().subscribe(
+      response => this.dose_list = response
+    );
+    this._dispenseService.getIndicationsList().subscribe(
+      response => this.indications = response
     );
     this._dispenseService.getChangeReason().subscribe(
       reason => this.reason = reason,
@@ -114,7 +133,7 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
       dispense_point: ['', Validators.required],
       ccc_number: [{ value: this.patient.ccc_number, disabled: true }],
       patient_name: [{ value: this.patient.first_name, disabled: true }],
-      purpose_id: '',
+      purpose_id: [{ value: '', disabled: true }],
       visit_date: [this.today, Validators.required],
       appointment_date: ['', [Validators.required]],
       current_height: '',
@@ -134,13 +153,16 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
       drugs: this.fb.array([this.buildRow()]),
     });
 
-    const regimenControl = this.dispenseForm.get('current_regimen');
-    // regimenControl.valueChanges.subscribe(value => this.setDrug(value)); // checks for changes in value
+    const regimenControl = this.dispenseForm.get('current_regimen_id');
 
+    regimenControl.valueChanges.subscribe(
+      value => this.setRegimenDrugs(+[value])
+    )
     let appointmentCtrl = this.dispenseForm.get('appointment_date');
+
+    //
     this.dispenseForm.get('days_to').valueChanges.subscribe(value => {
       if (value == '') {
-        // if null clear the appointment date and reset the validity of the form
         this.dispenseForm.patchValue({ appointment_date: '' });
         appointmentCtrl.setValidators(Validators.required);
         appointmentCtrl.updateValueAndValidity();
@@ -148,17 +170,31 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
       else {
         if (Math.sign(value) == 1) {
           this.nextAppointment(value);
-          //  console.log('I got: ' + value);
           appointmentCtrl.clearValidators();
           appointmentCtrl.updateValueAndValidity();
         }
         else {
-          // alert('webADT says,"Please enter a positive number"');
           this.dispenseForm.get('appointment_date').setValidators(Validators.required);
           this.dispenseForm.get('appointment_date').updateValueAndValidity();
         }
       }
     });
+
+    // 
+    this.dispenseForm.get('dispense_point').valueChanges.subscribe(
+      value => {
+        if (value !== '') {
+          this.dispenseForm.controls['purpose_id'].enable();
+        }
+        else {
+          // Disable the selection of purpose and erase current selection if any
+          this.dispenseForm.controls['purpose_id'].disable();
+          this.dispenseForm.patchValue({
+            purpose_id: null
+          })
+        }
+      }
+    )
   }
 
   ngDoCheck() {
@@ -169,7 +205,7 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
       patient_name: this.patient.first_name,
       patient_id: this.patient.id
     });
-
+    // Trigger calculation of appointment adherance
     if (this.dispenseForm.get('last_appointment') && this.dispenseForm.get('previous_visit') && this.dispenseForm.get('visit_date')) {
       if (this.dispenseForm.get('last_appointment').value !== null && this.dispenseForm.get('previous_visit').value !== null && this.dispenseForm.get('visit_date') != null) {
         let appointment = new Date(this.dispenseForm.get('last_appointment').value);
@@ -322,21 +358,6 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
       error => console.log(error)
     )
   }
-
-  /**
-   * Tracks Values of the form array
-   */
-  getIndex(index: number) {
-    this.index = index;
-    // this.rows.controls[index].valueChanges.subscribe(
-    //   quantity => {
-    //     if (typeof quantity.dispensed_qty != 'undefined' && Math.sign(quantity.dispensed_qty) != 1) {
-    //       alert('Please insert positive values')
-    //     }
-    //   }
-    // );
-  }
-
   /**
    * Display warning alerts
    * Quantity Dispensed Input
@@ -399,6 +420,14 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
     if (this.rows.get(`${index}.dispensed_qty`).errors) {
       this.errorAlert('Negative values are not allowed.');
     }
+    let stock = this.rows.get(`${index}.stock_id`);
+    if (+[value] > +[stock.value]) {
+      this.errorAlert('Qty dispensed cannot be more than stock on hand')
+      this.is_greater = true;
+    }
+    else {
+      this.is_greater = false;
+    }
   }
 
   getIndividualAndBatch(id: number, index: number) {
@@ -426,5 +455,70 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
       stock_id: individualBatch.balance_after
     })
   }
-
+  /**
+   * 
+   */
+  getPurpose(value: any) {
+    // returns details of the selected purpose
+    let purpose_details = this.purpose.find(val => val.id == +[value]);
+    if (purpose_details.name.toLowerCase() === 'routine refill') {
+      // Populate the drugs in the details
+      // console.log()
+      this.dispenseForm.patchValue({
+        drugs: [
+          {
+            drug_id: 4,
+            batch_no: 'Aye',
+            dose_id: 13,
+            actual_pill_count: 0,
+            duration: 0,
+            dispensed_qty: 5,
+            indication: 5,
+            comment: 'Awesome',
+            missed_pills: 0
+          },
+          {
+            drug_id: 4,
+            batch_no: 'Hei',
+            dose_id: 13,
+            actual_pill_count: 0,
+            duration: 0,
+            dispensed_qty: 5,
+            indication: 5,
+            comment: 'Awesome',
+            missed_pills: 0
+          },
+          {
+            drug_id: 4,
+            batch_no: 'Aye',
+            dose_id: 13,
+            actual_pill_count: 0,
+            duration: 0,
+            dispensed_qty: 5,
+            indication: 5,
+            comment: 'Awesome',
+            missed_pills: 0
+          }
+        ]
+      }
+        )
+    }
+  }
+  /**
+   * Trigger modal if actual pill count is more than expected pill count
+   */
+  checkPillCount(actual: number, index: number) {
+    let exp_pill_count = this.rows.get(`${index}.expected_pill_count`);
+    if (actual > +[exp_pill_count.value]) {
+      this.showChildModal();
+    }
+  }
+  /**
+   * Trigger modal if missed pills is greater than one
+   */
+  checkMissedPills(missed_pills: number, index: number) {
+    if (missed_pills > 0) {
+      this.showChildModal();
+    }
+  }
 }

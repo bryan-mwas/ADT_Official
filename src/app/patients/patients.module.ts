@@ -17,6 +17,8 @@ import { UtilsModule } from '../shared/utils/utils.module'; // For field filter 
 import { PaginationModule } from 'ng2-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Ng2PaginationModule } from 'ng2-pagination';
+import { ModalModule } from 'ng2-bootstrap/modal';
+
 @NgModule({
   declarations: [
     PatientAddComponent,
@@ -30,6 +32,7 @@ import { Ng2PaginationModule } from 'ng2-pagination';
     PatientFilterPipe
   ],
   imports: [
+    ModalModule.forRoot(),
     routing,
     ReactiveFormsModule,
     SharedModule,
