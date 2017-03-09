@@ -26,7 +26,7 @@
                                         <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                             <label><span style="color:red; font-weight:bold">*</span> Select Dispensing Point</label>
                                             <select class="form-control" id="select-1" placeholder="Select One" formControlName="dispense_point">
-                                                <option selected>Select One</option>
+                                                <option value='' selected>Select One</option>
                                                 <option value='1'>Main Store</option>
                                                 <option value='2'>Pharmacy</option>
                                             </select>
@@ -52,7 +52,7 @@
                                         </div>
                                         <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                             <label>Purpose of Visit</label>
-                                            <select class="form-control" id="select-1" formControlName="purpose_id">
+                                            <select #p class="form-control" id="select-1" formControlName="purpose_id" (change)="getPurpose(p.value)">
                                                 <option selected>--Select One--</option>
                                                 <option *ngFor="let purposes of purpose" value="{{purposes.id}}">{{purposes.name}}</option>
                                             </select>
@@ -86,7 +86,7 @@
                                         </div>
                                         <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                             <label><span style="color:red; font-weight:bold">*</span> Current Regimen</label>
-                                            <select class="form-control" id="select-1" #regimen formControlName="current_regimen_id" (change)="setRegimenDrugs(regimen.value)">
+                                            <select class="form-control" id="select-1" #regimen formControlName="current_regimen_id">
                                                 <option selected>--Select One--</option>
                                                 <option *ngFor="let regimen of regimens" value="{{regimen.id}}">{{regimen.name}}</option>
                                             </select>
@@ -106,13 +106,6 @@
                                             <label>Appointment Adherance (%)</label>
                                             <input class="form-control" placeholder="autofilled" type="text" formControlName="appointment_adherance" readonly>
                                         </div>
-                                        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                            <label>Poor/Fair Adherance Reasons</label>
-                                            <select class="form-control" id="select-1" formControlName="non_adherance_reason_id">
-                                                <option selected>--Select One--</option>
-                                                <option *ngFor="let non_adhere of non_adherence" value="{{non_adhere.id}}">{{non_adhere.name}}</option>
-                                            </select>
-                                        </div>
                                     </div>
                                 </fieldset>
                                 <fieldset class="col-xs-24 col-sm-6 col-md-6 col-lg-6">
@@ -121,7 +114,7 @@
                                         <div class="form-group">
                                             <label>Appointment Date</label>
                                             <div class="input-group">
-                                                <input type="text" name="mydate" placeholder="Select a date" class="form-control datepicker" formControlName="last_appointment" >
+                                                <input type="text" name="mydate" placeholder="Select a date" class="form-control datepicker" formControlName="last_appointment">
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                             </div>
                                         </div>
@@ -146,8 +139,8 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr *ngFor="let item of dispense_history">
-                                                                <td>{{item.visit_item && item.visit_item[0] && item.visit_item[0].stock_item &&  item.visit_item[0].stock_item.drug_name || 'N/A'}}</td>
-                                                                <td>{{item.visit_item && item.visit_item[0] && item.visit_item[0].stock_item &&  item.visit_item[0].stock_item.quantity_out || 'nil'}}</td>
+                                                                <td>{{item.visit_item && item.visit_item[0] && item.visit_item[0].stock_item && item.visit_item[0].stock_item.drug_name || 'N/A'}}</td>
+                                                                <td>{{item.visit_item && item.visit_item[0] && item.visit_item[0].stock_item && item.visit_item[0].stock_item.quantity_out}}</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -189,7 +182,7 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody formArrayName="drugs" *ngFor="let row of rows.controls; let i=index">
-                                                            <tr [formGroupName]="i" (click)="getIndex(i)">
+                                                            <tr [formGroupName]="i">
                                                                 <td id="complex_table">
                                                                     <select #drug class="form-control" id="input" *ngIf="drug_regimen" formControlName="drug_id" id="" (change)="getIndividualAndBatch(drug.value, this.i)">
                                                                         <option *ngFor="let regimen of drug_regimen.drug" value="{{regimen.id}}">{{regimen.name}}</option>
@@ -207,33 +200,35 @@
                                                                     <input class="form-control" id="input" type="text" formControlName="expiry_date">
                                                                 </td>
                                                                 <td id="complex_table">
-                                                                    <input class="form-control" id="input" type="text" formControlName="dose_id">
+                                                                    <select class="form-control" id="input" type="text" formControlName="dose_id">
+                                                                        <option *ngFor="let dose of dose_list" value="{{dose.id}}">{{dose.name}}</option>
+                                                                    </select>
                                                                 </td>
                                                                 <td id="complex_table">
                                                                     <input class="form-control" id="input" type="text" formControlName="expected_pill_count">
                                                                 </td>
                                                                 <td id="complex_table">
-                                                                    <input class="form-control" id="input" type="text" formControlName="actual_pill_count">
+                                                                    <input class="form-control" #actual id="input" type="text" formControlName="actual_pill_count" (keyup)="checkPillCount(actual.value, this.i)">
                                                                 </td>
                                                                 <td id="complex_table">
                                                                     <input class="form-control" id="input" type="text" formControlName="duration">
                                                                 </td>
                                                                 <td id="complex_table">
-                                                                    <input class="form-control" #qty id="input" type="text" formControlName="dispensed_qty" (keyup)="checkValidation(qty.value, this.i)">
+                                                                    <input class="form-control" [ngClass]="{'warning': is_greater}" #qty id="input" type="text" formControlName="dispensed_qty" (keyup)="checkValidation(qty.value, this.i)">
                                                                 </td>
                                                                 <td id="complex_table">
                                                                     <input class="form-control" id="input" type="text" formControlName="stock_id">
                                                                 </td>
                                                                 <td id="complex_table">
-                                                                    <!--<select class="form-control" id="input" *ngIf="regimen" formControlName="indication" id="">
-                                                                        <option *ngFor="let indication of regimen.drugs['indication']" value="{{indication.id}}">{{indication.name}}</option>
-                                                                    </select>-->
+                                                                    <select class="form-control" id="input" *ngIf="regimen" formControlName="indication" id="">
+                                                                        <option *ngFor="let indication of indications" value="{{indication.id}}">{{indication.name}}</option>
+                                                                    </select>
                                                                 </td>
                                                                 <td id="complex_table">
                                                                     <input class="form-control" id="input" type="text" formControlName="comment">
                                                                 </td>
                                                                 <td id="complex_table">
-                                                                    <input class="form-control" id="input" type="text" formControlName="missed_pills">
+                                                                    <input #missing class="form-control" id="input" type="text" formControlName="missed_pills" (keyup)="checkMissedPills(missing.value, this.i)">
                                                                 </td>
                                                                 <td id="complex_table">
                                                                     <button *ngIf="dispenseForm.controls.drugs.controls.length > 1" type="button" class="btn btn-danger" (click)="smartAlert('Are you sure?','delete_row',i)">Remove</button>
@@ -250,6 +245,26 @@
                                         <input type="reset" class="btn btn-danger button_size" value="Reset Fields" (click)="smartAlert('You are about to reset the fields are you sure?','reset')">
                                         <button class="btn btn-primary" [disabled]="!dispenseForm.valid" type="button"><i class="fa fa-print"></i> Print Labels</button>
                                         <button class="btn btn-primary" [disabled]="!dispenseForm.valid" type="submit"><i class="fa fa-save"></i> Dispense Drugs</button>
+                                    </div>
+                                    <!-- Poor/Fair Adherence Reasons -->
+                                    <div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-sm'">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" (click)="lgModal.hide()" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    <h4 class="modal-title">Poor/Fair Aherence Reasons</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Select a reason</p>
+                                                        <select class="form-control" id="select-1" formControlName="non_adherance_reason_id">
+                                                            <option selected>--Select One--</option>
+                                                            <option *ngFor="let non_adhere of non_adherence" value="{{non_adhere.id}}">{{non_adhere.name}}</option>
+                                                        </select>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </fieldset>
                             </form>

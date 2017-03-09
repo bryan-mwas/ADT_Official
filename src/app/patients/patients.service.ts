@@ -48,7 +48,7 @@ export class PatientsService {
     getLatestVisit(id: number) {
         return this._http.get(`${this._apiUrl}patients/${id}/visit/latest`)
             .map((response: Response) => <any[]>response.json())
-            .do(data => console.log('Visit: ' + JSON.stringify(data)))
+            .do(data => console.log('Latest Visit: ' + JSON.stringify(data)))
             .catch(this.handleError);
     }
     getLatestAppointment(id: number) {

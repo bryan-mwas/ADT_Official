@@ -5,7 +5,6 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import { CONFIG } from '../../core/config';
-
 import { Regimen } from '../patients';
 
 @Injectable()
@@ -19,12 +18,24 @@ export class DispenseService {
     /**
      * GET
      */
+    getIndicationsList() {
+        return this._http.get(this._url + `lists/indications`)
+            .map((response: Response) => <any[]>response.json())
+            .do(data => console.log('Indications: ' + JSON.stringify(data)))
+            .catch(this.handleError);
+    }
+    getDoseList() {
+        return this._http.get(this._url + `lists/dose`)
+            .map((response: Response) => <any[]>response.json())
+            .do(data => console.log('Doses: ' + JSON.stringify(data)))
+            .catch(this.handleError);
+    }
     getDrugDetails(id: number): Observable<any> {
-    return this._http.get(this._url + `dispense/drug/${id}`)
-      .map((response: Response) => <any[]>response.json())
-      .do(data => console.log('IndividualDrugDetails: ' + JSON.stringify(data)))
-      .catch(this.handleError);
-  }
+        return this._http.get(this._url + `dispense/drug/${id}`)
+            .map((response: Response) => <any[]>response.json())
+            .do(data => console.log('IndividualDrugDetails: ' + JSON.stringify(data)))
+            .catch(this.handleError);
+    }
     getRegimens() {
         return this._http.get(this._url + 'regimen')
             .map((res: Response) => <any[]>res.json()) // TODO: refactor this. Bad practice
