@@ -1,6 +1,6 @@
 import { Component, OnInit, DoCheck } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Types, Transaction, StockItem, Drug, StoreItem, Store } from './transactions';
 import { StockTransactionsService } from './stock-transactions.service';
 import 'rxjs/add/operator/switchMap';
@@ -37,11 +37,13 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
   constructor(
     private fb: FormBuilder,
     private _transactionService: StockTransactionsService,
+    private _route: ActivatedRoute,
     private router: Router) { }
 
   ngOnInit() {
+    // this._route.params
     this.stockTransactionsForm = this.fb.group({
-      transaction_time: ['', Validators.required],
+      transaction_date: ['', Validators.required],
       transaction_type_id: ['', Validators.required],
       ref_number: ['', Validators.required],
       store_id: '',
@@ -78,16 +80,25 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
 
   setDate(value: any, val: string) {
     this.stockTransactionsForm.patchValue({
-      transaction_time: value
+      transaction_date: value
+    });
+  }
+
+  setEDate(value: any, index: number) {
+    this.rows.controls[+[index]].patchValue({
+      expiry_date: value
     });
   }
 
   setStore(value: any) {
     let a = this.storesList.find(val => val['name'] === value);
     if (a) {
+      this.stockTransactionsForm.controls['store_id'].enable();
       this.stockTransactionsForm.patchValue({
         store_id: a['id']
       });
+    } else {
+      this.stockTransactionsForm.controls['store_id'].disable();
     }
   }
 
@@ -108,9 +119,16 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
   }
 
   getBatchDetails(batchNo: string, index: number) {
-    this._transactionService.getDrugBatchDetails(1, batchNo).subscribe(
-      individualBatch => this.patchBatch(individualBatch, index)
-    );
+    let b = this.batchList.find(val => val[''] === batchNo);
+    if (b) {
+      this._transactionService.getDrugBatchDetails(1, batchNo).subscribe(
+        individualBatch => this.patchBatch(individualBatch, index)
+      );
+    } else {
+      this.rows.controls[+[index]].patchValue({
+        batch_number: batchNo
+      });
+    }
   }
 
   index(val: any) {
@@ -198,7 +216,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
   }
 
   onSubmit(): void {
-    this._transactionService.addTransaction(this.stockTransactionsForm.value).subscribe(
+    this._transactionService.addTransaction(this.stockTransactionsForm.value, 1).subscribe(
       () => this.onSaveComplete(),
       (error) => {
         console.log('Error happened: ' + JSON.stringify(error));

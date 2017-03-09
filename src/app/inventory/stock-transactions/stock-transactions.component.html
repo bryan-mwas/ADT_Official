@@ -16,8 +16,8 @@
                      </tr>
                      <tr>
                         <div class="input-group">
-                           <input type="text" formControlName="transaction_time" placeholder="Select a date" class="form-control datepicker" [saUiDatepicker]="{ dateFormat: 'mm/dd/yy' , changeMonth: true, changeYear: true, yearRange : 'c-65:c+0'}"
-                           (selectDate)='setDate($event,"transaction_time")'>
+                           <input type="text" formControlName="transaction_date" placeholder="Select a date" class="form-control datepicker" [saUiDatepicker]="{ dateFormat: 'mm/dd/yy' , changeMonth: true, changeYear: true, yearRange : 'c-65:c+0'}"
+                           (selectDate)='setDate($event)'>
                         </div>
                      </tr>
                      <tr>
@@ -119,13 +119,23 @@
                      <td id="complex_table" *ngIf="!batchList">
                         <input id="input" class="form-control" formControlName="batch_number" type="text" readonly>
                      </td>
-                     <td id="complex_table" *ngIf="batchList">
+                     <!--<td id="complex_table" *ngIf="batchList">
                         <select #batch id="input" class="form-control" formControlName="batch_number" (change)="getBatchDetails(batch.value, this.i)">
                         <option *ngFor="let item of batchList | keys" value="{{item.key}}">{{item.key}}</option>
                         </select>
-                     </td>
+                     </td>-->
                      <td id="complex_table" *ngIf="batchList">
-                        <input id="input" class="form-control" formControlName="expiry_date" type="text" readonly>
+                         <input #batch id="input" type="text" formControlName="batch_number" class="form-control" list="batchlist" (change)="getBatchDetails(batch.value, this.i)">
+                         <datalist id="batchlist">
+                             <option *ngFor="let item of batchList | keys" value="{{item.key}}">{{item.key}}</option>                             
+                         </datalist>
+                     </td>
+                     <td id="complex_table" *ngIf="!batchList">
+                        <!--<input id="input" class="form-control" formControlName="expiry_date" type="text">-->
+                        <div class="input-group">
+                           <input type="text" formControlName="expiry_date" class="form-control datepicker" [saUiDatepicker]="{ dateFormat: 'mm/dd/yy' , changeMonth: true, changeYear: true, yearRange : 'c-65:c+0'}"
+                           (selectDate)='setEDate($event, this.i)'>
+                        </div>
                      </td>
                      <td id="complex_table">
                         <input #packs id="input" class="form-control" formControlName="quantity_packs" type="text" (change)="quantityValidator(packs.value, this.i)">
@@ -134,7 +144,7 @@
                         <input id="input" class="form-control" formControlName="quantity" type="text" readonly>
                      </td>
                      <td id="complex_table">
-                        <input id="input" class="form-control" formControlName="balance_before" type="text" readonly>
+                        <input id="input" class="form-control" formControlName="balance_before" type="text">
                      </td>
                      <td id="complex_table">
                         <input id="input" class="form-control" formControlName="unit_cost" type="text">

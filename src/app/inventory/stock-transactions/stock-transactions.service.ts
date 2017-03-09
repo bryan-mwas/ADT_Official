@@ -20,6 +20,7 @@ export class StockTransactionsService {
   private _itemsApi = this._apiUrl + 'stock/store';
   // private _addTransactionURL = this._apiUrl + 'stock_transactions';
   private _storesApi = this._apiUrl + 'stores';
+  private _addTransactionURL = this._apiUrl + 'store';
 
   constructor(private _http: Http) { }
 
@@ -83,12 +84,12 @@ export class StockTransactionsService {
 
   // POST
 
-  addTransaction(body: Object): Observable<StockItem[]> {
+  addTransaction(body: Object, id: number): Observable<StockItem[]> {
     let bodyString = JSON.stringify(body); // Stringify payload
     let headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
     let options = new RequestOptions({ headers: headers }); // Create a request option
 
-    return this._http.post(this._transactionApi, body, options)
+    return this._http.post(this._addTransactionURL + `/${id}` + '/stock', body, options)
       .map(() => body) // ...and calling .json() on the response to return data
       .catch(this.handleError); // ...errors if any
   }
