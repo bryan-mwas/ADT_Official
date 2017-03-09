@@ -42,7 +42,7 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
   dispenseForm: FormGroup;
   index: number;
   dispense_history: any[];
-  batch_details: string[];
+  batch_details: any[] = null;
 
   get rows(): FormArray {
     return <FormArray>this.dispenseForm.get('drugs');
@@ -225,15 +225,15 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
   buildRow(): FormGroup {
     return this.fb.group({
       drug_id: '',
-      unit: '',
+      unit: [{ value: '', disabled: true }],
       batch_no: '',
-      expiry_date: '',
+      expiry_date: [{ value: '', disabled: true }],
       dose_id: '',
-      expected_pill_count: '',
+      expected_pill_count: [{ value: '', disabled: true }],
       actual_pill_count: '',
       duration: '',
       dispensed_qty: ['', Validators.pattern('[0-9]+')],
-      stock_id: '',
+      stock_id: [{ value: '', disabled: true }],
       indication: '',
       comment: '',
       missed_pills: ''
@@ -386,9 +386,9 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
   setRegimenDrugs(regimen_id: number) {
     this._dispenseService.getRegimenDrugs(regimen_id).subscribe(
       drug => {
-        this.drug_regimen = drug
-        console.log(drug)
-    }
+        this.drug_regimen = drug[drug.length - 1]
+        console.log(drug[drug.length - 1])
+      }
     )
   }
 
@@ -402,21 +402,29 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
   }
 
   getIndividualAndBatch(id: number, index: number) {
-    //
-    console.log('Hello' + index);
     this._dispenseService.getDrugDetails(id).subscribe(
       val => {
         this.rows.controls[+[index]].patchValue({
-          unit: val.drug_unit,
-          duration: val.duration
+          unit: val.unit,
+          duration: val.duration,
+          expected_pill_count: val.expected_pill_count
         })
+        this.batch_details = val.batches;
       }
     );
-    this._dispenseService.getDrugBatch(1, id).subscribe(
-      val => {
-        this.batch_details = val;
-      }
-    );
+  }
+  /**
+   * Populates batch information i.e expiry_date
+   * @param value 
+   * @param index 
+   */
+  getBatchDetails(value: any, index: number) {
+    let individualBatch = this.batch_details.find(val => val.batch_number.toLowerCase() === value);
+    this.rows.controls[+[index]].patchValue({
+      expiry_date: individualBatch.expiry_date,
+      dispensed_qty: individualBatch.quantity_out,
+      stock_id: individualBatch.balance_after
+    })
   }
 
 }

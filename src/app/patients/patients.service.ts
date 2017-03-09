@@ -107,7 +107,7 @@ export class PatientsService {
     getLocation() {
         return this._http.get(this._locationsApi)
             .map((response: Response) => <PlaceOfBirth[]>response.json())
-            .do(data => console.log('All: ' + JSON.stringify(data)))
+            // .do(data => console.log('All: ' + JSON.stringify(data)))
             .catch(this.handleError);
     }
 

@@ -20,7 +20,7 @@ export class DispenseService {
      * GET
      */
     getDrugDetails(id: number): Observable<any> {
-    return this._http.get(this._url + `drugs/${id}`)
+    return this._http.get(this._url + `dispense/drug/${id}`)
       .map((response: Response) => <any[]>response.json())
       .do(data => console.log('IndividualDrugDetails: ' + JSON.stringify(data)))
       .catch(this.handleError);
