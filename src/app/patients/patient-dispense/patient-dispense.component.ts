@@ -107,6 +107,9 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
     this._route.params
       .switchMap((params: Params) => this._patientService.getPreviousVisits(+params['id']))
       .subscribe(a => this.dispense_history = a);
+    this._route.params
+      .switchMap((params: Params) => this._patientService.getDrugsHistory(+params['id']))
+      .subscribe(drugs => this.setDrugs(drugs));
     this._dispenseService.getRegimens().subscribe(
       regimen => this.regimens = regimen,
       error => console.error(error)
@@ -261,24 +264,24 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
   buildRow(): FormGroup {
     return this.fb.group({
       drug_id: '',
-      unit: [{ value: '', disabled: true }],
+      unit_cost: [{ value: '', disabled: true }],
       batch_no: '',
       expiry_date: [{ value: '', disabled: true }],
       dose_id: '',
       expected_pill_count: [{ value: '', disabled: true }],
       actual_pill_count: '',
       duration: '',
-      dispensed_qty: ['', Validators.pattern('[0-9]+')],
-      stock_id: [{ value: '', disabled: true }],
-      indication: '',
+      quantity_out: ['', Validators.pattern('[0-9]+')],
+      balance_after: [{ value: '', disabled: true }],
+      indication_id: '',
       comment: '',
-      missed_pills: ''
+      missed_pill_count: ''
     });
   }
 
   addRow() {
     // Proper way to access the individual form control in a form array
-    let dispenseControl = this.rows.get(`${this.rows.length - 1}.dispensed_qty`);
+    let dispenseControl = this.rows.get(`${this.rows.length - 1}.quantity_out`);
     let drugControl = this.rows.get(`${this.rows.length - 1}.drug_id`);
     if (drugControl.value == '') {
       this.errorAlert('You have to select a drug');
@@ -302,7 +305,15 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
       alert('You cannot delete the first row. Try restting the fields');
     }
   }
-
+  /**
+   * 
+   */
+  setDrugs(drugs: DrugsTable[]) {
+    const drugsFGs = drugs.map(drugs => this.fb.group(drugs));
+    console.log(drugsFGs)
+    const drugsFormArray = this.fb.array(drugsFGs);
+    this.dispenseForm.setControl('drugs', drugsFormArray);
+  }
   /**
    * Get users input, add the number of days and
    * set date picker to use the current date
@@ -417,10 +428,10 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
    * Check Validation for an individual element at a particular row.
    */
   checkValidation(value: any, index: number) {
-    if (this.rows.get(`${index}.dispensed_qty`).errors) {
+    if (this.rows.get(`${index}.quantity_out`).errors) {
       this.errorAlert('Negative values are not allowed.');
     }
-    let stock = this.rows.get(`${index}.stock_id`);
+    let stock = this.rows.get(`${index}.balance_after`);
     if (+[value] > +[stock.value]) {
       this.errorAlert('Qty dispensed cannot be more than stock on hand')
       this.is_greater = true;
@@ -434,7 +445,7 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
     this._dispenseService.getDrugDetails(id).subscribe(
       val => {
         this.rows.controls[+[index]].patchValue({
-          unit: val.unit,
+          unit_cost: val.unit_cost,
           duration: val.duration,
           expected_pill_count: val.expected_pill_count
         })
@@ -451,8 +462,8 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
     let individualBatch = this.batch_details.find(val => val.batch_number.toLowerCase() === value);
     this.rows.controls[+[index]].patchValue({
       expiry_date: individualBatch.expiry_date,
-      dispensed_qty: individualBatch.quantity_out,
-      stock_id: individualBatch.balance_after
+      quantity_out: individualBatch.quantity_out,
+      balance_after: individualBatch.balance_after
     })
   }
   /**
@@ -472,10 +483,10 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
             dose_id: 13,
             actual_pill_count: 0,
             duration: 0,
-            dispensed_qty: 5,
-            indication: 5,
+            quantity_out: 5,
+            indication_id: 5,
             comment: 'Awesome',
-            missed_pills: 0
+            missed_pill_count: 0
           },
           {
             drug_id: 4,
@@ -483,10 +494,10 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
             dose_id: 13,
             actual_pill_count: 0,
             duration: 0,
-            dispensed_qty: 5,
-            indication: 5,
+            quantity_out: 5,
+            indication_id: 5,
             comment: 'Awesome',
-            missed_pills: 0
+            missed_pill_count: 0
           },
           {
             drug_id: 4,
@@ -494,14 +505,14 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
             dose_id: 13,
             actual_pill_count: 0,
             duration: 0,
-            dispensed_qty: 5,
-            indication: 5,
+            quantity_out: 5,
+            indication_id: 5,
             comment: 'Awesome',
-            missed_pills: 0
+            missed_pill_count: 0
           }
         ]
       }
-        )
+      )
     }
   }
   /**
@@ -516,8 +527,8 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
   /**
    * Trigger modal if missed pills is greater than one
    */
-  checkMissedPills(missed_pills: number, index: number) {
-    if (missed_pills > 0) {
+  checkMissedPills(missed_pill_count: number, index: number) {
+    if (missed_pill_count > 0) {
       this.showChildModal();
     }
   }

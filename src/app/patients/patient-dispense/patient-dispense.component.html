@@ -189,7 +189,7 @@
                                                                     </select>
                                                                 </td>
                                                                 <td id="complex_table">
-                                                                    <input class="form-control" id="input" type="text" formControlName="unit">
+                                                                    <input class="form-control" id="input" type="text" formControlName="unit_cost">
                                                                 </td>
                                                                 <td id="complex_table">
                                                                     <select #batch *ngIf="batch_details" class="form-control" formControlName="batch_no" id="" (change)="getBatchDetails(batch.value, this.i)">
@@ -214,13 +214,13 @@
                                                                     <input class="form-control" id="input" type="text" formControlName="duration">
                                                                 </td>
                                                                 <td id="complex_table">
-                                                                    <input class="form-control" [ngClass]="{'warning': is_greater}" #qty id="input" type="text" formControlName="dispensed_qty" (keyup)="checkValidation(qty.value, this.i)">
+                                                                    <input class="form-control" [ngClass]="{'warning': is_greater}" #qty id="input" type="text" formControlName="quantity_out" (keyup)="checkValidation(qty.value, this.i)">
                                                                 </td>
                                                                 <td id="complex_table">
-                                                                    <input class="form-control" id="input" type="text" formControlName="stock_id">
+                                                                    <input class="form-control" id="input" type="text" formControlName="balance_after">
                                                                 </td>
                                                                 <td id="complex_table">
-                                                                    <select class="form-control" id="input" *ngIf="regimen" formControlName="indication" id="">
+                                                                    <select class="form-control" id="input" *ngIf="regimen" formControlName="indication_id" id="">
                                                                         <option *ngFor="let indication of indications" value="{{indication.id}}">{{indication.name}}</option>
                                                                     </select>
                                                                 </td>
@@ -228,7 +228,7 @@
                                                                     <input class="form-control" id="input" type="text" formControlName="comment">
                                                                 </td>
                                                                 <td id="complex_table">
-                                                                    <input #missing class="form-control" id="input" type="text" formControlName="missed_pills" (keyup)="checkMissedPills(missing.value, this.i)">
+                                                                    <input #missing class="form-control" id="input" type="text" formControlName="missed_pill_count" (keyup)="checkMissedPills(missing.value, this.i)">
                                                                 </td>
                                                                 <td id="complex_table">
                                                                     <button *ngIf="dispenseForm.controls.drugs.controls.length > 1" type="button" class="btn btn-danger" (click)="smartAlert('Are you sure?','delete_row',i)">Remove</button>
