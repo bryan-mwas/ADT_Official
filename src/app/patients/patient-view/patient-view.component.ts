@@ -48,7 +48,7 @@ export class PatientViewComponent implements OnInit, DoCheck {
       .subscribe(a => {
         let latest = a[a.length - 1]
         this.latest_visit = latest
-        if (latest.current_weight && latest.current_height) {
+        if (typeof latest !== 'undefined' && latest.current_weight && latest.current_height) {
           this.latest_bsa = Math.sqrt((latest.current_height * latest.current_weight) / 3600);
         }
       });
