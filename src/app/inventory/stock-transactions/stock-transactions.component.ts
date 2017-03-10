@@ -50,10 +50,6 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
       drugs: this._fb.array([this.buildRow()]),
     });
     this._transactionService.getTransactionTypes().subscribe(data => this.transactionTypes = data);
-    // this.stockTransactionsForm.get('transaction_type_id').valueChanges.subscribe(
-    //   val => this._transactionService.getTransaction(+[val]).subscribe((p) => this.transaction = p),
-    //   (err) => console.error(err),
-    // );
     this._transactionService.getDrugs().subscribe(d => this.drugsList = d);
     this._transactionService.getItems().subscribe(i => this.storeItems = i);
     this._transactionService.getStores().subscribe(z => this.storesList = z);
@@ -88,6 +84,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
 
   removeRow(i: number) {
     const control = <FormArray>this.stockTransactionsForm.controls['drugs'];
+    control.disable();
     control.removeAt(i);
   }
 
@@ -138,32 +135,14 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     }
   }
 
-  getSDDetails() {
-    if (this.storeDrugs != undefined) {
-      let b: any = this.storeDrugs.find(val => val['drug_id']);
-      console.log(JSON.stringify(b));
-    }
-  }
-
   getIndividualDrug(id: number, index: number) {
     this._transactionService.getDrugDetails(+[id]).subscribe(
       individualDrug => this.patchRow(individualDrug, index)
     );
-    this._transactionService.getDrugBatches(1, +[id]).subscribe(i => this.batchList = i);
+     this._route.params
+        .switchMap((params: Params) => this._transactionService.getDrugBatches(+params['id'], +[id]))
+        .subscribe(i => this.batchList = i);
   }
-
-  // getBatchDetails(batchNo: string, index: number) {
-  //   let b = this.batchList.find(val => val[''] === batchNo);
-  //   if (b) {
-  //     this._transactionService.getDrugBatchDetails(1, batchNo).subscribe(
-  //       individualBatch => this.patchBatch(individualBatch, index)
-  //     );
-  //   } else {
-  //     this.rows.controls[+[index]].patchValue({
-  //       batch_number: batchNo
-  //     });
-  //   }
-  // }
 
   // Patch Methods
 
@@ -251,6 +230,13 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
   }
 
   // Yucky Zone
+  QuantityCalc(index: number) {
+
+  }
+
+  TotalCalc(index: number) {
+
+  }
 
   ngDoCheck() {
     if (this.i != null) {

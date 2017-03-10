@@ -24,7 +24,7 @@
                         <th>Transaction Type</th>
                      </tr>
                      <tr *ngIf="transactionTypes">
-                        <select #transaction formControlName="transaction_type_id" class="form-control" id="select-1" (change)="getStoreDrugs(transaction.value, this.i)" (change)="getSDDetails()">
+                        <select #transaction formControlName="transaction_type_id" class="form-control" id="select-1" (change)="getStoreDrugs(transaction.value, this.i)">
                            <option value="null" disabled selected> Select Transaction Type</option>
                            <option *ngFor="let type of transactionTypes" value="{{type.id}}">{{type.name}}</option>
                         </select>
@@ -104,17 +104,21 @@
                      </tr>
                   </thead>
                   <tbody formArrayName="drugs" *ngFor="let row of rows.controls; let i=index">
+                     <tr [formGroupName]="i" (click)="index(i)"  *ngIf="stockTransactionsForm.controls['transaction_type_id'].pristine" disabled>
+                     </tr>
+                  </tbody>                 
+                  <tbody formArrayName="drugs" *ngFor="let row of rows.controls; let i=index">
                      <tr [formGroupName]="i" (click)="index(i)">
-                     <td id="complex_table" *ngIf="drugsList">
+                     <td id="complex_table" *ngIf="!storeDrugs">
                         <select #drug id="input" class="form-control" *ngIf="drugsList" formControlName="drug_id" (change)="getIndividualDrug(drug.value, this.i)">
                         <option *ngFor="let drug of drugsList"  value="{{drug.id}}">{{drug.name}}</option>
                         </select>
                      </td>
-                     <!--<td id="complex_table" *ngIf="storeDrugs">
+                     <td id="complex_table" *ngIf="storeDrugs">
                         <select #drug id="input" class="form-control" *ngIf="storeDrugs" formControlName="drug_id" (change)="getIndividualDrug(drug.value, this.i)">
-                        <option *ngFor="let drug of storeDrugs"  value="{{drug.drug_id}}">{{drug.name}}</option>
+                        <option *ngFor="let drug of storeDrugs"  value="{{drug.id}}">{{drug.name}}</option>
                         </select>
-                     </td>-->
+                     </td>
                      <td id="complex_table">
                         <input id="input" class="form-control" formControlName="unit" type="text" readonly>
                      </td>
@@ -130,12 +134,12 @@
                         </select>
                      </td>-->
                      <td id="complex_table">
-                         <input #batch id="input" type="text" formControlName="batch_number" class="form-control" list="batchlist"> <!--(change)="getBatchDetails(batch.value, this.i)">-->
+                         <input #batch id="input" type="text" formControlName="batch_number" class="form-control" list="batchlist" autocomplete="off" (change)="getBatchDetails(batch.value, this.i)"> <!--(change)="getBatchDetails(batch.value, this.i)">-->
                          <datalist id="batchlist">
-                             <option *ngFor="let item of batchList | keys" value="{{item.key}}">{{item.key}}</option>                             
+                             <option *ngFor="let item of batchList" value="{{item.batch_number}}">{{item.batch_number}}</option>                             
                          </datalist>
                      </td>
-                     <td id="complex_table" *ngIf="!batchList">
+                     <td id="complex_table">
                         <!--<input id="input" class="form-control" formControlName="expiry_date" type="text">-->
                         <div class="input-group">
                            <input type="text" formControlName="expiry_date" class="form-control datepicker" [saUiDatepicker]="{ dateFormat: 'mm/dd/yy' , changeMonth: true, changeYear: true, yearRange : 'c-65:c+0'}"
@@ -161,7 +165,7 @@
                         <input id="input" class="form-control" formControlName="comment" type="text">
                      </td>
                      <td id="complex_table">
-                        <button *ngIf="stockTransactionsForm.controls.drugs.controls.length > 1" class="form-control" class="btn btn-danger btn-size" (click)="smartAlert('Are you sure?','delete_row',i)">Remove</button>
+                        <button *ngIf="stockTransactionsForm.controls.drugs.controls.length > 1" class="form-control" class="btn btn-danger btn-size" (click)="removeRow(this.i)">Remove</button>
                      </td>
                      </tr>
                   </tbody>
