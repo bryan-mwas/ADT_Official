@@ -107,9 +107,6 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
     this._route.params
       .switchMap((params: Params) => this._patientService.getPreviousVisits(+params['id']))
       .subscribe(a => this.dispense_history = a);
-    this._route.params
-      .switchMap((params: Params) => this._patientService.getDrugsHistory(+params['id']))
-      .subscribe(drugs => this.setDrugs(drugs));
     this._dispenseService.getRegimens().subscribe(
       regimen => this.regimens = regimen,
       error => console.error(error)
@@ -158,6 +155,11 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
 
     const regimenControl = this.dispenseForm.get('current_regimen_id');
 
+    const drugsControl = this.dispenseForm.get('drugs');
+    drugsControl.valueChanges.forEach(
+      (value: string) => console.log(value)
+    );
+
     regimenControl.valueChanges.subscribe(
       value => this.setRegimenDrugs(+[value])
     )
@@ -198,9 +200,20 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
         }
       }
     )
+    this.rows.valueChanges.subscribe(
+      val => console.log(val)
+    )
   }
 
   ngDoCheck() {
+    let a = this.rows.controls;
+    let count = 1;
+    for (let b of a) {
+      count++;
+      b.get('drug_id').valueChanges.subscribe(
+        a => console.log('aye ' + count)
+      )
+    }
     let appointmentCtrl = this.dispenseForm.get('appointment_date');
     // Checks if the patient info has been asynchronously loaded
     this.dispenseForm.patchValue({
@@ -264,15 +277,15 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
   buildRow(): FormGroup {
     return this.fb.group({
       drug_id: '',
-      unit_cost: [{ value: '', disabled: true }],
-      batch_no: '',
+      unit: [{ value: '', disabled: true }],
+      batch_number: '',
       expiry_date: [{ value: '', disabled: true }],
       dose_id: '',
       expected_pill_count: [{ value: '', disabled: true }],
       actual_pill_count: '',
       duration: '',
       quantity_out: ['', Validators.pattern('[0-9]+')],
-      balance_after: [{ value: '', disabled: true }],
+      balance_before: [{ value: '', disabled: true }],
       indication_id: '',
       comment: '',
       missed_pill_count: ''
@@ -313,6 +326,14 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
     console.log(drugsFGs)
     const drugsFormArray = this.fb.array(drugsFGs);
     this.dispenseForm.setControl('drugs', drugsFormArray);
+    const drugsControl = this.dispenseForm.get('drugs');
+    drugsControl.valueChanges.subscribe(
+      val => {
+        for (let item of val) {
+          console.log(item.drug_id)
+        }
+      }
+    );
   }
   /**
    * Get users input, add the number of days and
@@ -431,7 +452,7 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
     if (this.rows.get(`${index}.quantity_out`).errors) {
       this.errorAlert('Negative values are not allowed.');
     }
-    let stock = this.rows.get(`${index}.balance_after`);
+    let stock = this.rows.get(`${index}.balance_before`);
     if (+[value] > +[stock.value]) {
       this.errorAlert('Qty dispensed cannot be more than stock on hand')
       this.is_greater = true;
@@ -445,7 +466,7 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
     this._dispenseService.getDrugDetails(id).subscribe(
       val => {
         this.rows.controls[+[index]].patchValue({
-          unit_cost: val.unit_cost,
+          unit: val.unit,
           duration: val.duration,
           expected_pill_count: val.expected_pill_count
         })
@@ -463,7 +484,7 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
     this.rows.controls[+[index]].patchValue({
       expiry_date: individualBatch.expiry_date,
       quantity_out: individualBatch.quantity_out,
-      balance_after: individualBatch.balance_after
+      balance_before: individualBatch.balance_before
     })
   }
   /**
@@ -474,45 +495,39 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
     let purpose_details = this.purpose.find(val => val.id == +[value]);
     if (purpose_details.name.toLowerCase() === 'routine refill') {
       // Populate the drugs in the details
-      // console.log()
-      this.dispenseForm.patchValue({
-        drugs: [
-          {
-            drug_id: 4,
-            batch_no: 'Aye',
-            dose_id: 13,
-            actual_pill_count: 0,
-            duration: 0,
-            quantity_out: 5,
-            indication_id: 5,
-            comment: 'Awesome',
-            missed_pill_count: 0
-          },
-          {
-            drug_id: 4,
-            batch_no: 'Hei',
-            dose_id: 13,
-            actual_pill_count: 0,
-            duration: 0,
-            quantity_out: 5,
-            indication_id: 5,
-            comment: 'Awesome',
-            missed_pill_count: 0
-          },
-          {
-            drug_id: 4,
-            batch_no: 'Aye',
-            dose_id: 13,
-            actual_pill_count: 0,
-            duration: 0,
-            quantity_out: 5,
-            indication_id: 5,
-            comment: 'Awesome',
-            missed_pill_count: 0
+      this._route.params
+        .switchMap((params: Params) => this._patientService.getDrugsHistory(+params['id']))
+        .map(
+        drugs => {
+          let modified_drugs: DrugsTable[] = [];
+          for (let item of drugs) {
+            // Appends properties to the array. Intended for the form array
+            item['actual_pill_count'] = '';
+            item['missed_pill_count'] = '';
+            item['comment'] = '';
+            modified_drugs.push(item);
           }
-        ]
-      }
-      )
+          return modified_drugs;
+        }
+        )
+        .subscribe(drugs => {
+          // Populate the drug details for the refill oly when there's exist a history
+          console.log(drugs);
+          if (drugs.length !== 0) {
+            this.setDrugs(drugs);
+            // Disable the (unit, expected_pill_count, expiry_date and balance_before)
+            let a = this.rows.controls;
+            for (let b of a) {
+              b.get('unit').disable();
+              b.get('expiry_date').disable();
+              b.get('expected_pill_count').disable();
+              b.get('balance_before').disable();
+            }
+          }
+          else {
+            console.log(`There is no drug history`);
+          }
+        });
     }
   }
   /**

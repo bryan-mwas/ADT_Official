@@ -137,10 +137,10 @@
                                                                 <th>Quantity Dispensed</th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody>
-                                                            <tr *ngFor="let item of dispense_history">
-                                                                <td>{{item.visit_item && item.visit_item[0] && item.visit_item[0].stock_item && item.visit_item[0].stock_item.drug_name || 'N/A'}}</td>
-                                                                <td>{{item.visit_item && item.visit_item[0] && item.visit_item[0].stock_item && item.visit_item[0].stock_item.quantity_out}}</td>
+                                                        <tbody *ngIf="dispense_history && dispense_history[0]">
+                                                            <tr *ngFor="let item of dispense_history[0].visit_item">
+                                                                <td>{{item.stock_item.drug_name || 'N/A'}}</td>
+                                                                <td>{{item.stock_item.quantity_out}}</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -165,7 +165,7 @@
                                                     <table id="disp_table" class="table table-bordered">
                                                         <thead>
                                                             <tr>
-                                                                <th>Drug</th>
+                                                                <th style="width: 110px;">Drug</th>
                                                                 <th>Unit</th>
                                                                 <th>Batch No.</th>
                                                                 <th>Expiry Date</th>
@@ -189,10 +189,10 @@
                                                                     </select>
                                                                 </td>
                                                                 <td id="complex_table">
-                                                                    <input class="form-control" id="input" type="text" formControlName="unit_cost">
+                                                                    <input class="form-control" id="input" type="text" formControlName="unit">
                                                                 </td>
                                                                 <td id="complex_table">
-                                                                    <select #batch *ngIf="batch_details" class="form-control" formControlName="batch_no" id="" (change)="getBatchDetails(batch.value, this.i)">
+                                                                    <select #batch *ngIf="batch_details" class="form-control" formControlName="batch_number" id="" (change)="getBatchDetails(batch.value, this.i)">
                                                                         <option *ngFor="let batch of batch_details" value="{{batch.batch_number}}">{{batch.batch_number}}</option>
                                                                     </select>
                                                                 </td>
@@ -217,7 +217,7 @@
                                                                     <input class="form-control" [ngClass]="{'warning': is_greater}" #qty id="input" type="text" formControlName="quantity_out" (keyup)="checkValidation(qty.value, this.i)">
                                                                 </td>
                                                                 <td id="complex_table">
-                                                                    <input class="form-control" id="input" type="text" formControlName="balance_after">
+                                                                    <input class="form-control" id="input" type="text" formControlName="balance_before">
                                                                 </td>
                                                                 <td id="complex_table">
                                                                     <select class="form-control" id="input" *ngIf="regimen" formControlName="indication_id" id="">

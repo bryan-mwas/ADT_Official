@@ -6,10 +6,10 @@ export class DrugsTable {
     duration: number;
     quantity_out: number;
     indication_id: number;
-    unit_cost: number;  //<--- Temporary
+    unit: string;  //<--- Temporary
     expiry_date: string;
     expected_pill_count: number;
-    balance_after: number; // <--- Refers to the stock on hand
+    balance_before: number; // <--- Refers to the stock on hand
     comment: number;
     missed_pill_count: number;
 }
