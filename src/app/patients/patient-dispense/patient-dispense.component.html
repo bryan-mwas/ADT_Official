@@ -193,7 +193,7 @@
                                                                 </td>
                                                                 <td id="complex_table">
                                                                     <select #batch *ngIf="batch_details" class="form-control" formControlName="batch_number" id="" (change)="getBatchDetails(batch.value, this.i)">
-                                                                        <option *ngFor="let batch of batch_details" value="{{batch.batch_number}}">{{batch.batch_number}}</option>
+                                                                        <option *ngFor="let batch of batch_details[this.i]" value="{{batch.batch_number}}">{{batch.batch_number}}</option>
                                                                     </select>
                                                                 </td>
                                                                 <td id="complex_table">

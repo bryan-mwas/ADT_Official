@@ -51,7 +51,7 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
   dispenseForm: FormGroup;
   index: number;
   dispense_history: any[];
-  batch_details: any[] = null;
+  batch_details: any[] = [];
   dose_list: Object[];
   indications: Object[];
   is_greater: boolean = false;
@@ -321,19 +321,34 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
   /**
    * 
    */
+  logArrayElements(element, index, array) {
+    console.log('a[' + index + '] = ' + element);
+  }
   setDrugs(drugs: DrugsTable[]) {
     const drugsFGs = drugs.map(drugs => this.fb.group(drugs));
     console.log(drugsFGs)
     const drugsFormArray = this.fb.array(drugsFGs);
     this.dispenseForm.setControl('drugs', drugsFormArray);
     const drugsControl = this.dispenseForm.get('drugs');
-    drugsControl.valueChanges.subscribe(
-      val => {
-        for (let item of val) {
-          console.log(item.drug_id)
-        }
-      }
-    );
+    console.log(this.rows.controls['drug_id'])
+    // drugsControl.valueChanges.forEach(
+    //   val => {
+    //     val.forEach((item, index) => {
+    //       // console.log(item);
+    //       // console.log(index)
+    //       this._dispenseService.getDrugDetails(item.drug_id).subscribe(
+    //         val => {
+    //           this.rows.controls[+[index]].patchValue({
+    //             unit: val.unit,
+    //             duration: val.duration,
+    //             expected_pill_count: val.expected_pill_count
+    //           })
+    //           this.batch_details = val.batches;
+    //         }
+    //       );
+    //     });
+    //   }
+    // );
   }
   /**
    * Get users input, add the number of days and
@@ -513,6 +528,19 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
         .subscribe(drugs => {
           // Populate the drug details for the refill oly when there's exist a history
           console.log(drugs);
+          drugs.forEach((item, index) => {
+          // console.log(item);
+          // console.log(index)
+          // Gets respective drugs batch number
+          this._dispenseService.getDrugDetails(item.drug_id).subscribe(
+            val => {
+              // this.batch_details.push(val.batches)
+              this.batch_details[index] = val.batches;
+              console.log(this.batch_details)
+              // console.log(val.batches)
+            }
+          );
+        });
           if (drugs.length !== 0) {
             this.setDrugs(drugs);
             // Disable the (unit, expected_pill_count, expiry_date and balance_before)

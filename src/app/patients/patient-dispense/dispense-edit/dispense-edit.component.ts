@@ -32,9 +32,7 @@ export class DispenseEditComponent implements OnInit {
       .subscribe(patient => {
         this.dispenseEditForm.patchValue({
           ccc_number: patient.ccc_number,
-          patient_name: patient.first_name,
-          current_height: patient.current_height,
-          current_weight: patient.current_weight
+          patient_name: patient.first_name
         })
       });
     this._activeRoute.params.switchMap((params: Params) => this._patientService.getPreviousVisits(+params['id'])).subscribe(
@@ -49,9 +47,11 @@ export class DispenseEditComponent implements OnInit {
             this.dispenseEditForm.patchValue({
               latest_visit_date: appointment[0].visit_date,
               current_regimen_id: appointment[0].current_regimen_id,
-              last_regimen_id: appointment[0].last_regimen_id,
+              last_regimen_id: appointment[0].current_regimen_id,
               previous_visit: appointment[0].visit_date,
-              appointment_adherence: appointment[0].appointment_adherence
+              appointment_adherence: appointment[0].appointment_adherence,
+              current_height: appointment[0].current_height,
+              current_weight: appointment[0].current_weight
             })
           }
         }
