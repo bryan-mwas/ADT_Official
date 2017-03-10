@@ -14,6 +14,22 @@ export interface IDrugs {
     generic: IGeneric;
 }
 
+export interface StockDrugs {
+    unit: string;
+    pack_size: number;
+    generic: string;
+    dose: string;
+    batch_number: string;
+    expiry_date: string;
+    balance_before: number;
+    balance_after: number;
+    unit_cost: number;
+    comment: string;
+    store: number;
+    id: number;
+    name: string;
+}
+
 export interface IGeneric {
     id: number;
     name: string;
@@ -28,7 +44,7 @@ export interface IStockDrug {
 
 export interface IStockItem {
     id: number;
-    batch_number: number;
+    batch_number: string;
     expiry_date: string;
     quantity_in: number;
     quantity_out: number;
@@ -51,4 +67,10 @@ export interface IStock {
     store_id: number;
     facility_id: number;
     transaction_type_id: number;
+}
+
+export class Store {
+    id: number;
+    name: string;
+    type: string;
 }
