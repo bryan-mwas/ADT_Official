@@ -108,15 +108,10 @@
                      </tr>
                   </tbody>                 
                   <tbody formArrayName="drugs" *ngFor="let row of rows.controls; let i=index">
-                     <tr [formGroupName]="i" (click)="index(i)">
-                     <td id="complex_table" *ngIf="!storeDrugs">
+                     <tr [formGroupName]="i" (click)="index(i)">                     
+                     <td id="complex_table" *ngIf="drugsList">
                         <select #drug id="input" class="form-control" *ngIf="drugsList" formControlName="drug_id" (change)="getIndividualDrug(drug.value, this.i)">
                         <option *ngFor="let drug of drugsList"  value="{{drug.id}}">{{drug.name}}</option>
-                        </select>
-                     </td>
-                     <td id="complex_table" *ngIf="storeDrugs">
-                        <select #drug id="input" class="form-control" *ngIf="storeDrugs" formControlName="drug_id" (change)="getIndividualDrug(drug.value, this.i)">
-                        <option *ngFor="let drug of storeDrugs"  value="{{drug.id}}">{{drug.name}}</option>
                         </select>
                      </td>
                      <td id="complex_table">
@@ -134,7 +129,7 @@
                         </select>
                      </td>-->
                      <td id="complex_table">
-                         <input #batch id="input" type="text" formControlName="batch_number" class="form-control" list="batchlist" autocomplete="off" (change)="getBatchDetails(batch.value, this.i)"> <!--(change)="getBatchDetails(batch.value, this.i)">-->
+                         <input #batch id="input" type="text" formControlName="batch_number" class="form-control" list="batchlist" autocomplete="off" (change)="getBatchDetails(batch.value, this.i)">
                          <datalist id="batchlist">
                              <option *ngFor="let item of batchList" value="{{item.batch_number}}">{{item.batch_number}}</option>                             
                          </datalist>

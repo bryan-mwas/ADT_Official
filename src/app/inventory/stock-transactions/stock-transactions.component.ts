@@ -26,8 +26,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
   private storesList: Observable<string[]>;
   private transactionTypes: Transaction[];
   private drugsList: Observable<string[]>;
-  private storeDrugs: Observable<string[]>;
-  private storeItems: StoreItem;
+  // private storeItems: StoreItem;
   private batchList: Observable<string[]>;
   private indiv: Observable<string[]>;
 
@@ -51,7 +50,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     });
     this._transactionService.getTransactionTypes().subscribe(data => this.transactionTypes = data);
     this._transactionService.getDrugs().subscribe(d => this.drugsList = d);
-    this._transactionService.getItems().subscribe(i => this.storeItems = i);
+    // this._transactionService.getItems().subscribe(i => this.storeItems = i);
     this._transactionService.getStores().subscribe(z => this.storesList = z);
     // console.log(this.rows.controls[0] + 'index: ' + this.index);
   }
@@ -128,10 +127,10 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
       // alert(e);
       this._route.params
         .switchMap((params: Params) => this._transactionService.getDrugsbyStore(+params['id']))
-        .subscribe(z => this.storeDrugs = z);
+        .subscribe(z => this.drugsList = z);
     } else {
       this.rows.controls[+[index]].reset();
-      this._transactionService.getDrugs().subscribe(d => this.storeDrugs = d);
+      this._transactionService.getDrugs().subscribe(d => this.drugsList = d);
     }
   }
 
@@ -139,9 +138,16 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     this._transactionService.getDrugDetails(+[id]).subscribe(
       individualDrug => this.patchRow(individualDrug, index)
     );
-     this._route.params
-        .switchMap((params: Params) => this._transactionService.getDrugBatches(+params['id'], +[id]))
-        .subscribe(i => this.batchList = i);
+    this._route.params
+      .switchMap((params: Params) => this._transactionService.getDrugBatches(+params['id'], +[id]))
+      .subscribe(i => this.batchList = i);
+  }
+
+  getBatchDetails(batchNo: string, index: number) {
+    let b = this.drugsList.find(val => val['batch_number'] === batchNo);
+    if (b) {
+      this.patchBatch(b, index);
+    }
   }
 
   // Patch Methods
@@ -159,8 +165,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     this.rows.controls[+[val]].patchValue(
       {
         expiry_date: batch.expiry_date,
-        balance_before: batch.balance,
-        comment: batch.comment
+        balance_before: batch.balance_before,
       }
     );
   }
@@ -230,13 +235,6 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
   }
 
   // Yucky Zone
-  QuantityCalc(index: number) {
-
-  }
-
-  TotalCalc(index: number) {
-
-  }
 
   ngDoCheck() {
     if (this.i != null) {
@@ -257,8 +255,8 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     //     if (this.transaction['effect'] === 0) {
     //       this._route.params
     //         .switchMap((params: Params) => this._transactionService.getDrugsbyStore(+params['id']))
-    //         .subscribe(z => this.storeDrugs = z);
-    //       this._transactionService.getDrugDetails(this.storeDrugs['drug_id']).subscribe(p => this.drugsList = p);
+    //         .subscribe(z => this.drugsList = z);
+    //       this._transactionService.getDrugDetails(this.drugsList['drug_id']).subscribe(p => this.drugsList = p);
     //     }
     //   }
     // }

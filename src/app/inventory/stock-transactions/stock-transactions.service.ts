@@ -14,10 +14,10 @@ export class StockTransactionsService {
   // private _apiUrl = CONFIG.baseUrl;
   private _apiUrl = CONFIG.alternateUrl;
 
-  private _transactionApi = this._apiUrl + 'stock';
+  // private _transactionApi = this._apiUrl + 'stock';
   private _drugsApi = this._apiUrl + 'drugs';
   private _typesApi = this._apiUrl + 'lists/transaction_type';
-  private _itemsApi = this._apiUrl + 'stock/store';
+  // private _itemsApi = this._apiUrl + 'stock/store';
   private _storesApi = this._apiUrl + 'stores';
   private _storeURL = this._apiUrl + 'store';
 
@@ -58,17 +58,17 @@ export class StockTransactionsService {
       .catch(this.handleError);
   }
 
-  getItems(): Observable<any> {
-    return this._http.get(this._itemsApi)
-      .map((response: Response) => <StoreItem[]>response.json())
-      .catch(this.handleError);
-  }
+  // getItems(): Observable<any> {
+  //   return this._http.get(this._itemsApi)
+  //     .map((response: Response) => <StoreItem[]>response.json())
+  //     .catch(this.handleError);
+  // }
 
-  getStoreItems(id: number): Observable<any> {
-    return this._http.get(this._itemsApi + `/${id}`)
-      .map((response: Response) => <StoreItem[]>response.json())
-      .catch(this.handleError);
-  }
+  // getStoreItems(id: number): Observable<any> {
+  //   return this._http.get(this._itemsApi + `/${id}`)
+  //     .map((response: Response) => <StoreItem[]>response.json())
+  //     .catch(this.handleError);
+  // }
 
   getDrugBatches(storeId: number, drugId: number): Observable<any> {
     return this._http.get(this._storeURL + `/${storeId}` + '/stock/drug/' + `${drugId}`)
@@ -76,11 +76,12 @@ export class StockTransactionsService {
       .catch(this.handleError);
   }
 
-  // getDrugBatchDetails(storeId: number, batchNo: string): Observable<any> {
-  //   return this.getStoreItems(storeId)
-  //     .map((storeItem: StoreItem[]) => storeItem.find(b => b.batch_number === batchNo))
-  //     .catch(this.handleError);
-  // }
+  getDrugBatchDetails(storeId: number, batchNo: string): Observable<any> {
+    return this.getDrugsbyStore(storeId)
+      .map((stockItem: StockItem[]) => stockItem.find(b => b.batch_number === batchNo))
+      .do(data => console.log('pengBatch: ' + JSON.stringify(data)))
+      .catch(this.handleError);
+  }
 
   thisStore(id: number) {
     return this._http.get(this._storesApi + `/${id}`)

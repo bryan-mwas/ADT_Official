@@ -11,7 +11,7 @@ export class Transaction {
 
 export class StockItem {
     id: number;
-    batch_number: number;
+    batch_number: string;
     expiry_date: string;
     quantity_in: number;
     quantity_out: number;
