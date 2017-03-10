@@ -1,8 +1,8 @@
-import { RouterModule, Routes } from "@angular/router";
-import { FacilityDetailsComponent } from "./facility-details/facility-details.component"
-import { FacilityPatientSourcesComponent } from "./facility-patient-sources/facility-patient-sources.component"
-import { FacilitySupportersComponent } from "./facility-supporters/facility-supporters.component"
-import { FacilityUsersComponent } from "./facility-users/facility-users.component"
+import { RouterModule, Routes } from '@angular/router';
+import { FacilityDetailsComponent } from './facility-details/facility-details.component';
+import { FacilityPatientSourcesComponent } from './facility-patient-sources/facility-patient-sources.component';
+import { FacilitySupportersComponent } from './facility-supporters/facility-supporters.component';
+import { FacilityUsersComponent } from './facility-users/facility-users.component';
 
 
 export const routes: Routes = [

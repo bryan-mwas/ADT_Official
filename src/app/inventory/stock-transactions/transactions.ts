@@ -6,6 +6,7 @@ export class Types {
 export class Transaction {
     id: number;
     name: string;
+    effect: number;
 }
 
 export class StockItem {

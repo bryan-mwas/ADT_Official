@@ -18,6 +18,10 @@ export class FacilityDetailsComponent implements OnInit {
   @Input() edit: boolean;
   facility = new Facility();
   errorMessage: string;
+  // Update
+  @ViewChild('facilityDetailForm') currentForm: NgForm;
+  facilityDetailForm: NgForm;
+
   private countiesList: Observable<string[]>;
   private subcountiesList: Observable<string[]>;
   private facilityTypes: Observable<string[]>;
@@ -69,10 +73,6 @@ export class FacilityDetailsComponent implements OnInit {
     return JSON.stringify(this.facility);
   }
 
-  // Update
-  facilityDetailForm: NgForm;
-  @ViewChild('facilityDetailForm') currentForm: NgForm;
-
   ngAfterViewChecked() {
         this.formChanged();
     }
@@ -89,7 +89,7 @@ export class FacilityDetailsComponent implements OnInit {
   onValueChanged(data?: any) {
         if (!this.facilityDetailForm) { return; }
         const form = this.facilityDetailForm.form;
-        console.log(form);        
+        console.log(form);
     }
 
      onSubmit(): void {

@@ -91,9 +91,9 @@ export class FacilityService {
 
         return this._http.put(`${this._faciltyApi}/${body['id']}`, body, options) // ...using put request
             .map((res: Response) => res.json()) // ...and calling .json() on the response to return data
-            .catch((error: any) => Observable.throw(error.json().error || 'Server error')); //...errors if a
+            .catch((error: any) => Observable.throw(error.json().error || 'Server error')); // ...errors if a
     }
-    
+
     updateFacilityUser(body: Object): Observable<User[]> {
         let bodyString = JSON.stringify(body);
         let headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
@@ -142,7 +142,7 @@ export class FacilityService {
 
         return this._http.post(this._sourcesApi, body, options) // ...using post request
             .map((res: Response) => res.json()) // ...and calling .json() on the response to return data
-            .catch((error: any) => Observable.throw(error.json().error || 'Server error')); //...errors if any
+            .catch((error: any) => Observable.throw(error.json().error || 'Server error')); // ...errors if any
     }
 
     addSupporter(body: Object): Observable<Supporters[]> {
@@ -152,7 +152,7 @@ export class FacilityService {
 
         return this._http.post(this._supportersApi, body, options) // ...using post request
             .map((res: Response) => res.json()) // ...and calling .json() on the response to return data
-            .catch((error: any) => Observable.throw(error.json().error || 'Server error')); //...errors if any
+            .catch((error: any) => Observable.throw(error.json().error || 'Server error')); // ...errors if any
     }
 
     // Delete
