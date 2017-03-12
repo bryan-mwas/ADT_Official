@@ -25,7 +25,7 @@ export class DispenseService {
             .catch(this.handleError);
     }
     getDoseList() {
-        return this._http.get(this._url + `lists/dose`)
+        return this._http.get(this._url + `lists/doses`)
             .map((response: Response) => <any[]>response.json())
             .do(data => console.log('Doses: ' + JSON.stringify(data)))
             .catch(this.handleError);
@@ -37,31 +37,31 @@ export class DispenseService {
             .catch(this.handleError);
     }
     getRegimens() {
-        return this._http.get(this._url + 'regimen')
+        return this._http.get(this._url + 'regimens')
             .map((res: Response) => <any[]>res.json()) // TODO: refactor this. Bad practice
             .do(data => console.log('Change Reasons: ' + JSON.stringify(data)))
             .catch(this.handleError);
     }
     getChangeReason() {
-        return this._http.get(this._url + 'lists/changereason')
+        return this._http.get(this._url + 'lists/changereasons')
             .map((res: Response) => <any[]>res.json()) // TODO: refactor this. Bad practice
             .do(data => console.log('Change Reasons: ' + JSON.stringify(data)))
             .catch(this.handleError);
     }
     getPurpose() {
-        return this._http.get(this._url + 'lists/purpose')
+        return this._http.get(this._url + 'lists/purposes')
             .map((res: Response) => <any[]>res.json()) // TODO: refactor this. Bad practice
             .do(data => console.log('Purpose: ' + JSON.stringify(data)))
             .catch(this.handleError);
     }
     getNonAdherence() {
-        return this._http.get(this._url + 'lists/nonaadherencereason')
+        return this._http.get(this._url + 'lists/nonaadherencereasons')
             .map((res: Response) => <any[]>res.json()) // TODO: refactor this. Bad practice
             .do(data => console.log('Non Adherance: ' + JSON.stringify(data)))
             .catch(this.handleError);
     }
     getRegimenDrugs(id: number) {
-        return this._http.get(this._url + `regimen/${id}/drugs`)
+        return this._http.get(this._url + `regimens/${id}/drugs`)
             .map((res: Response) => <any[]>res.json()) // TODO: refactor this. Bad practice
             .do(data => console.log('Regimen Drugs: ' + JSON.stringify(data)))
             .catch(this.handleError);

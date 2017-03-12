@@ -19,11 +19,11 @@ export class PatientsService {
     private _allergiesApi = this._apiUrl + 'lists/allergies';
     private _sourcesApi = this._apiUrl + 'lists/patientsources';
     private _servicesApi = this._apiUrl + 'lists/services';
-    private _regimenApi = this._apiUrl + 'lists/regimen';
+    private _regimenApi = this._apiUrl + 'lists/regimens';
     private _prophylaxisApi = this._apiUrl + 'lists/prophylaxis';
-    private _whoStageApi = this._apiUrl + 'lists/whostage';
-    private _pepReasonApi = this._apiUrl + 'lists/pep';
-    private _locationsApi = this._apiUrl + 'lists/subcounty';
+    private _whoStageApi = this._apiUrl + 'lists/whostages';
+    private _pepReasonApi = this._apiUrl + 'lists/pepreasons';
+    private _locationsApi = this._apiUrl + 'lists/subcounties';
     private _statusApi = this._apiUrl + 'lists/status';
     private _familyPlanning = this._apiUrl + 'lists/familyplanning';
     private _patientsList = this._apiUrl + 'patients?page=';
@@ -40,31 +40,31 @@ export class PatientsService {
             .catch(this.handleError);
     }
     getAppointments(id: number) {
-        return this._http.get(`${this._apiUrl}patients/${id}/appointments`)
+        return this._http.get(`${this._apiUrl}appointments/patients/${id}`)
             .map((response: Response) => <any[]>response.json())
             .do(data => console.log('Dispense history: ' + JSON.stringify(data)))
             .catch(this.handleError);
     }
     getPreviousVisits(id: number) {
-        return this._http.get(`${this._apiUrl}patients/${id}/visits`)
+        return this._http.get(`${this._apiUrl}visits/patients/${id}`)
             .map((response: Response) => <any[]>response.json())
             .do(data => console.log('Dispense history: ' + JSON.stringify(data)))
             .catch(this.handleError);
     }
     getLatestVisit(id: number) {
-        return this._http.get(`${this._apiUrl}patients/${id}/visit/latest`)
+        return this._http.get(`${this._apiUrl}visits/patients/${id}/latest`)
             .map((response: Response) => <any[]>response.json())
             .do(data => console.log('Latest Visit: ' + JSON.stringify(data)))
             .catch(this.handleError);
     }
     getLatestAppointment(id: number) {
-        return this._http.get(`${this._apiUrl}patients/${id}/appointment/latest`)
+        return this._http.get(`${this._apiUrl}appointments/patients/${id}/latest`)
             .map((response: Response) => <any[]>response.json())
             .do(data => console.log('Appointment: ' + JSON.stringify(data)))
             .catch(this.handleError);
     }
     getViralLoad(id: number) {
-        return this._http.get(`${this._apiUrl}patients/${id}/viralload`)
+        return this._http.get(`${this._apiUrl}patients/${id}/viralloads`)
             .map((response: Response) => <any[]>response.json())
             .do(data => console.log('Viral Load Data: ' + JSON.stringify(data)))
             .catch(this.handleError);
