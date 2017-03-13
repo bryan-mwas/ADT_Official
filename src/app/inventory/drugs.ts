@@ -38,24 +38,30 @@ export interface IGeneric {
 export interface IStockDrug {
     drug: IDrugs;
     unit;
-    stock_item: IStockItem;
+    stock_item: ITransactionDetail;
     stock: IStock;
 }
 
-export interface IStockItem {
-    id: number;
+export interface ITransactionDetail {
+    unit: string;
+    pack_size: number;
+    generic: string;
+    dose: string;
     batch_number: string;
     expiry_date: string;
-    quantity_in: number;
-    quantity_out: number;
-    quantity_packs: number;
     balance_before: number;
     balance_after: number;
     unit_cost: number;
-    total_cost: number;
     comment: string;
-    drug_id: number;
-    stock_id: number;
+    store: string;
+    id: number;
+    name: string;
+    ref_number: string;
+    transaction_time: string;
+    transaction_detail: string;
+    transaction_type_id: number;
+    quantity_packs: number;
+    total_cost: number;
 }
 
 export interface IStock {

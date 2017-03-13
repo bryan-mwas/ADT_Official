@@ -231,7 +231,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
   onSaveComplete() {
     console.log('Created a new Transaction');
     this.successNotification();
-    this._router.navigateByUrl('/inventory/inventory-management');
+    this._router.navigateByUrl(`/inventory/inventory-management/${this.store.id}`);
   }
 
   // Yucky Zone

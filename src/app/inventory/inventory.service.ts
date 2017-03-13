@@ -17,13 +17,6 @@ export class InventoryService {
 
     constructor(private _http: Http) { }
 
-    getPaginatedDrugs(id: number) {
-        return this._http.get(`${this._apiUrl}drugs?page=${id}`)
-            .map((response: Response) => <IDrugs[]>response.json())
-            // .do(data => console.log('All: ' + JSON.stringify(data)))z
-            .catch(this.handleError);
-    }
-
     getDrugs(): Observable<IDrugs[]> {
         return this._http.get(this._apiUrl + 'drugs')
             .map((response: Response) => <IDrugs[]>response.json())
@@ -31,24 +24,24 @@ export class InventoryService {
             .catch(this.handleError);
     }
 
-    getStockDrug(id: number): Observable<any[]> {
-        return this._http.get(`${this._apiUrl}stock/${id}/bincard`)
+    getStockDrug(storeId: number, id: number): Observable<any[]> {
+        return this._http.get(`${this._apiUrl}stores/${storeId}/stocks/drugs/${id}`)
             .map((response: Response) => <any[]>response.json())
-            // .do(data => console.log('getIndividualDrug: ' + JSON.stringify(data)))
+            .do(data => console.log('Transaction Details: ' + JSON.stringify(data)))
             .catch(this.handleError);
     }
 
     thisStore(id: number) {
         return this._http.get(this._storesApi + `/${id}`)
             .map((response: Response) => <Store[]>response.json())
-            .do(data => console.log('HERE : ' + JSON.stringify(data)))
+            // .do(data => console.log('HERE : ' + JSON.stringify(data)))
             .catch(this.handleError);
     }
 
     getDrugsbyStore(storeId: number): Observable<any> {
-    return this._http.get(this._apiUrl + 'store' + `/${storeId}` + '/stock/drug')
+    return this._http.get(this._apiUrl + 'stores' + `/${storeId}` + '/stocks/drugs')
       .map((response: Response) => <StockDrugs[]>response.json())
-      .do(data => console.log('drugs in store: ' + JSON.stringify(data)))
+    //   .do(data => console.log('drugs in store: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
 
