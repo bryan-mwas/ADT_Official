@@ -294,7 +294,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 0px;">
                                         <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                         <label>Date of next appointment:</label>
                                         <div class="input-group">
@@ -533,7 +533,7 @@
                                                                                         <td>{{patient.gender}}</td>
                                                                                         <td>{{getAge(patient.birth_date)}}</td>
                                                                                         <td>{{patient.enrollment_date}}</td>
-                                                                                        <td>{{patient.current_status && patient.current_status[0] != null && patient.current_status[0].name}}</td>
+                                                                                        <td>{{patient.current_status_name}}</td>
                                                                                         <td>{{latest_viral_load?.test_date || 'n/a'}}</td>
                                                                                         <td>{{latest_viral_load?.result || 'n/a'}}</td>
                                                                                     </tr>
@@ -567,7 +567,7 @@
                                                                                         <td>{{history.visit_item && history.visit_item[0] && history.visit_item[0].missed_pill_count}}</td>
                                                                                         <td></td>
                                                                                         <td></td>
-                                                                                        <td></td>
+                                                                                        <td>{{history.appointment_adherence}}</td>
                                                                                         <td></td>
                                                                                     </tr>
                                                                                 </tbody>
