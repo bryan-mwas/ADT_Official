@@ -135,11 +135,9 @@ export class DispenseEditComponent implements OnInit {
         let modified_drugs: DrugsTable[] = [];
         for (let item of drugs) {
           // Appends properties to the array. Intended for the form array
-          item['actual_pill_count'] = '';
-          item['missed_pill_count'] = '';
-          item['comment'] = '';
           item['brand_id'] = '';
-          delete item['expected_pill_count']; // Removes unwanted property.
+          // Removes unwanted property.
+          delete item['expected_pill_count']; 
           modified_drugs.push(item);
         }
         return modified_drugs;
