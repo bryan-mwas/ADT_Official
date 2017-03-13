@@ -28,11 +28,11 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <label>Dispensing Date</label>
-                                    <input formControlName="latest_visit_date" class="form-control" type="text">
+                                    <input formControlName="visit_date" class="form-control" type="text">
                                 </div>
                                 <div class="col-sm-6">
                                     <label>Purpose of Visit</label>
-                                    <select formControlName="purpose_visit" class="form-control" id="select-1">
+                                    <select formControlName="purpose_id" class="form-control" id="select-1">
                                         <option selected>--Selected--</option>
                                         <option *ngFor="let purposes of purpose" value="{{purposes.id}}">{{purposes.name}}</option>
                                     </select>
@@ -92,8 +92,8 @@
                                                 <th>Comment</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr>
+                                        <tbody formArrayName="drugs" *ngFor="let row of rows.controls; let i=index">
+                                            <tr [formGroupName]="i">
                                                 <td id="complex_table">
                                                     <select id="input" formControlName="drug_id" class="form-control"></select>
                                                 </td>
@@ -101,34 +101,36 @@
                                                     <input id="input" formControlName="unit" class="form-control" type="text">
                                                 </td>
                                                 <td id="complex_table">
-                                                    <select id="input" formControlName="batch_id" class="form-control"></select>
+                                                    <select id="input" formControlName="batch_number" class="form-control"></select>
                                                 </td>
                                                 <td id="complex_table">
                                                     <input id="input" formControlName="expiry_date" class="form-control" type="text">
                                                 </td>
                                                 <td id="complex_table">
-                                                    <select id="input" formControlName="dose_id" class="form-control"></select>
+                                                    <select id="input" formControlName="dose_id" class="form-control">
+                                                        <option *ngFor="let item of dose_list" value="{{item.id}}">{{item.name}}</option>
+                                                    </select>
                                                 </td>
                                                 <td id="complex_table">
                                                     <input id="input" formControlName="duration" class="form-control" type="text">
                                                 </td>
                                                 <td id="complex_table">
-                                                    <input id="input" formControlName="dispense_quantity" class="form-control" type="text">
+                                                    <input id="input" formControlName="quantity_out" class="form-control" type="text">
                                                 </td>
                                                 <td id="complex_table">
-                                                    <input id="input" formControlName="stock" class="form-control" type="text">
+                                                    <input id="input" formControlName="balance_before" class="form-control" type="text">
                                                 </td>
                                                 <td id="complex_table">
-                                                    <select id="input" formControlName="brand_name_id" class="form-control"></select>
+                                                    <select id="input" formControlName="brand_id" class="form-control"></select>
                                                 </td>
                                                 <td id="complex_table">
                                                     <select id="input" formControlName="indication_id" class="form-control"></select>
                                                 </td>
                                                 <td id="complex_table">
-                                                    <input id="input" formControlName="pill_count" class="form-control" type="text">
+                                                    <input id="input" formControlName="actual_pill_count" class="form-control" type="text">
                                                 </td>
                                                 <td id="complex_table">
-                                                    <input id="input" formControlName="missed_pills" class="form-control" type="text">
+                                                    <input id="input" formControlName="missed_pill_count" class="form-control" type="text">
                                                 </td>
                                                 <td id="complex_table">
                                                     <input id="input" formControlName="comment" class="form-control" type="text">

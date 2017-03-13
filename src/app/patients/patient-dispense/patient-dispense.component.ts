@@ -206,14 +206,6 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
   }
 
   ngDoCheck() {
-    let a = this.rows.controls;
-    let count = 1;
-    for (let b of a) {
-      count++;
-      b.get('drug_id').valueChanges.subscribe(
-        a => console.log('aye ' + count)
-      )
-    }
     let appointmentCtrl = this.dispenseForm.get('appointment_date');
     // Checks if the patient info has been asynchronously loaded
     this.dispenseForm.patchValue({
@@ -330,25 +322,7 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
     const drugsFormArray = this.fb.array(drugsFGs);
     this.dispenseForm.setControl('drugs', drugsFormArray);
     const drugsControl = this.dispenseForm.get('drugs');
-    console.log(this.rows.controls['drug_id'])
-    // drugsControl.valueChanges.forEach(
-    //   val => {
-    //     val.forEach((item, index) => {
-    //       // console.log(item);
-    //       // console.log(index)
-    //       this._dispenseService.getDrugDetails(item.drug_id).subscribe(
-    //         val => {
-    //           this.rows.controls[+[index]].patchValue({
-    //             unit: val.unit,
-    //             duration: val.duration,
-    //             expected_pill_count: val.expected_pill_count
-    //           })
-    //           this.batch_details = val.batches;
-    //         }
-    //       );
-    //     });
-    //   }
-    // );
+    console.log(this.rows.controls['drug_id']);
   }
   /**
    * Get users input, add the number of days and
@@ -434,7 +408,6 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
     });
   }
   errorAlert(value: string) {
-
     $.smallBox({
       title: "Error Alert",
       content: value,
@@ -485,7 +458,7 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
           duration: val.duration,
           expected_pill_count: val.expected_pill_count
         })
-        this.batch_details = val.batches;
+        this.batch_details[index] = val.batches;
       }
     );
   }
@@ -495,7 +468,8 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
    * @param index 
    */
   getBatchDetails(value: any, index: number) {
-    let individualBatch = this.batch_details.find(val => val.batch_number.toLowerCase() === value);
+    console.log(value);
+    let individualBatch = this.batch_details[index].find(val => val.batch_number.toLowerCase() === value);
     this.rows.controls[+[index]].patchValue({
       expiry_date: individualBatch.expiry_date,
       quantity_out: individualBatch.quantity_out,
