@@ -99,7 +99,8 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
               current_regimen_id: appointment[0].current_regimen_id,
               previous_visit: appointment[0].visit_date,
               current_height: appointment[0].current_height,
-              current_weight: appointment[0].current_weight
+              current_weight: appointment[0].current_weight,
+              purpose_id: appointment[0].purpose_id
             })
           }
         }
@@ -210,7 +211,7 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
     // Checks if the patient info has been asynchronously loaded
     this.dispenseForm.patchValue({
       ccc_number: this.patient.ccc_number,
-      patient_name: this.patient.first_name,
+      patient_name: `${this.patient.first_name} ${this.patient.other_name} ${this.patient.last_name}`,
       patient_id: this.patient.id
     });
     // Trigger calculation of appointment adherance
@@ -392,9 +393,6 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
         if (type === 'delete_row' && optional) {
           this.removeRow(optional)
         }
-        else if (type === 'reset') {
-          this.dispenseForm.reset()
-        }
       }
     });
   }
@@ -417,8 +415,11 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
     });
   }
 
-  confirm() {
-    confirm('Are you sure you would like to reset the fields');
+  /**
+   * Resets the form
+   */
+  reset() {
+    this.ngOnInit();
   }
 
   /**
@@ -469,7 +470,7 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
    */
   getBatchDetails(value: any, index: number) {
     console.log(value);
-    let individualBatch = this.batch_details[index].find(val => val.batch_number.toLowerCase() === value);
+    let individualBatch = this.batch_details[index].find(val => val.batch_number.toLowerCase() === value.toLowerCase());
     this.rows.controls[+[index]].patchValue({
       expiry_date: individualBatch.expiry_date,
       quantity_out: individualBatch.quantity_out,
@@ -503,18 +504,18 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
           // Populate the drug details for the refill oly when there's exist a history
           console.log(drugs);
           drugs.forEach((item, index) => {
-          // console.log(item);
-          // console.log(index)
-          // Gets respective drugs batch number
-          this._dispenseService.getDrugDetails(item.drug_id).subscribe(
-            val => {
-              // this.batch_details.push(val.batches)
-              this.batch_details[index] = val.batches;
-              console.log(this.batch_details)
-              // console.log(val.batches)
-            }
-          );
-        });
+            // console.log(item);
+            // console.log(index)
+            // Gets respective drugs batch number
+            this._dispenseService.getDrugDetails(item.drug_id).subscribe(
+              val => {
+                // this.batch_details.push(val.batches)
+                this.batch_details[index] = val.batches;
+                console.log(this.batch_details)
+                // console.log(val.batches)
+              }
+            );
+          });
           if (drugs.length !== 0) {
             this.setDrugs(drugs);
             // Disable the (unit, expected_pill_count, expiry_date and balance_before)
