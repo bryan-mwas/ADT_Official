@@ -5,7 +5,7 @@ import { StockTransactionsComponent } from './stock-transactions/stock-transacti
 
 export const routes: Routes = [
     {
-        path: 'inventory-management',
+        path: 'inventory-management/:id',
         component: InventoryManagementComponent,
         data: { pageTitle: 'Store / Inventory Management' }
     },

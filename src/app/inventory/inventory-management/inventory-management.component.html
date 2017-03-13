@@ -37,13 +37,13 @@
                                     <tbody>
                                         <tr *ngFor="let drug of drugs | fieldFilter:'name':binding | paginate: { itemsPerPage: 10, currentPage: p }">
                                             <td>{{ drug.name }}</td>
-                                            <td>{{ drug.drug_generic}}</td>
-                                            <td>{{ drug.quantity}}</td>
-                                            <td>{{ drug.drug_unit}}</td>
+                                            <td>{{ drug.generic}}</td>
+                                            <td>{{ drug.balance_after}}</td>
+                                            <td>{{ drug.unit}}</td>
                                             <td>{{ drug.pack_size}}</td>
                                             <!-- TODO: Use the supplier -->
-                                            <td>{{ drug.drug_supporter}}</td>
-                                            <td>{{ drug.drug_dose}}</td>
+                                            <td>Kenya Pharma</td>
+                                            <td>{{ drug.dose}}</td>
                                             <td><a href="" [routerLink]="['/inventory/bin-card',drug.id]">View Bin Card</a></td>
                                         </tr>
                                     </tbody>

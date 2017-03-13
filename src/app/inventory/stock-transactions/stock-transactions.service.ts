@@ -11,16 +11,15 @@ import { CONFIG } from '../../core/config';
 @Injectable()
 export class StockTransactionsService {
 
-  private _apiUrl = CONFIG.baseUrl;
-  // private _apiUrl = CONFIG.alternateUrl;
+  // private _apiUrl = CONFIG.baseUrl;
+  private _apiUrl = CONFIG.alternateUrl;
 
-  private _transactionApi = this._apiUrl + 'stock';
+  // private _transactionApi = this._apiUrl + 'stock';
   private _drugsApi = this._apiUrl + 'drugs';
   private _typesApi = this._apiUrl + 'lists/transaction_type';
-  private _itemsApi = this._apiUrl + 'stock/store';
-  // private _addTransactionURL = this._apiUrl + 'stock_transactions';
+  // private _itemsApi = this._apiUrl + 'stock/store';
   private _storesApi = this._apiUrl + 'stores';
-  private _addTransactionURL = this._apiUrl + 'store';
+  private _storeURL = this._apiUrl + 'store';
 
   constructor(private _http: Http) { }
 
@@ -53,33 +52,34 @@ export class StockTransactionsService {
   }
 
   getDrugsbyStore(storeId: number): Observable<any> {
-    return this._http.get(this._addTransactionURL + `/${storeId}` + '/stock/drug')
+    return this._http.get(this._storeURL + `/${storeId}` + '/stock/drug')
       .map((response: Response) => <StockItem[]>response.json())
       .do(data => console.log('drugs in store: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
 
-  getItems(): Observable<any> {
-    return this._http.get(this._itemsApi)
-      .map((response: Response) => <StoreItem[]>response.json())
-      .catch(this.handleError);
-  }
+  // getItems(): Observable<any> {
+  //   return this._http.get(this._itemsApi)
+  //     .map((response: Response) => <StoreItem[]>response.json())
+  //     .catch(this.handleError);
+  // }
 
-  getStoreItems(id: number): Observable<any> {
-    return this._http.get(this._itemsApi + `/${id}`)
-      .map((response: Response) => <StoreItem[]>response.json())
-      .catch(this.handleError);
-  }
+  // getStoreItems(id: number): Observable<any> {
+  //   return this._http.get(this._itemsApi + `/${id}`)
+  //     .map((response: Response) => <StoreItem[]>response.json())
+  //     .catch(this.handleError);
+  // }
 
   getDrugBatches(storeId: number, drugId: number): Observable<any> {
-    return this._http.get(this._itemsApi + `/${storeId}` + '/drug/' + `${drugId}`)
+    return this._http.get(this._storeURL + `/${storeId}` + '/stock/drug/' + `${drugId}`)
       .map((response: Response) => <StoreItem[]>response.json())
       .catch(this.handleError);
   }
 
   getDrugBatchDetails(storeId: number, batchNo: string): Observable<any> {
-    return this.getStoreItems(storeId)
-      .map((storeItem: StoreItem[]) => storeItem.find(b => b.batch_number === batchNo))
+    return this.getDrugsbyStore(storeId)
+      .map((stockItem: StockItem[]) => stockItem.find(b => b.batch_number === batchNo))
+      .do(data => console.log('pengBatch: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
 
@@ -104,7 +104,7 @@ export class StockTransactionsService {
     let headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
     let options = new RequestOptions({ headers: headers }); // Create a request option
 
-    return this._http.post(this._addTransactionURL + `/${id}` + '/stock', body, options)
+    return this._http.post(this._storeURL + `/${id}` + '/stock', body, options)
       .map(() => body) // ...and calling .json() on the response to return data
       .catch(this.handleError); // ...errors if any
   }

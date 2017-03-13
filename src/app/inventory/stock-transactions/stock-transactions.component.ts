@@ -26,8 +26,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
   private storesList: Observable<string[]>;
   private transactionTypes: Transaction[];
   private drugsList: Observable<string[]>;
-  private storeDrugs: Observable<string[]>;
-  private storeItems: StoreItem;
+  // private storeItems: StoreItem;
   private batchList: Observable<string[]>;
   private indiv: Observable<string[]>;
 
@@ -50,12 +49,8 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
       drugs: this._fb.array([this.buildRow()]),
     });
     this._transactionService.getTransactionTypes().subscribe(data => this.transactionTypes = data);
-    // this.stockTransactionsForm.get('transaction_type_id').valueChanges.subscribe(
-    //   val => this._transactionService.getTransaction(+[val]).subscribe((p) => this.transaction = p),
-    //   (err) => console.error(err),
-    // );
     this._transactionService.getDrugs().subscribe(d => this.drugsList = d);
-    this._transactionService.getItems().subscribe(i => this.storeItems = i);
+    // this._transactionService.getItems().subscribe(i => this.storeItems = i);
     this._transactionService.getStores().subscribe(z => this.storesList = z);
     // console.log(this.rows.controls[0] + 'index: ' + this.index);
   }
@@ -88,6 +83,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
 
   removeRow(i: number) {
     const control = <FormArray>this.stockTransactionsForm.controls['drugs'];
+    control.disable();
     control.removeAt(i);
   }
 
@@ -131,17 +127,10 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
       // alert(e);
       this._route.params
         .switchMap((params: Params) => this._transactionService.getDrugsbyStore(+params['id']))
-        .subscribe(z => this.storeDrugs = z);
+        .subscribe(z => this.drugsList = z);
     } else {
       this.rows.controls[+[index]].reset();
-      this._transactionService.getDrugs().subscribe(d => this.storeDrugs = d);
-    }
-  }
-
-  getSDDetails() {
-    if (this.storeDrugs != undefined) {
-      let b: any = this.storeDrugs.find(val => val['drug_id']);
-      console.log(JSON.stringify(b));
+      this._transactionService.getDrugs().subscribe(d => this.drugsList = d);
     }
   }
 
@@ -149,21 +138,17 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     this._transactionService.getDrugDetails(+[id]).subscribe(
       individualDrug => this.patchRow(individualDrug, index)
     );
-    this._transactionService.getDrugBatches(1, +[id]).subscribe(i => this.batchList = i);
+    this._route.params
+      .switchMap((params: Params) => this._transactionService.getDrugBatches(+params['id'], +[id]))
+      .subscribe(i => this.batchList = i);
   }
 
-  // getBatchDetails(batchNo: string, index: number) {
-  //   let b = this.batchList.find(val => val[''] === batchNo);
-  //   if (b) {
-  //     this._transactionService.getDrugBatchDetails(1, batchNo).subscribe(
-  //       individualBatch => this.patchBatch(individualBatch, index)
-  //     );
-  //   } else {
-  //     this.rows.controls[+[index]].patchValue({
-  //       batch_number: batchNo
-  //     });
-  //   }
-  // }
+  getBatchDetails(batchNo: string, index: number) {
+    let b = this.drugsList.find(val => val['batch_number'] === batchNo);
+    if (b) {
+      this.patchBatch(b, index);
+    }
+  }
 
   // Patch Methods
 
@@ -180,8 +165,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     this.rows.controls[+[val]].patchValue(
       {
         expiry_date: batch.expiry_date,
-        balance_before: batch.balance,
-        comment: batch.comment
+        balance_before: batch.balance_before,
       }
     );
   }
@@ -271,8 +255,8 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     //     if (this.transaction['effect'] === 0) {
     //       this._route.params
     //         .switchMap((params: Params) => this._transactionService.getDrugsbyStore(+params['id']))
-    //         .subscribe(z => this.storeDrugs = z);
-    //       this._transactionService.getDrugDetails(this.storeDrugs['drug_id']).subscribe(p => this.drugsList = p);
+    //         .subscribe(z => this.drugsList = z);
+    //       this._transactionService.getDrugDetails(this.drugsList['drug_id']).subscribe(p => this.drugsList = p);
     //     }
     //   }
     // }
