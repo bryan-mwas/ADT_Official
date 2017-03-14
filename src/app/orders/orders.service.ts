@@ -9,7 +9,7 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class OrdersService {
 
-  private _apiUrl = 'http://192.168.133.10/adt-core/lib/public/api/';
+  private _apiUrl = 'http://192.168.33.10/adt-core/lib/public/api/';
 
   private _cdrrApi = this._apiUrl + 'cdrr';
   private _mapsApi = this._apiUrl + 'maps';
