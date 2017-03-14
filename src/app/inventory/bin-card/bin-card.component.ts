@@ -11,6 +11,7 @@ import 'rxjs/add/operator/switchMap';
 export class BinCardComponent implements OnInit {
 
   transactions: ITransactionDetail[];
+  batches: ITransactionDetail[];
   public currentPage: number = 1;
 
   constructor(
@@ -20,8 +21,11 @@ export class BinCardComponent implements OnInit {
 
   ngOnInit() {
     this._route.params
-      .switchMap((params: Params) => this._inventoryService.getStockDrug(1, +params['id']))
+      .switchMap((params: Params) => this._inventoryService.getDrugTransactions(1, +params['id']))
       .subscribe(res => this.transactions = res);
+    this._route.params
+      .switchMap((params: Params) => this._inventoryService.getViableBatches(1, +params['id']))
+      .subscribe(res => this.batches = res);
   }
 
 }

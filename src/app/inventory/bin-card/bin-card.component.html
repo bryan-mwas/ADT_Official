@@ -76,23 +76,21 @@
                                     <th>Expiry Date</th>
                                  </tr>
                               </thead>
+                              <tbody><tr><th colspan="5" style="text-align: center">No Viable Batches</th></tr></tbody>
                               <tbody>
-                                 <tr *ngFor="let batch of stock | fieldFilter:'name':binding">
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                 <tr *ngFor="let batch of batches | fieldFilter:'name':binding">
+                                    <td>{{batch.name}}</td>
+                                    <td>{{batch.pack_size}}</td>
+                                    <td>{{batch.batch_number}}</td>
+                                    <td>{{batch.balance_after}}</td>
+                                    <td>{{batch.expiry_date}}</td>
                                  </tr>
                               </tbody>
                            </table>
                            <div class="dt-toolbar-footer">
                               <div class="col-sm-6 col-xs-12">
                                  <div class="dataTables_info" id="DataTables_Table_1_info" role="status" aria-live="polite">
-                                    Showing
-                                    <> to
-                                    <> of
-                                    <> entries
+                                    <!--Showing <> to <> of <> entries-->
                                  </div>
                               </div>
                               <div class="col-xs-12 col-sm-6">
@@ -148,8 +146,8 @@
                         <tbody *ngIf="transactions">
                            <tr *ngFor="let transaction of transactions">
                               <td>{{transaction.ref_number}}</td>
-                              <td>{{transaction.transaction_time}}</td>
-                              <td>{{transaction.transaction_type_id}}</td>
+                              <td>{{transaction.transaction_date}}</td>
+                              <td>{{transaction.transaction_name}}</td>
                               <td>{{transaction.batch_number}}</td>
                               <td>{{transaction.expiry_date}}</td>
                               <td>{{transaction.pack_size}}</td>
@@ -167,7 +165,7 @@
                                 <!--Showing <> to <> of <> entries-->
                             </div>
                         </div>
-                        <div class="col-xs-12 col-sm-6">
+                        <div class="col-xs-12 col-sm-6" style="text-align: right">
                             <pagination-controls (pageChange)="p = $event"></pagination-controls>
                         </div>
                     </div>

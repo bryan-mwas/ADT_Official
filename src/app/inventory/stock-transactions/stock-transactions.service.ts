@@ -11,8 +11,8 @@ import { CONFIG } from '../../core/config';
 @Injectable()
 export class StockTransactionsService {
 
-  private _apiUrl = CONFIG.baseUrl;
-  // private _apiUrl = CONFIG.alternateUrl;
+  // private _apiUrl = CONFIG.baseUrl;
+  private _apiUrl = CONFIG.alternateUrl;
 
   // private _transactionApi = this._apiUrl + 'stock';
   private _drugsApi = this._apiUrl + 'drugs';
@@ -54,7 +54,7 @@ export class StockTransactionsService {
   getDrugsbyStore(storeId: number): Observable<any> {
     return this._http.get(this._storeURL + `/${storeId}` + '/stocks/drugs')
       .map((response: Response) => <StockItem[]>response.json())
-      .do(data => console.log('drugs in store: ' + JSON.stringify(data)))
+      // .do(data => console.log('drugs in store: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
 
@@ -71,7 +71,7 @@ export class StockTransactionsService {
   // }
 
   getDrugBatches(storeId: number, drugId: number): Observable<any> {
-    return this._http.get(this._storeURL + `/${storeId}` + '/stocks/drugs/' + `${drugId}`)
+    return this._http.get(this._storeURL + `/${storeId}` + '/stocks/drugs/' + `${drugId}` + '/all')
       .map((response: Response) => <StoreItem[]>response.json())
       .catch(this.handleError);
   }

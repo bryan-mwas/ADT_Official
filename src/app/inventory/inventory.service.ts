@@ -24,10 +24,17 @@ export class InventoryService {
             .catch(this.handleError);
     }
 
-    getStockDrug(storeId: number, id: number): Observable<any[]> {
-        return this._http.get(`${this._apiUrl}stores/${storeId}/stocks/drugs/${id}`)
+    getDrugTransactions(storeId: number, id: number): Observable<any[]> {
+        return this._http.get(`${this._apiUrl}stores/${storeId}/stocks/drugs/${id}/all`)
             .map((response: Response) => <any[]>response.json())
             .do(data => console.log('Transaction Details: ' + JSON.stringify(data)))
+            .catch(this.handleError);
+    }
+
+    getViableBatches(storeId: number, drugId: number): Observable<any[]> {
+        return this._http.get(`${this._apiUrl}stores/${storeId}/stocks/drugs/${drugId}/now`)
+            .map((response: Response) => <any[]>response.json())
+            .do(data => console.log('Viable Batch Details: ' + JSON.stringify(data)))
             .catch(this.handleError);
     }
 
