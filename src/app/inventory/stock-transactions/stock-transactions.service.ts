@@ -16,10 +16,10 @@ export class StockTransactionsService {
 
   // private _transactionApi = this._apiUrl + 'stock';
   private _drugsApi = this._apiUrl + 'drugs';
-  private _typesApi = this._apiUrl + 'lists/transaction_type';
+  private _typesApi = this._apiUrl + 'lists/transaction_types';
   // private _itemsApi = this._apiUrl + 'stock/store';
   private _storesApi = this._apiUrl + 'stores';
-  private _storeURL = this._apiUrl + 'store';
+  private _storeURL = this._apiUrl + 'stores';
 
   constructor(private _http: Http) { }
 
@@ -52,9 +52,9 @@ export class StockTransactionsService {
   }
 
   getDrugsbyStore(storeId: number): Observable<any> {
-    return this._http.get(this._storeURL + `/${storeId}` + '/stock/drug')
+    return this._http.get(this._storeURL + `/${storeId}` + '/stocks/drugs')
       .map((response: Response) => <StockItem[]>response.json())
-      .do(data => console.log('drugs in store: ' + JSON.stringify(data)))
+      // .do(data => console.log('drugs in store: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
 
@@ -71,7 +71,7 @@ export class StockTransactionsService {
   // }
 
   getDrugBatches(storeId: number, drugId: number): Observable<any> {
-    return this._http.get(this._storeURL + `/${storeId}` + '/stock/drug/' + `${drugId}`)
+    return this._http.get(this._storeURL + `/${storeId}` + '/stocks/drugs/' + `${drugId}` + '/all')
       .map((response: Response) => <StoreItem[]>response.json())
       .catch(this.handleError);
   }
@@ -104,7 +104,7 @@ export class StockTransactionsService {
     let headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
     let options = new RequestOptions({ headers: headers }); // Create a request option
 
-    return this._http.post(this._storeURL + `/${id}` + '/stock', body, options)
+    return this._http.post(this._storeURL + `/${id}` + '/stocks', body, options)
       .map(() => body) // ...and calling .json() on the response to return data
       .catch(this.handleError); // ...errors if any
   }

@@ -175,7 +175,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
   quantityValidator(packs: number, val: number) {
     let q = this.rows.controls[+[val]].value.quantity;
     let aq = this.rows.controls[+[val]].value.balance_before;
-    if ((packs * q) > aq) {
+    if (this.rows.controls[+[val]].get('balance_before').dirty && (packs * q) > aq) {
       this.errorAlert('Quantity entered is greater than Available Quantity');
     }
   }
@@ -231,7 +231,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
   onSaveComplete() {
     console.log('Created a new Transaction');
     this.successNotification();
-    this._router.navigateByUrl('/inventory/inventory-management');
+    this._router.navigateByUrl(`/inventory/inventory-management/${this.store.id}`);
   }
 
   // Yucky Zone

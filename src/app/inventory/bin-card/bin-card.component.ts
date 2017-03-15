@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { InventoryService } from '../inventory.service';
-import { IStockDrug } from '../drugs';
+import { IStockDrug, ITransactionDetail } from '../drugs';
 import 'rxjs/add/operator/switchMap';
 @Component({
   selector: 'app-bin-card',
@@ -10,17 +10,22 @@ import 'rxjs/add/operator/switchMap';
 })
 export class BinCardComponent implements OnInit {
 
-  stock: IStockDrug[];
+  transactions: ITransactionDetail[];
+  batches: ITransactionDetail[];
+  public currentPage: number = 1;
 
   constructor(
-    private route: ActivatedRoute,
-    private service: InventoryService
+    private _route: ActivatedRoute,
+    private _inventoryService: InventoryService
   ) { }
 
   ngOnInit() {
-    this.route.params
-      .switchMap((params: Params) => this.service.getStockDrug(+params['id']))
-      .subscribe(res => this.stock = res);
+    this._route.params
+      .switchMap((params: Params) => this._inventoryService.getDrugTransactions(1, +params['id']))
+      .subscribe(res => this.transactions = res);
+    this._route.params
+      .switchMap((params: Params) => this._inventoryService.getViableBatches(1, +params['id']))
+      .subscribe(res => this.batches = res);
   }
 
 }
