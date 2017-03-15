@@ -11,7 +11,7 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class InventoryService {
 
-    protected _apiUrl = CONFIG.baseUrl;
+    protected _apiUrl = CONFIG.alternateUrl;
 
     private _storesApi = this._apiUrl + 'stores';
 
@@ -35,6 +35,13 @@ export class InventoryService {
         return this._http.get(`${this._apiUrl}stores/${storeId}/stocks/drugs/${drugId}/now`)
             .map((response: Response) => <any[]>response.json())
             .do(data => console.log('Viable Batch Details: ' + JSON.stringify(data)))
+            .catch(this.handleError);
+    }
+
+    getDrugInformation(storeId: number, drugId: number): Observable<any[]> {
+        return this._http.get(`${this._apiUrl}stores/${storeId}/stocks/drugs/${drugId}/information`)
+            .map((response: Response) => <any[]>response.json())
+            .do(data => console.log('Drug Details: ' + JSON.stringify(data)))
             .catch(this.handleError);
     }
 

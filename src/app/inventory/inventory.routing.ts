@@ -10,7 +10,7 @@ export const routes: Routes = [
         data: { pageTitle: 'Store / Inventory Management' }
     },
     {
-        path: 'bin-card/:id',
+        path: ':storeId/bin-card/:drugId',
         component: BinCardComponent,
         data: { pageTitle: 'Drug Bin Card' }
     },
