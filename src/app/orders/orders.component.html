@@ -91,8 +91,8 @@
                                                     <td>{{cdrr.status}}</td>
                                                     <td>{{cdrr.facility_name}}</td>
                                                     <td style="text-align: center;">
-                                                        <a [routerLink]="['/orders/view-cdrr']" class="btn btn-default btn-xs"><i class="fa fa-eye"></i> View</a>
-                                                        <a [routerLink]="['/orders/update-cdrr']" class="btn btn-primary btn-xs"><i class="fa fa-refresh"></i> Update</a>
+                                                        <a [routerLink]="['/orders/view-cdrr/',cdrr.id]" class="btn btn-default btn-xs"><i class="fa fa-eye"></i> View</a>
+                                                        <a [routerLink]="['/orders/update-cdrr/',cdrr.id]" class="btn btn-primary btn-xs"><i class="fa fa-refresh"></i> Update</a>
                                                         <a class="btn btn-danger btn-xs" title="Delete"><i class="fa fa-trash"></i> Delete</a>
                                                         <a class="btn btn-success btn-xs" title="Download"><i class="fa fa-download"></i> Download</a>
                                                     </td>
