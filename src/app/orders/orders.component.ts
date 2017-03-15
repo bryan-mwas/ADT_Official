@@ -54,7 +54,10 @@ export class OrdersComponent implements OnInit {
   binding: string;
   show_items: number;
   filter_period: any[];
-  // period_begin_filter: string;
+  filter_period_maps: any[];
+  monthsList = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  period_begin_filter: string = 'all';
+  period_begin_maps_filter: string = 'all';
 
   constructor(private _ordersService: OrdersService) { }
 
@@ -63,33 +66,42 @@ export class OrdersComponent implements OnInit {
       this.cdrrList = data;
       // Array with period_begin only
       let period_begin: any[] = data.map(item => item.period_begin);
-      let res = []; // Holds arrays resulting from the split operation hence, it is multi-dimnsional in nature
-      period_begin.forEach((element) => {
-        res.push(element.split("-"));
-      });
-      let combined = [];
-      let monthsList = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-      // i is the date from the respective list
-      for (let i in res) {
-        // Creates a list of the dates i.e Month - Year
-        // parseInt => Clears the preceeding 0 in a number
-        combined.push(monthsList[parseInt(res[i][1], 10) - 1] + '-' + res[i][0]);
-      }
-      // unique and distinct; Both are used to produce an array with distinct values
-      var unique = {};
-      var distinct = [];
-      for (var i in combined) {
-        if (typeof (unique[combined[i]]) == "undefined") {
-          distinct.push(combined[i]);
-        }
-        unique[combined[i]] = 0;
-      }
-      // This property is iterated over at the filter period
-      this.filter_period = distinct;
-      console.log(distinct)
+      this.filter_period = this.isolatePeriodDates(period_begin).sort().reverse();
     });
-    this._ordersService.getMapOrderDetails().subscribe(data => this.mapsList = data);
+    this._ordersService.getMapOrderDetails().subscribe(data => {
+      this.mapsList = data;
+      let period_map_begin: any[] = data.map(item => item.period_begin);
+      this.filter_period_maps = this.isolatePeriodDates(period_map_begin).sort().reverse();
+    });
     this._ordersService.getFacilityDetails().subscribe(data => this.facilityDetails = data);
+  }
+  /**
+   * Isolates the unique dates from the period begin values
+   */
+  isolatePeriodDates(period_begin: any[]) {
+    let unique = {};
+    let distinct = [];
+    let res = []; // Holds arrays resulting from the split operation hence, it is multi-dimnsional in nature
+    period_begin.forEach((element) => {
+      res.push(element.split("-"));
+    });
+    let combined = [];
+    // i is the date from the respective list
+    for (let i in res) {
+      // Creates a list of the dates i.e Month - Year
+      // parseInt => Clears the preceeding 0 in a number
+      combined.push(this.monthsList[parseInt(res[i][1], 10) - 1] + '-' + res[i][0]);
+    }
+    // unique and distinct; Both are used to produce an array with distinct values
+    for (var i in combined) {
+      if (typeof (unique[combined[i]]) == "undefined") {
+        distinct.push(combined[i]);
+      }
+      unique[combined[i]] = 0;
+    }
+    // This property is iterated over at the filter period
+    return distinct;
+    // console.log(this.distinct)
   }
   /**
    * 

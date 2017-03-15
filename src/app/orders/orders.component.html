@@ -38,7 +38,7 @@
                                                             Filter Period:
                                                         </label>
                                                         <select #period name="period_begin" class="form-control" [(ngModel)]="period_begin_filter" (change)="filterPeriod(period.value)">
-                                                            <!--<option [value]="all">All</option>-->
+                                                            <option value="all">All</option>
                                                             <option *ngFor="let item of filter_period" value="{{item}}">{{item}}</option>
                                                         </select>
                                                     </div>
@@ -61,7 +61,7 @@
                                                 <div class="col-xs-12 col-sm-6 hidden-xs">
                                                     <div class="pull-right form-inline">
                                                         <label for="show_item" style="font-weight: bold;">
-                                                            Show:
+                                                            Items per Page:
                                                         </label>
                                                         <!--<input type="number" class="input" min="0" [(ngModel)]="config.itemsPerPage">-->
                                                         <select name="show_item" class="form-control" [(ngModel)]="config.itemsPerPage">
@@ -136,11 +136,9 @@
                                                         <label for="period_begin" style="font-weight: bold;">
                                                             Filter Period:
                                                         </label>
-                                                        <select name="period_begin" class="form-control" [(ngModel)]="period_begin_filter">
-                                                            <option [value]="1">5</option>
-                                                            <option [value]="10">10</option>
-                                                            <option [value]="15">15</option>
-                                                            <option [value]="20">20</option>
+                                                       <select #period name="period_begin" class="form-control" [(ngModel)]="period_begin_maps_filter" (change)="filterPeriod(period.value)">
+                                                            <option value="all">All</option>
+                                                            <option *ngFor="let item of filter_period_maps" value="{{item}}">{{item}}</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -162,7 +160,7 @@
                                                 <div class="col-xs-12 col-sm-6 hidden-xs">
                                                     <div class="pull-right form-inline">
                                                         <label for="show_item" style="font-weight: bold;">
-                                                            Show:
+                                                            Items per Page:
                                                         </label>
                                                         <!--<input type="number" class="input" min="0" [(ngModel)]="config.itemsPerPage">-->
                                                         <select name="show_item" class="form-control" [(ngModel)]="config.itemsPerPage">
@@ -186,14 +184,14 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr *ngFor="let cdrr of cdrrList | fieldFilter:'orders':binding | paginate: config">
-                                                    <td>{{cdrr.code}}</td>
-                                                    <td>{{cdrr.period_begin}}</td>
-                                                    <td>{{cdrr.status}}</td>
-                                                    <td>{{cdrr.facility_name}}</td>
+                                                <tr *ngFor="let map of mapsList | fieldFilter: 'period':period_begin_maps_filter | fieldFilter:'orders':binding | paginate: config">
+                                                    <td>{{map.code}}</td>
+                                                    <td>{{map.period_begin}}</td>
+                                                    <td>{{map.status}}</td>
+                                                    <td>{{map.facility_name}}</td>
                                                     <td style="text-align: center;">
-                                                        <a [routerLink]="['/orders/view-cdrr']" class="btn btn-default btn-xs"><i class="fa fa-eye"></i> View</a>
-                                                        <a [routerLink]="['/orders/update-cdrr']" class="btn btn-primary btn-xs"><i class="fa fa-refresh"></i> Update</a>
+                                                        <a [routerLink]="['/orders/view-map']" class="btn btn-default btn-xs"><i class="fa fa-eye"></i> View</a>
+                                                        <a [routerLink]="['/orders/update-map']" class="btn btn-primary btn-xs"><i class="fa fa-refresh"></i> Update</a>
                                                         <a class="btn btn-danger btn-xs" title="Delete"><i class="fa fa-trash"></i> Delete</a>
                                                         <a class="btn btn-success btn-xs" title="Download"><i class="fa fa-download"></i> Download</a>
                                                     </td>
