@@ -11,7 +11,7 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class InventoryService {
 
-    protected _apiUrl = CONFIG.alternateUrl;
+    protected _apiUrl = CONFIG.baseUrl;
 
     private _storesApi = this._apiUrl + 'stores';
 
