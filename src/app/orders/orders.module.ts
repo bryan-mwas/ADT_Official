@@ -11,6 +11,8 @@ import { FormsModule } from '@angular/forms';
 import { SmartadminInputModule } from "../shared/forms/input/smartadmin-input.module";
 import { SmartadminDatatableModule } from "../shared/ui/datatable/smartadmin-datatable.module";
 import { OrdersService } from './orders.service';
+import { Ng2PaginationModule } from 'ng2-pagination';
+import { UtilsModule } from '../shared/utils/utils.module'; // For field filter pipe.
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { OrdersService } from './orders.service';
     SmartadminModule,
     FormsModule,
     SmartadminInputModule,
-    SmartadminDatatableModule
+    SmartadminDatatableModule,
+    Ng2PaginationModule,
+    UtilsModule
   ],
   providers: [OrdersService],
   entryComponents: []

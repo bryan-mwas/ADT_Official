@@ -102,7 +102,7 @@ export class DispenseService {
         let headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' }); // ... Set content type to JSON
         let options = new RequestOptions({ headers: headers }); // Create a request option
 
-        return this._http.post(`${this._url}${body['patient_id']}/dispense`, body, options) // ...using put request
+        return this._http.post(`${this._url}dispense/patients/${body['patient_id']}`, body, options) // ...using put request
             .map(() => body)
             .catch((error: any) => Observable.throw(error.json().error || 'Server error')); //...errors if a
     }

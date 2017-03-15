@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { OrdersService } from './orders.service';
 import { Order, Facility } from './orders';
 import { Observable } from 'rxjs/Observable';
+import { PaginationInstance } from 'ng2-pagination';
 // import { ModalDirective } from "ng2-bootstrap";
 // import { ViewChild } from "@angular/core/src/metadata/di";
 
@@ -29,52 +30,99 @@ export class OrdersComponent implements OnInit {
     }
   }
 
+  //Advanced
+  public maxSize: number = 7;
+  public directionLinks: boolean = true;
+  public autoHide: boolean = false;
+  public config: PaginationInstance = {
+    itemsPerPage: 10,
+    currentPage: 1
+  };
+  public labels: any = {
+    previousLabel: 'Previous',
+    nextLabel: 'Next',
+    screenReaderPaginationLabel: 'Pagination',
+    screenReaderPageLabel: 'page',
+    screenReaderCurrentLabel: `You're on page`
+  };
+
   cdrrList: Order[];
   cdrr = new Order();
   mapsList: Order[];
   maps = new Order();
-  private facilityDetails: Observable<String[]>
+  private facilityDetails: Observable<String[]>;
+  binding: string;
+  show_items: number;
+  filter_period: any[];
+  filter_period_maps: any[];
+  monthsList = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  period_begin_filter: string = 'all';
+  period_begin_maps_filter: string = 'all';
 
   constructor(private _ordersService: OrdersService) { }
 
-  tableOptions: Object = {
-    colReorder: true,
-    ajax: 'assets/api/tables/orders.dummy.json',
-    columns: [{ data: 'id' }, { data: 'period_beginning' }, { data: 'status' }, { data: 'facility_name' }],
-    "columnDefs": [
-      {
-        // The `data` parameter refers to the data for the cell (defined by the
-        // `data` option, which defaults to the column being worked with, in
-        // this case `data: 0`.
-        "render": function (data, type, row) {
-          return `
-               <div class="btn-group" role="group">
-                <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Options
-                  <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                  <li><a href="/orders/view-cdrr">View</a></li>
-                  <li><a href="/orders/update-cdrr">Update</a></li>
-                  <li><a>Delete</a></li>
-                  <li><a>Download</a></li>
-                </ul>
-              </div>
-              `
-          // return '<a class="btn btn-primary btn-xs" href="patients/dispense/' + row['id'] + '">Dispense</a> <a class="btn btn-primary btn-xs" href="patients/view/' + row['id'] + '">Detail</a>'
-        },
-        // NOTE: Targeting the [actions] column.
-        "targets": 4
-      },
-      { "width": "10%", "targets": 0 }
-    ],
-    responsive: true
+  ngOnInit(): void {
+    this._ordersService.getCdrrOrderDetails().subscribe((data: Order[]) => {
+      this.cdrrList = data;
+      // Array with period_begin only
+      let period_begin: any[] = data.map(item => item.period_begin);
+      this.filter_period = this.isolatePeriodDates(period_begin).sort().reverse();
+    });
+    this._ordersService.getMapOrderDetails().subscribe(data => {
+      this.mapsList = data;
+      let period_map_begin: any[] = data.map(item => item.period_begin);
+      this.filter_period_maps = this.isolatePeriodDates(period_map_begin).sort().reverse();
+    });
+    this._ordersService.getFacilityDetails().subscribe(data => this.facilityDetails = data);
+  }
+  /**
+   * Isolates the unique dates from the period begin values
+   */
+  isolatePeriodDates(period_begin: any[]) {
+    let unique = {};
+    let distinct = [];
+    let res = []; // Holds arrays resulting from the split operation hence, it is multi-dimnsional in nature
+    period_begin.forEach((element) => {
+      res.push(element.split("-"));
+    });
+    let combined = [];
+    // i is the date from the respective list
+    for (let i in res) {
+      // Creates a list of the dates i.e Month - Year
+      // parseInt => Clears the preceeding 0 in a number
+      combined.push(this.monthsList[parseInt(res[i][1], 10) - 1] + '-' + res[i][0]);
+    }
+    // unique and distinct; Both are used to produce an array with distinct values
+    for (var i in combined) {
+      if (typeof (unique[combined[i]]) == "undefined") {
+        distinct.push(combined[i]);
+      }
+      unique[combined[i]] = 0;
+    }
+    // This property is iterated over at the filter period
+    return distinct;
+    // console.log(this.distinct)
+  }
+  /**
+   * 
+   * @param date 
+   */
+  filterPeriod(date: string) {
+    // Gives an array with [0] -> Month && [1] -> Year
+    date.split('-');
+    let period_begin: any[] = this.cdrrList.map(item => item.period_begin);
+    period_begin.forEach(el => console.log(new Date(el).getFullYear()))
+    console.log(period_begin)
   }
 
-  ngOnInit(): void {
-    this._ordersService.getCdrrOrderDetails().subscribe(data => this.cdrrList = data);
-    this._ordersService.getMapOrderDetails().subscribe(data => this.mapsList = data);
-    // this._ordersService.getFacilityDetails().subscribe(data => this.facilityDetails = data);
+  /**
+   * 
+   * @param number 
+   */
+
+  onPageChange(number: number) {
+    console.log('change to page', number);
+    this.config.currentPage = number;
   }
 
 }
