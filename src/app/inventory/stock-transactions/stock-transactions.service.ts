@@ -11,8 +11,8 @@ import { CONFIG } from '../../core/config';
 @Injectable()
 export class StockTransactionsService {
 
-  // private _apiUrl = CONFIG.baseUrl;
-  private _apiUrl = CONFIG.alternateUrl;
+  private _apiUrl = CONFIG.baseUrl;
+  // private _apiUrl = CONFIG.alternateUrl;
 
   // private _transactionApi = this._apiUrl + 'stock';
   private _drugsApi = this._apiUrl + 'drugs';
