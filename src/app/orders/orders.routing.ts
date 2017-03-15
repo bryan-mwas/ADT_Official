@@ -11,23 +11,23 @@ export const routes: Routes = [
         component: OrdersComponent
     },
     {
-        path: 'view-cdrr',
+        path: 'view-cdrr/:id',
         component: ViewCdrrComponent,
         data: { pageTitle: 'Satellite Facility F-CDRR'}
     },
     {
-        path: 'update-cdrr',
-        component: UpdateCdrrComponent,
+        path: 'update-cdrr/:id',
+        component: ViewCdrrComponent,
         data: { pageTitle: 'Satellite Facility F-CDRR'}
     },
     {
-        path: 'view-map',
+        path: 'view-map/:id',
         component: ViewMapComponent,
         data: { pageTitle: 'Satellite Facility MAP'}
     },
     {
-        path: 'update-map',
-        component: UpdateMapComponent,
+        path: 'update-map/:id',
+        component: ViewMapComponent,
         data: { pageTitle: 'Satellite Facility MAP'}
     }
 ];

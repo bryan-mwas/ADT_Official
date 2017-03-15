@@ -25,7 +25,12 @@ export class OrdersService {
       .do(data => console.log('All CDRRs: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
-
+  getIndividualCdrrOrderDetails(id: number) {
+    return this._http.get(`${this._cdrrApi}/${id}`)
+      .map((response: Response) => <Order[]>response.json())
+      .do(data => console.log('Single CDRR: ' + JSON.stringify(data)))
+      .catch(this.handleError);
+  }
   getMapOrderDetails() {
     return this._http.get(this._mapsApi)
       .map((response: Response) => <Order[]>response.json())
