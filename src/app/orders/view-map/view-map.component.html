@@ -1,3 +1,99 @@
-<p>
-  view-map works!
-</p>
+<div id="content" *ngIf="map_item">
+  <sa-widgets-grid>
+    <sa-widget [colorbutton]="false" [editbutton]="false" [togglebutton]="false" [deletebutton]="false" [fullscreenbutton]="true"
+      [custombutton]="false" [sortable]="false" color="blueDark">
+      <header>
+        <h2>{{map_item.code+'#'+map_item.id}} {{map_item.status}}</h2>
+      </header>
+      <div class="table-responsive" style="padding:12px; overflow-x:auto;">
+        <form [formGroup]="mapForm" novalidate>
+          <div class="table-responsive">
+            <table style="width: 100%" class="table table-bordered table-condensed">
+              <tbody>
+                <tr>
+                  <th>Facility Code</th>
+                  <td>{{map_item.code}}</td>
+                  <th>Facility Name</th>
+                  <td>{{map_item.facility_name | uppercase}}</td>
+                </tr>
+                <tr>
+                  <th>County</th>
+                  <td></td>
+                  <th>District</th>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th>Programme Supervisor</th>
+                  <td>{{map_item.supporter_name | uppercase}}</td>
+                  <th>Service Provided</th>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th>Reporting Period</th>
+                  <td class="form-inline">
+                    <span style="font-weight: bold;">Beginning: </span>
+                    <input class="form-control" formControlName="period_begin" style="width: 150px;" type="text" name="" id="">
+                    <!--<input class="form-control" style="width: 90px;" type="text">-->
+                  </td>
+                  <td colspan="2" class="form-inline">
+                    <span style="font-weight: bold;">Ending: </span>
+                    <input class="form-control" formControlName="period_end" style="width: 150px;" type="text" name="" id="">
+                    <!--<input class="form-control" style="width: 90px;" type="text">-->
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-bordered table-stripped table-condensed">
+              <thead>
+                <tr>
+                <th>Regimen Code</th>
+                <th>ARV Treatment Regimen</th>
+                <th>No of Cumulative Active Patients/Clients on this regimen at the End of the Reporting period
+                  <a class="btn btn-xs btn-info"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td id="complex_table">
+                    <input id="input" type="text" class="form-control">
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <table style="width: 100%" class="table table-bordered">
+            <tr>
+              <th>Report Prepared by:</th>
+              <td></td>
+              <th>Designation:</th>
+              <td></td>
+            </tr>
+            <tr>
+              <th>Contact Telephone:</th>
+              <td></td>
+              <th>Date:</th>
+              <td></td>
+            </tr>
+            <tr>
+              <th>Report Updated by:</th>
+              <td></td>
+              <th>Designation:</th>
+              <td></td>
+            </tr>
+            <tr>
+              <th>Contact Telephone:</th>
+              <td></td>
+              <th>Date:</th>
+              <td></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+    </sa-widget>
+  </sa-widgets-grid>
+</div>

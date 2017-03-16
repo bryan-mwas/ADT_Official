@@ -2,6 +2,7 @@ import { Component, OnInit, DoCheck, Input } from '@angular/core';
 import { Patient } from '../patients';
 import { PatientsService } from '../patients.service';
 import { Observable } from 'rxjs/Observable';
+import { PaginationInstance } from 'ng2-pagination';
 
 declare var $: any;
 
@@ -19,6 +20,22 @@ export class PatientListComponent implements OnInit, DoCheck {
   contact: string;
   regimen: string;
   status_binding: string = '';
+
+  //Advanced
+  public maxSize: number = 7;
+  public directionLinks: boolean = true;
+  public autoHide: boolean = false;
+  public config: PaginationInstance = {
+    itemsPerPage: 10,
+    currentPage: 1
+  };
+  public labels: any = {
+    previousLabel: 'Previous',
+    nextLabel: 'Next',
+    screenReaderPaginationLabel: 'Pagination',
+    screenReaderPageLabel: 'page',
+    screenReaderCurrentLabel: `You're on page`
+  };
 
   constructor(protected service: PatientsService) { }
 

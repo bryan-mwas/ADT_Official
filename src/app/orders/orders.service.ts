@@ -37,6 +37,12 @@ export class OrdersService {
       .do(data => console.log('All MAPs: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
+  getIndividualMapOrderDetails(id: number) {
+    return this._http.get(`${this._mapsApi}/${id}`)
+      .map((response: Response) => <Order[]>response.json())
+      .do(data => console.log('Single MAP: ' + JSON.stringify(data)))
+      .catch(this.handleError);
+  }
 
   getFacilityDetails() {
     return this._http.get(this._facilitiesApi)
@@ -46,7 +52,6 @@ export class OrdersService {
   }
 
   // Error Handling
-
   private handleError(error: Response) {
     let msg = `Status code ${error.status} on url ${error.url}`;
     console.error(msg);

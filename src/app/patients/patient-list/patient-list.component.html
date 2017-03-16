@@ -109,15 +109,17 @@
                             </table>
                             <div class="dt-toolbar-footer">
                                 <div class="col-sm-6 col-xs-12">
-                                    <div class="dataTables_info" id="DataTables_Table_1_info" role="status" aria-live="polite">
-                                        Showing {{patients.from}} to {{patients.to}} of {{patients.total}} entries
+                                    <div class="dataTables_info form-inline" id="DataTables_Table_1_info" role="status" aria-live="polite">
+                                        Current Page: <input type="number" class="form-control" min="0" [(ngModel)]="config.currentPage">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-6">
                                     <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_1_paginate">
-                                        <!--<pagination class="dataTables_paginate paging_simple_numbers" [itemsPerPage]="patients.per_page" [totalItems]="patients.total"
-                                            [(ngModel)]="currentPage" (pageChanged)="pageChanged($event)"></pagination>-->
-                                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                                        <pagination-controls [maxSize]="maxSize" [directionLinks]="directionLinks" [autoHide]="autoHide" [previousLabel]="labels.previousLabel"
+                                            [nextLabel]="labels.nextLabel" [screenReaderPaginationLabel]="labels.screenReaderPaginationLabel"
+                                            [screenReaderPageLabel]="labels.screenReaderPageLabel" [screenReaderCurrentLabel]="labels.screenReaderCurrentLabel"
+                                            (pageChange)="onPageChange($event)">
+                                        </pagination-controls>
                                     </div>
                                 </div>
                             </div>

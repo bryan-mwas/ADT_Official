@@ -106,6 +106,7 @@ export class PatientsService {
     getPatient(id: number) {
         return this._http.get(this._addPatientRoute + `/${id}`)
             .map((response: Response) => <Patient[]>response.json())
+            .retry()
             .do(data => console.log('All: ' + JSON.stringify(data)))
             .catch(this.handleError);
     }
@@ -113,6 +114,7 @@ export class PatientsService {
     getLocation() {
         return this._http.get(this._locationsApi)
             .map((response: Response) => <PlaceOfBirth[]>response.json())
+            .retry()
             // .do(data => console.log('All: ' + JSON.stringify(data)))
             .catch(this.handleError);
     }
@@ -120,6 +122,7 @@ export class PatientsService {
     getServices() {
         return this._http.get(this._servicesApi)
             .map((response: Response) => <Service[]>response.json())
+            .retry()
             // .do(data => console.log('All: ' + JSON.stringify(data)))
             .catch(this.handleError);
     }
@@ -130,26 +133,31 @@ export class PatientsService {
     getService(id: number): Observable<any> {
         return this.getServices()
             .map((service: Service[]) => service.find(p => p.id === id))
+            .retry()
             .do(data => console.log('Service: ' + JSON.stringify(data)));
     }
 
     getRegimen() {
         return this._http.get(this._regimenApi)
-            .map(res => res.json());
+            .map(res => res.json())
+            .retry();
     }
 
     getProphylaxis() {
         return this._http.get(this._prophylaxisApi)
-            .map(res => res.json());
+            .map(res => res.json())
+            .retry();
     }
 
     getWho_stage() {
         return this._http.get(this._whoStageApi)
-            .map(res => res.json());
+            .map(res => res.json())
+            .retry();
     }
     getSource() {
         return this._http.get(this._sourcesApi)
             .map((response: Response) => <Source[]>response.json())
+            .retry()
             .do(data => console.log('All: ' + JSON.stringify(data)))
             .catch(this.handleError);
     }
@@ -157,6 +165,7 @@ export class PatientsService {
     getIllness(): Observable<Illness[]> {
         return this._http.get(this._illnessApi)
             .map((response: Response) => <Illness[]>response.json())
+            .retry()
             .do(data => console.log('All: ' + JSON.stringify(data)))
             .catch(this.handleError);
     }
@@ -164,6 +173,7 @@ export class PatientsService {
     getAllergies(): Observable<Allergies[]> {
         return this._http.get(this._allergiesApi)
             .map((response: Response) => <Allergies[]>response.json())
+            .retry()
             .do(data => console.log('All: ' + JSON.stringify(data)))
             .catch(this.handleError);
     }
