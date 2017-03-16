@@ -12,6 +12,7 @@ export class BinCardComponent implements OnInit {
 
   transactions: ITransactionDetail[];
   batches: ITransactionDetail[];
+  drugInfo: any[];
   public currentPage: number = 1;
 
   constructor(
@@ -21,11 +22,14 @@ export class BinCardComponent implements OnInit {
 
   ngOnInit() {
     this._route.params
-      .switchMap((params: Params) => this._inventoryService.getDrugTransactions(1, +params['id']))
+      .switchMap((params: Params) => this._inventoryService.getDrugTransactions(+params['storeId'], +params['drugId']))
       .subscribe(res => this.transactions = res);
     this._route.params
-      .switchMap((params: Params) => this._inventoryService.getViableBatches(1, +params['id']))
+      .switchMap((params: Params) => this._inventoryService.getViableBatches(+params['storeId'], +params['drugId']))
       .subscribe(res => this.batches = res);
+    this._route.params
+      .switchMap((params: Params) => this._inventoryService.getDrugInformation(+params['storeId'], +params['drugId']))
+      .subscribe(res => this.drugInfo = res);
   }
 
 }

@@ -49,10 +49,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
       drugs: this._fb.array([this.buildRow()]),
     });
     this._transactionService.getTransactionTypes().subscribe(data => this.transactionTypes = data);
-    this._transactionService.getDrugs().subscribe(d => this.drugsList = d);
-    // this._transactionService.getItems().subscribe(i => this.storeItems = i);
     this._transactionService.getStores().subscribe(z => this.storesList = z);
-    // console.log(this.rows.controls[0] + 'index: ' + this.index);
   }
 
   buildRow(): FormGroup {
@@ -143,6 +140,8 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
       .subscribe(i => this.batchList = i);
   }
 
+  getBatches(id: number, index: number) {}
+
   getBatchDetails(batchNo: string, index: number) {
     let b = this.drugsList.find(val => val['batch_number'] === batchNo);
     if (b) {
@@ -175,7 +174,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
   quantityValidator(packs: number, val: number) {
     let q = this.rows.controls[+[val]].value.quantity;
     let aq = this.rows.controls[+[val]].value.balance_before;
-    if (this.rows.controls[+[val]].get('balance_before').dirty && (packs * q) > aq) {
+    if (this.rows.controls[+[val]].get('balance_before').value !== null && (packs * q) > aq) {
       this.errorAlert('Quantity entered is greater than Available Quantity');
     }
   }
@@ -234,32 +233,22 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     this._router.navigateByUrl(`/inventory/inventory-management/${this.store.id}`);
   }
 
+  quantityCalculator(val: any, index: number) {
+    let currentRow = this.rows.controls[index].value;
+    this.rows.controls[index].patchValue({
+      quantity: (currentRow.quantity_packs * currentRow.pack_size)
+    });
+  }
+
+  totalCalculator(val: any, index: number) {
+    let currentRow = this.rows.controls[index].value;
+    this.rows.controls[index].patchValue({
+      quantity: (currentRow.quantity_packs * currentRow.unit_cost)
+    });
+  }
+
   // Yucky Zone
 
   ngDoCheck() {
-    if (this.i != null) {
-      let currentRow = this.rows.controls[this.i].value;
-      let p = currentRow.quantity_packs;
-      let pc = currentRow.unit_cost;
-      let ps = currentRow.pack_size;
-      let aq = currentRow.quantity;
-      let q = currentRow.balance_before;
-      this.rows.controls[this.i].patchValue({
-        total: (p * pc),
-        quantity: (ps * p)
-      });
-    }
-    // if (this.stockTransactionsForm.get('transaction_type_id').valueChanges) {
-    //   console.log(JSON.stringify(this.transaction));
-    //   if (this.transaction) {
-    //     if (this.transaction['effect'] === 0) {
-    //       this._route.params
-    //         .switchMap((params: Params) => this._transactionService.getDrugsbyStore(+params['id']))
-    //         .subscribe(z => this.drugsList = z);
-    //       this._transactionService.getDrugDetails(this.drugsList['drug_id']).subscribe(p => this.drugsList = p);
-    //     }
-    //   }
-    // }
   }
-
 }

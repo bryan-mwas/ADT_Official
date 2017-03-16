@@ -14,27 +14,27 @@
                         <tbody>
                            <tr style="border-top:0px">
                               <td>Commodity</td>
-                              <th id="drug_name">ABACAVIR (ABC) Liquid 20MG/ML (240ml)</th>
+                              <th id="drug_name">{{drugInfo?.commodity}}</th>
                            </tr>
                            <tr>
                               <td>Unit</td>
-                              <th id="drug_unit"> Bottle</th>
+                              <th id="drug_unit"> {{drugInfo?.unit}}</th>
                            </tr>
                            <tr>
                               <td>Total Stock</td>
-                              <th id="stock_status" style="color:#00B831;font-weight:bold;">0</th>
+                              <th id="stock_status" style="color:#00B831;font-weight:bold;">{{drugInfo?.total_stock}}</th>
                            </tr>
                            <tr>
                               <td>Max Stock Level</td>
-                              <th id="maximum_consumption">0</th>
+                              <th id="maximum_consumption">{{drugInfo?.max_stock_level}}</th>
                            </tr>
                            <tr>
                               <td>Min Stock Level</td>
-                              <th id="minimum_consumption">0</th>
+                              <th id="minimum_consumption">{{drugInfo?.min_stock_level}}</th>
                            </tr>
                            <tr>
                               <td>Avg Monthly Consumption</td>
-                              <th id="avg_consumption">0</th>
+                              <th id="avg_consumption">{{drugInfo?.avg_monthly_consumption}}</th>
                            </tr>
                         </tbody>
                      </table>
@@ -76,7 +76,7 @@
                                     <th>Expiry Date</th>
                                  </tr>
                               </thead>
-                              <tbody><tr><th colspan="5" style="text-align: center">No Viable Batches</th></tr></tbody>
+                              <tbody *ngIf="batches > 1"><tr><th colspan="5" style="text-align: center">No Viable Batches</th></tr></tbody>
                               <tbody>
                                  <tr *ngFor="let batch of batches | fieldFilter:'name':binding">
                                     <td>{{batch.name}}</td>
