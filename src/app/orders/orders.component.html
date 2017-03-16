@@ -86,7 +86,7 @@
                                             </thead>
                                             <tbody>
                                                 <tr *ngFor="let cdrr of cdrrList | fieldFilter:'period':period_begin_filter | fieldFilter:'orders':binding | paginate: config">
-                                                    <td>{{cdrr.code}}</td>
+                                                    <td>{{cdrr.code+'#'+cdrr.id}}</td>
                                                     <td>{{cdrr.period_begin}}</td>
                                                     <td>{{cdrr.status}}</td>
                                                     <td>{{cdrr.facility_name}}</td>
@@ -185,13 +185,13 @@
                                             </thead>
                                             <tbody>
                                                 <tr *ngFor="let map of mapsList | fieldFilter: 'period':period_begin_maps_filter | fieldFilter:'orders':binding | paginate: config">
-                                                    <td>{{map.code}}</td>
+                                                    <td>{{map.code+'#'+map.id}}</td>
                                                     <td>{{map.period_begin}}</td>
                                                     <td>{{map.status}}</td>
                                                     <td>{{map.facility_name}}</td>
                                                     <td style="text-align: center;">
-                                                        <a [routerLink]="['/orders/view-map']" class="btn btn-default btn-xs"><i class="fa fa-eye"></i> View</a>
-                                                        <a [routerLink]="['/orders/update-map']" class="btn btn-primary btn-xs"><i class="fa fa-refresh"></i> Update</a>
+                                                        <a [routerLink]="['/orders/view-map',map.id]" class="btn btn-default btn-xs"><i class="fa fa-eye"></i> View</a>
+                                                        <a [routerLink]="['/orders/update-map',map.id]" class="btn btn-primary btn-xs"><i class="fa fa-refresh"></i> Update</a>
                                                         <a class="btn btn-danger btn-xs" title="Delete"><i class="fa fa-trash"></i> Delete</a>
                                                         <a class="btn btn-success btn-xs" title="Download"><i class="fa fa-download"></i> Download</a>
                                                     </td>

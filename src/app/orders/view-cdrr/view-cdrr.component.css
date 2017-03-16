@@ -20,6 +20,9 @@
   background-color: #f39c12;
   border-color: #e67e22;
 }*/
+.mwas thead {
+    background-color: #f39c12 !important;
+}
         /*table {
             width: 100%;
         }

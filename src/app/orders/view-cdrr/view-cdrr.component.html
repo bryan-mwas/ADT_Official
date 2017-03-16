@@ -1,327 +1,166 @@
-<div id="content">
-  <sa-widgets-grid>
-    <sa-widget [colorbutton]="false" [editbutton]="false" [togglebutton]="false" [deletebutton]="false" [fullscreenbutton]="false"
-      [custombutton]="false" [sortable]="false" color="blueDark">
-      <header>
-        <h2>F-CDRR #35906 Prepared</h2>
-      </header>
-      <div class="table-responsive" style="padding:12px; overflow-x:auto;">
-        <ul class="nav nav-pills">
-          <li><a [routerLink]="['/orders/update-cdrr']">Update</a></li>
-          <li class="active"><a [routerLink]="['/orders/view-cdrr']">View</a></li>
-          <li><a href="#">Delete</a></li>
-        </ul>
-        <form novalidate [formGroup]="cdrrForm">
-          <table style="width: 100%" class="table table-bordered">
-          <tbody *ngIf="cdrr_item">
-            <tr>
-              <th colspan="2" style="text-align: center">FACILITY CONSUMPTION DATA REPORT AND REQUEST (F-CDRR) FOR ANTIRETROVIRALS AND OPPORTUNISTIC INFECTION MEDICINES </th>
-            </tr>
-            <tr>
-              <td><b>Facility Name:</b> {{cdrr_item.facility_name}}</td>
-              <td><b>Facility Code:</b> {{cdrr_item.code}}</td>
-            </tr>
-            <tr>
-              <td><b>County:</b> Nairobi</td>
-              <td><b>District:</b> Starehe</td>
-            </tr>
-            <tr>
-              <td colspan="2"><b>Programme Sponsor:</b> PEPFAR[STATIC]</td>
-            </tr>
-            <tr>
-              <td><b>Type of Service Provided at the Facility:</b> ART, PMTCT, PEP[STATIC]</td>
-              <td><b>Non-ARV:</b> <input type='checkbox' formControlName="arv"></td>
-            </tr>
-            <tr class="form-inline">
-              <td colspan="2"><b>Period of Reporting:</b>
-              <input type="text" class="form-control" formControlName="reporting_period">
-               <!--<select id="select-1" placeholder="April">
-                  <option>April</option>
-               </select>
-               <select id="select-1" placeholder="2016">
-                <option>2017</option>
-               </select>-->
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <table style="width: 100%;" class="table table-bordered">
-            <thead style="background:lightskyblue;">
-              <tr>
-                <th rowspan="3" style="vertical-align:bottom">Drug Name</th>
-                <th rowspan="3" style="vertical-align:bottom">Unit Pack Size</th>
-                <th style="vertical-align:bottom">Beginning Balance</th>
-                <th style="vertical-align:bottom">Quantity Received This Period</th>
-                <th style="vertical-align:bottom">Total Quantity Dispensed this Period</th>
-                <th style="vertical-align:bottom">Losses(Damages, Expiries, Missing)</th>
-                <th style="vertical-align:bottom">Positive Adjustments(Stock Transfers from Other Facilities)</th>
-                <th style="vertical-align:bottom">Negative Adjustments(Borrowed from or Issued out to Other Facilities)</th>
-                <th style="vertical-align:bottom">End of Month Physical Count(For CS Dispensing Point, please exclude the central site store stocks)</th>
-                <th colspan="2" style="vertical-align:bottom">Drugs with Less than 6 Months to Expiry</th>
-                <th style="vertical-align:bottom">Days out of Stock this Month</th>
-                <th style="vertical-align:bottom">Quantity Required for RESUPPLY</th>
-              </tr>
-              <tr>
-                <th style="vertical-align:bottom">In Packs</th>
-                <th style="vertical-align:bottom">In Packs</th>
-                <th style="vertical-align:bottom">In Packs</th>
-                <th style="vertical-align:bottom">In Packs</th>
-                <th style="vertical-align:bottom">In Packs</th>
-                <th style="vertical-align:bottom">In Packs</th>
-                <th style="vertical-align:bottom">In Packs</th>
-                <th style="vertical-align:bottom">Quantity</th>
-                <th style="vertical-align:bottom">Expiry Date</th>
-                <th style="vertical-align:bottom">In Packs</th>
-                <th style="vertical-align:bottom">In Packs</th>
-              </tr>
-              <tr>
-                <th style="vertical-align:bottom">A</th>
-                <th style="vertical-align:bottom">B</th>
-                <th style="vertical-align:bottom">C</th>
-                <th style="vertical-align:bottom">D</th>
-                <th style="vertical-align:bottom">E</th>
-                <th style="vertical-align:bottom">F</th>
-                <th style="vertical-align:bottom">G</th>
-                <th style="vertical-align:bottom">In Unit Packs</th>
-                <th style="vertical-align:bottom">mm-yy</th> 
-                <th style="vertical-align:bottom">H</th>
-                <th style="vertical-align:bottom">I</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-              <td id="complex_table"><input type="text" id="input" class="form-control" /></td>
-              <td id="complex_table"><input type="text" id="input" class="form-control" /></td>
-              <td id="complex_table"><input type="text" id="input" class="form-control" /></td>
-              <td id="complex_table"><input type="text" id="input" class="form-control" /></td>
-              <td id="complex_table"><input type="text" id="input" class="form-control" /></td>
-              <td id="complex_table"><input type="text" id="input" class="form-control" /></td>
-              <td id="complex_table"><input type="text" id="input" class="form-control" /></td>
-              <td id="complex_table"><input type="text" id="input" class="form-control" /></td>
-              <td id="complex_table"><input type="text" id="input" class="form-control" /></td>
-              <td id="complex_table"><input type="text" id="input" class="form-control" /></td>
-              <td id="complex_table"><input type="text" id="input" class="form-control" /></td>
-              <td id="complex_table"><input type="text" id="input" class="form-control" /></td>
-              <td id="complex_table"><input type="text" id="input" class="form-control" /></td>
-            </tr>
-            <tr>
-              <td>Eltavirine[ETV]25mg Tabs</td>
-              <td>96</td>
-              <td>62</td>
-              <td>66</td>
-              <td>66</td>
-              <td>0</td>
-              <td>79</td>
-              <td>90</td>
-              <td>647</td>
-              <td>86</td>
-              <td></td>
-              <td>0</td>
-              <td>702</td>
-            </tr>
-            <tr>
-              <td>Eltavirine[ETV]25mg Tabs</td>
-              <td>96</td>
-              <td>62</td>
-              <td>66</td>
-              <td>66</td>
-              <td>0</td>
-              <td>79</td>
-              <td>90</td>
-              <td>647</td>
-              <td>86</td>
-              <td></td>
-              <td>0</td>
-              <td>702</td>
-            </tr>
-            <tr>
-              <td>Eltavirine[ETV]25mg Tabs</td>
-              <td>96</td>
-              <td>62</td>
-              <td>66</td>
-              <td>66</td>
-              <td>0</td>
-              <td>79</td>
-              <td>90</td>
-              <td>647</td>
-              <td>86</td>
-              <td></td>
-              <td>0</td>
-              <td>702</td>
-            </tr>
-            <tr style="background-color: grey">
-              <td style="text-align: center" colspan="13">Pediatric Preparations</td>
-            </tr>
-            <tr>
-              <td>Eltavirine[ETV]25mg Tabs</td>
-              <td>96</td>
-              <td>62</td>
-              <td>66</td>
-              <td>66</td>
-              <td>0</td>
-              <td>79</td>
-              <td>90</td>
-              <td>647</td>
-              <td>86</td>
-              <td></td>
-              <td>0</td>
-              <td>702</td>
-            </tr>
-            <tr>
-              <td>Eltavirine[ETV]25mg Tabs</td>
-              <td>96</td>
-              <td>62</td>
-              <td>66</td>
-              <td>66</td>
-              <td>0</td>
-              <td>79</td>
-              <td>90</td>
-              <td>647</td>
-              <td>86</td>
-              <td></td>
-              <td>0</td>
-              <td>702</td>
-            </tr>
-            <tr>
-              <td>Zidovudine[AZT]30mg Tabs</td>
-              <td>96</td>
-              <td>62</td>
-              <td>66</td>
-              <td>66</td>
-              <td>0</td>
-              <td>79</td>
-              <td>90</td>
-              <td>647</td>
-              <td>86</td>
-              <td></td>
-              <td>0</td>
-              <td>702</td>
-            </tr>            
-            <tr>
-              <td>Eltavirine[ETV]25mg Tabs</td>
-              <td>96</td>
-              <td>62</td>
-              <td>66</td>
-              <td>66</td>
-              <td>0</td>
-              <td>79</td>
-              <td>90</td>
-              <td>647</td>
-              <td>86</td>
-              <td></td>
-              <td>0</td>
-              <td>702</td>
-            </tr>
-            <tr>
-              <td>Zidovudine[AZT]30mg Tabs</td>
-              <td>96</td>
-              <td>62</td>
-              <td>66</td>
-              <td>66</td>
-              <td>0</td>
-              <td>79</td>
-              <td>90</td>
-              <td>647</td>
-              <td>86</td>
-              <td></td>
-              <td>0</td>
-              <td>702</td>
-            </tr>
-            <tr style="background-color: grey">
-              <td style="text-align: center" colspan="13">Drugs for OIs</td>
-            </tr>
-            <tr>
-              <td>Eltavirine[ETV]25mg Tabs</td>
-              <td>96</td>
-              <td>62</td>
-              <td>66</td>
-              <td>66</td>
-              <td>0</td>
-              <td>79</td>
-              <td>90</td>
-              <td>647</td>
-              <td>86</td>
-              <td></td>
-              <td>0</td>
-              <td>702</td>
-            </tr>
-            <tr>
-              <td>Zidovudine[AZT]30mg Tabs</td>
-              <td>96</td>
-              <td>62</td>
-              <td>66</td>
-              <td>66</td>
-              <td>0</td>
-              <td>79</td>
-              <td>90</td>
-              <td>647</td>
-              <td>86</td>
-              <td></td>
-              <td>0</td>
-              <td>702</td>
-            </tr>
-            <tr>
-              <td>Eltavirine[ETV]25mg Tabs</td>
-              <td>96</td>
-              <td>62</td>
-              <td>66</td>
-              <td>66</td>
-              <td>0</td>
-              <td>79</td>
-              <td>90</td>
-              <td>647</td>
-              <td>86</td>
-              <td></td>
-              <td>0</td>
-              <td>702</td>
-            </tr>
-            <tr>
-              <td>Zidovudine[AZT]30mg Tabs</td>
-              <td>96</td>
-              <td>62</td>
-              <td>66</td>
-              <td>66</td>
-              <td>0</td>
-              <td>79</td>
-              <td>90</td>
-              <td>647</td>
-              <td>86</td>
-              <td></td>
-              <td>0</td>
-              <td>702</td>
-            </tr>
-            </tbody>
-        </table>       
-        <p><b>Comments (Explain ALL Losses and Adjustments)</b></p>
-        <textarea rows="4" style="width: 100%"></textarea>
-        <table style="width: 100%" class="table table-bordered">
-          <tr>
-            <th>Report Prepared by:</th>
-            <td></td>
-            <th>Designation:</th>
-            <td></td>
-          </tr>
-          <tr>
-            <th>Contact Telephone:</th>
-            <td></td>
-            <th>Date:</th>
-            <td></td>
-          </tr>
-          <tr>
-            <th>Report Updated by:</th>
-            <td></td>
-            <th>Designation:</th>
-            <td></td>
-          </tr>
-          <tr>
-            <th>Contact Telephone:</th>
-            <td></td>
-            <th>Date:</th>
-            <td></td>
-          </tr>
-        </table>
-        </form> 
-      </div>
-    </sa-widget>
-  </sa-widgets-grid>
+<div id="content" *ngIf="cdrr_item">
+    <sa-widgets-grid>
+        <sa-widget [colorbutton]="false" [editbutton]="false" [togglebutton]="false" [deletebutton]="false" [fullscreenbutton]="true" [custombutton]="false" [sortable]="false" color="blueDark">
+            <header>
+                <h2>{{cdrr_item.code+'#'+cdrr_item.id}}</h2>
+            </header>
+            <div class="table-responsive" style="padding:12px; overflow-x:auto;">
+                <ul class="nav nav-pills">
+                    <li><a [routerLink]="['/orders/update-cdrr/',cdrr_item.id]">Update</a></li>
+                    <li class="active"><a [routerLink]="['/orders/view-cdrr']">View</a></li>
+                    <li><a href="#">Delete</a></li>
+                </ul>
+                <form novalidate [formGroup]="cdrrForm">
+                    <div class="table-responsive">
+                        <table style="width: 100%" class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th colspan="2" style="text-align: center">FACILITY CONSUMPTION DATA REPORT AND REQUEST (F-CDRR) FOR ANTIRETROVIRALS AND OPPORTUNISTIC INFECTION MEDICINES </th>
+                                </tr>
+                                <tr>
+                                    <td><b>Facility Name:</b> {{cdrr_item.facility_name | uppercase}}</td>
+                                    <td><b>Facility Code:</b> {{cdrr_item.code}}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>County:</b> Nairobi</td>
+                                    <td><b>District:</b> {{cdrr_item.facility['subcounty_name'] | uppercase}}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><b>Programme Sponsor:</b> {{cdrr_item.supporter_name}}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Type of Service Provided at the Facility:</b> {{cdrr_item.facility['service'] | uppercase}}</td>
+                                    <td><b>Non-ARV:</b>
+                                        <input type='checkbox' formControlName="arv">
+                                    </td>
+                                </tr>
+                                <tr class="form-inline">
+                                    <td colspan="2"><b>Period of Reporting:</b>
+                                        <input type="text" class="form-control" formControlName="reporting_period">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-responsive" style="overflow-x: hidden;">
+                        <table style="zoom: 90%" class="table table-bordered table-condensed">
+                            <thead style="background:lightskyblue;">
+                                <tr>
+                                    <th rowspan="3" style="vertical-align:bottom">Drug Name</th>
+                                    <th rowspan="3" style="vertical-align:bottom">Unit Pack Size</th>
+                                    <th style="vertical-align:bottom">Beginning Balance</th>
+                                    <th style="vertical-align:bottom">Quantity Received This Period</th>
+                                    <th style="vertical-align:bottom">Total Quantity Dispensed this Period</th>
+                                    <th style="vertical-align:bottom">Losses(Damages, Expiries, Missing)</th>
+                                    <th style="vertical-align:bottom">Positive Adjustments(Stock Transfers from Other Facilities)</th>
+                                    <th style="vertical-align:bottom">Negative Adjustments(Borrowed from or Issued out to Other Facilities)</th>
+                                    <th style="vertical-align:bottom">End of Month Physical Count(For CS Dispensing Point, please exclude the central site store stocks)</th>
+                                    <th colspan="2" style="vertical-align:bottom">Drugs with Less than 6 Months to Expiry</th>
+                                    <th style="vertical-align:bottom">Days out of Stock this Month</th>
+                                    <th style="vertical-align:bottom">Quantity Required for RESUPPLY</th>
+                                </tr>
+                                <tr>
+                                    <th style="vertical-align:bottom">In Packs</th>
+                                    <th style="vertical-align:bottom">In Packs</th>
+                                    <th style="vertical-align:bottom">In Packs</th>
+                                    <th style="vertical-align:bottom">In Packs</th>
+                                    <th style="vertical-align:bottom">In Packs</th>
+                                    <th style="vertical-align:bottom">In Packs</th>
+                                    <th style="vertical-align:bottom">In Packs</th>
+                                    <th style="vertical-align:bottom">Quantity</th>
+                                    <th style="vertical-align:bottom">Expiry Date</th>
+                                    <th style="vertical-align:bottom">In Packs</th>
+                                    <th style="vertical-align:bottom">In Packs</th>
+                                </tr>
+                                <tr>
+                                    <th style="vertical-align:bottom">A</th>
+                                    <th style="vertical-align:bottom">B</th>
+                                    <th style="vertical-align:bottom">C</th>
+                                    <th style="vertical-align:bottom">D</th>
+                                    <th style="vertical-align:bottom">E</th>
+                                    <th style="vertical-align:bottom">F</th>
+                                    <th style="vertical-align:bottom">G</th>
+                                    <th style="vertical-align:bottom">In Unit Packs</th>
+                                    <th style="vertical-align:bottom">mm-yy</th>
+                                    <th style="vertical-align:bottom">H</th>
+                                    <th style="vertical-align:bottom">I</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td id="complex_table">
+                                        <input type="text" id="input" class="form-control" />
+                                    </td>
+                                    <td id="complex_table">
+                                        <input type="text" id="input" class="form-control" />
+                                    </td>
+                                    <td id="complex_table">
+                                        <input type="text" id="input" class="form-control" />
+                                    </td>
+                                    <td id="complex_table">
+                                        <input type="text" id="input" class="form-control" />
+                                    </td>
+                                    <td id="complex_table">
+                                        <input type="text" id="input" class="form-control" />
+                                    </td>
+                                    <td id="complex_table">
+                                        <input type="text" id="input" class="form-control" />
+                                    </td>
+                                    <td id="complex_table">
+                                        <input type="text" id="input" class="form-control" />
+                                    </td>
+                                    <td id="complex_table">
+                                        <input type="text" id="input" class="form-control" />
+                                    </td>
+                                    <td id="complex_table">
+                                        <input type="text" id="input" class="form-control" />
+                                    </td>
+                                    <td id="complex_table">
+                                        <input type="text" id="input" class="form-control" />
+                                    </td>
+                                    <td id="complex_table">
+                                        <input type="text" id="input" class="form-control" />
+                                    </td>
+                                    <td id="complex_table">
+                                        <input type="text" id="input" class="form-control" />
+                                    </td>
+                                    <td id="complex_table">
+                                        <input type="text" id="input" class="form-control" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p><b>Comments (Explain ALL Losses and Adjustments)</b></p>
+                    <textarea rows="4" style="width: 100%"></textarea>
+                    <table style="width: 100%" class="table table-bordered">
+                        <tr>
+                            <th>Report Prepared by:</th>
+                            <td></td>
+                            <th>Designation:</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Contact Telephone:</th>
+                            <td></td>
+                            <th>Date:</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Report Updated by:</th>
+                            <td></td>
+                            <th>Designation:</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Contact Telephone:</th>
+                            <td></td>
+                            <th>Date:</th>
+                            <td></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </sa-widget>
+    </sa-widgets-grid>
 </div>
