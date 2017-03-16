@@ -3,8 +3,6 @@ import { OrdersService } from './orders.service';
 import { Order, Facility } from './orders';
 import { Observable } from 'rxjs/Observable';
 import { PaginationInstance } from 'ng2-pagination';
-// import { ModalDirective } from "ng2-bootstrap";
-// import { ViewChild } from "@angular/core/src/metadata/di";
 
 declare var $: any;
 
