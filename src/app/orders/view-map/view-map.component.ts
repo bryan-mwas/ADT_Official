@@ -27,11 +27,15 @@ export class ViewMapComponent implements OnInit {
       })
     })
     this.mapForm = this._fb.group({
-      period_begin: [{value:'', disabled: true}],
-      period_end: [{value:'', disabled: true}]
+      period_begin: [{ value: '', disabled: true }],
+      period_end: [{ value: '', disabled: true }]
     })
   }
-
+  /**
+   * GETs the name of the month and year from a date (yyyy-mm-dd)
+   * @param map -> contains period begin and end dates.
+   * @param field 
+   */
   periodStringifier(map: any, field: string) {
     let a = map[field].split('-');
     // Get the month from the date.
