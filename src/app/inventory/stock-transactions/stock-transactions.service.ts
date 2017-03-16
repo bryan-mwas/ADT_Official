@@ -11,8 +11,8 @@ import { CONFIG } from '../../core/config';
 @Injectable()
 export class StockTransactionsService {
 
-  // private _apiUrl = CONFIG.baseUrl;
   private _apiUrl = CONFIG.alternateUrl;
+  // private _apiUrl = CONFIG.alternateUrl;
 
   // private _transactionApi = this._apiUrl + 'stock';
   private _drugsApi = this._apiUrl + 'drugs';
@@ -28,12 +28,14 @@ export class StockTransactionsService {
   getTransactionTypes() {
     return this._http.get(this._typesApi)
       .map((response: Response) => <Types[]>response.json())
+      .retryWhen(error => error.delay(1000))
       .catch(this.handleError);
   }
 
   getTransaction(id: number): Observable<any> {
     return this.getTransactionTypes()
       .map((transaction: Transaction[]) => transaction.find(p => p.id === id))
+      .retryWhen(error => error.delay(1000))
       .do(data => console.log('transaction: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
@@ -41,12 +43,14 @@ export class StockTransactionsService {
   getDrugs() {
     return this._http.get(this._drugsApi)
       .map((response: Response) => <Drug[]>response.json())
+      .retryWhen(error => error.delay(1000))
       .catch(this.handleError);
   }
 
   getDrugDetails(id: number): Observable<any> {
     return this._http.get(this._drugsApi + `/${id}`)
       .map((response: Response) => <Drug[]>response.json())
+      .retryWhen(error => error.delay(1000))
       // .do(data => console.log('lol: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
@@ -54,6 +58,7 @@ export class StockTransactionsService {
   getDrugsbyStore(storeId: number): Observable<any> {
     return this._http.get(this._storeURL + `/${storeId}` + '/stocks/drugs')
       .map((response: Response) => <StockItem[]>response.json())
+      .retryWhen(error => error.delay(1000))
       // .do(data => console.log('drugs in store: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
@@ -73,12 +78,14 @@ export class StockTransactionsService {
   getDrugBatches(storeId: number, drugId: number): Observable<any> {
     return this._http.get(this._storeURL + `/${storeId}` + '/stocks/drugs/' + `${drugId}` + '/all')
       .map((response: Response) => <StoreItem[]>response.json())
+      .retryWhen(error => error.delay(1000))
       .catch(this.handleError);
   }
 
   getDrugBatchDetails(storeId: number, batchNo: string): Observable<any> {
     return this.getDrugsbyStore(storeId)
       .map((stockItem: StockItem[]) => stockItem.find(b => b.batch_number === batchNo))
+      .retryWhen(error => error.delay(1000))
       .do(data => console.log('pengBatch: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
@@ -86,6 +93,7 @@ export class StockTransactionsService {
   thisStore(id: number) {
     return this._http.get(this._storesApi + `/${id}`)
       .map((response: Response) => <Store[]>response.json())
+      .retryWhen(error => error.delay(1000))
       // .do(data => console.log('HERE : ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
@@ -93,6 +101,7 @@ export class StockTransactionsService {
   getStores() {
     return this._http.get(this._storesApi)
       .map((response: Response) => <Store[]>response.json())
+      .retryWhen(error => error.delay(1000))
       // .do(data => console.log('stores: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }

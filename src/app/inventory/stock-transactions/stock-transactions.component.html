@@ -16,7 +16,7 @@
                      </tr>
                      <tr>
                         <div class="input-group">
-                           <input type="text" formControlName="transaction_date" placeholder="Select a date" class="form-control datepicker" [saUiDatepicker]="{ dateFormat: 'yy-mm-dd' , changeMonth: true, changeYear: true, yearRange : 'c-65:c+0'}"
+                           <input type="text" formControlName="transaction_date" class="form-control datepicker" [saUiDatepicker]="dateOptions"
                            (selectDate)='setDate($event)'>
                         </div>
                      </tr>
@@ -41,7 +41,7 @@
                      </tr>
                      <tr>
                         <input type="text" formControlName="ref_number" placeholder="Ref No" class="form-control">
-                     </tr>
+                     </tr>                     
                      <div *ngIf="stockTransactionsForm.get('transaction_type_id').value == 3 || stockTransactionsForm.get('transaction_type_id').value == 4 || stockTransactionsForm.get('transaction_type_id').value == 6 || stockTransactionsForm.get('transaction_type_id').value == 7">
                         <tr>
                            <th>Destination</th>
@@ -134,12 +134,12 @@
                         <td id="complex_table">
                            <!--<input id="input" class="form-control" formControlName="expiry_date" type="text">-->
                            <div class="input-group">
-                              <input type="text" formControlName="expiry_date" class="form-control datepicker" [saUiDatepicker]="{ dateFormat: 'yy-mm-dd' , changeMonth: true, changeYear: true, yearRange : 'c:c+30'}"
+                              <input type="text" formControlName="expiry_date" class="form-control datepicker" [saUiDatepicker]="eDateOptions"
                               (selectDate)='setEDate($event, this.i)'>
                            </div>
                         </td>
                         <td id="complex_table">
-                           <input #packs id="input" class="form-control" formControlName="quantity_packs" type="text" (change)="quantityValidator(packs.value, this.i)" (keyup)="quantityCalculator(packs, this.i)">
+                           <input #packs id="input" class="form-control" formControlName="quantity_packs" type="text" (keyup)="quantityValidator(packs.value, this.i)" (keyup)="quantityCalculator(packs, this.i)">
                         </td>
                         <td id="complex_table">
                            <input id="input" class="form-control" formControlName="quantity" type="text" readonly>

@@ -1,4 +1,5 @@
 import { Component, OnInit, DoCheck } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Types, Transaction, StockItem, Drug, StoreItem, Store } from './transactions';
@@ -12,7 +13,7 @@ declare var $: any;
   selector: 'app-stock-transactions',
   templateUrl: './stock-transactions.component.html',
   styleUrls: ['./stock-transactions.component.css'],
-  providers: [StockTransactionsService]
+  providers: [StockTransactionsService, DatePipe]
 })
 export class StockTransactionsComponent implements OnInit, DoCheck {
 
@@ -23,6 +24,20 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
   transaction: Transaction;
   // stockItem: Transaction;
   drugItem: Drug;
+  eDateOptions: Object = {
+    dateFormat: 'yy-mm-dd',
+    changeMonth: true,
+    changeYear: true,
+    yearRange: 'c:c+20',
+    minDate: new Date()
+  }
+  dateOptions: Object = {
+    dateFormat: 'yy-mm-dd',
+    changeMonth: true,
+    changeYear: true,
+    // minDate: new Date(),
+    beforeShowDay: $.datepicker.noWeekends
+  };
   private storesList: Observable<string[]>;
   private transactionTypes: Transaction[];
   private drugsList: Observable<string[]>;
@@ -34,6 +49,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     private _fb: FormBuilder,
     private _transactionService: StockTransactionsService,
     private _route: ActivatedRoute,
+    private _datePipe: DatePipe,
     private _router: Router) { }
 
   ngOnInit() {
@@ -41,7 +57,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
       .switchMap((params: Params) => this._transactionService.thisStore(+params['id']))
       .subscribe(store => this.store = store);
     this.stockTransactionsForm = this._fb.group({
-      transaction_date: ['', Validators.required],
+      transaction_date: [this.today, Validators.required],
       transaction_type_id: ['', Validators.required],
       ref_number: ['', Validators.required],
       store_id: '',
@@ -59,10 +75,10 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
       pack_size: '',
       batch_number: '',
       expiry_date: '',
-      quantity_packs: ['', Validators.required],
+      quantity_packs: ['', Validators.pattern('^[0-9]*[1-9][0-9]*$')],
       quantity: '',
       balance_before: '',
-      unit_cost: '',
+      unit_cost: ['', Validators.pattern('^[0-9]*[1-9][0-9]*$')],
       total: '',
       comment: ''
     });
@@ -72,6 +88,11 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
 
   get rows(): FormArray {
     return <FormArray>this.stockTransactionsForm.get('drugs');
+  }
+
+  get today() {
+    let today = new Date();
+    return this._datePipe.transform(today, 'y-MM-dd');
   }
 
   addRow() {
@@ -96,7 +117,14 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     });
   }
 
-  setEDate(value: any, index: number) {
+  setEDate(value: Date, index: number) {
+    let today = new Date();
+    let eDate = new Date(value);
+    let eDateMS = eDate.getTime();
+    console.log('1: ' + today + '2: ' + eDate, eDateMS - today.getTime());
+    if (eDateMS - today.getTime() < 15552000000) {
+      this.errorAlert('The expiry date updated is within 6 months!');
+    }
     this.rows.controls[+[index]].patchValue({
       expiry_date: value
     });
@@ -119,6 +147,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
   // List Changers
 
   getStoreDrugs(value: number, index: number) {
+    this.rows.controls[+[index]].reset();
     let e = this.transactionTypes.find(val => val.id === +[value]);
     if (+[e['effect']] === 0) {
       // alert(e);
@@ -140,8 +169,6 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
       .subscribe(i => this.batchList = i);
   }
 
-  getBatches(id: number, index: number) {}
-
   getBatchDetails(batchNo: string, index: number) {
     let b = this.drugsList.find(val => val['batch_number'] === batchNo);
     if (b) {
@@ -158,23 +185,38 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
         pack_size: drug.pack_size,
       }
     );
+    this.rows.get(`${val}.batch_number`).reset();
+    this.rows.get(`${val}.expiry_date`).reset();
+    this.rows.get(`${val}.balance_before`).reset();
+    this.rows.get(`${val}.unit_cost`).reset();
   }
 
   patchBatch(batch: any, val: number) {
     this.rows.controls[+[val]].patchValue(
       {
         expiry_date: batch.expiry_date,
-        balance_before: batch.balance_before,
+        balance_before: batch.balance_after,
+        unit_cost: batch.unit_cost
       }
     );
+    if (this.rows.get(`${val}.expiry_date`).value !== null) {
+      let today = new Date();
+      let eDate = new Date(this.rows.get(`${val}.expiry_date`).value);
+      let eDateMS = eDate.getTime();
+      console.log('1: ' + today + '2: ' + eDate, eDateMS - today.getTime());
+      if (eDateMS - today.getTime() < 15552000000) {
+        this.errorAlert('The drug being transacted expires within 6 months!');
+      }
+    }
   }
 
   // Validators and Notifications
 
   quantityValidator(packs: number, val: number) {
-    let q = this.rows.controls[+[val]].value.quantity;
-    let aq = this.rows.controls[+[val]].value.balance_before;
-    if (this.rows.controls[+[val]].get('balance_before').value !== null && (packs * q) > aq) {
+    if (this.rows.get(`${val}.quantity_packs`).errors) {
+      this.errorAlert('Please enter a valid number');
+    }
+    if (this.rows.get(`${val}.balance_before`).value !== null && (+[packs] * this.rows.controls[+[val]].value.pack_size) > this.rows.controls[+[val]].value.balance_before) {
       this.errorAlert('Quantity entered is greater than Available Quantity');
     }
   }
@@ -241,9 +283,8 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
   }
 
   totalCalculator(val: any, index: number) {
-    let currentRow = this.rows.controls[index].value;
     this.rows.controls[index].patchValue({
-      quantity: (currentRow.quantity_packs * currentRow.unit_cost)
+      total: (this.rows.get(`${index}.quantity_packs`).value * this.rows.get(`${index}.unit_cost`).value)
     });
   }
 
