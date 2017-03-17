@@ -20,6 +20,7 @@ export class InventoryService {
     getDrugs(): Observable<IDrugs[]> {
         return this._http.get(this._apiUrl + 'drugs')
             .map((response: Response) => <IDrugs[]>response.json())
+            .retryWhen(error => error.delay(1000))
             // .do(data => console.log('getDrugs: ' + JSON.stringify(data)))
             .catch(this.handleError);
     }
@@ -27,6 +28,7 @@ export class InventoryService {
     getDrugTransactions(storeId: number, id: number): Observable<any[]> {
         return this._http.get(`${this._apiUrl}stores/${storeId}/stocks/drugs/${id}/all`)
             .map((response: Response) => <any[]>response.json())
+            .retryWhen(error => error.delay(1000))
             .do(data => console.log('Transaction Details: ' + JSON.stringify(data)))
             .catch(this.handleError);
     }
@@ -34,6 +36,7 @@ export class InventoryService {
     getViableBatches(storeId: number, drugId: number): Observable<any[]> {
         return this._http.get(`${this._apiUrl}stores/${storeId}/stocks/drugs/${drugId}/now`)
             .map((response: Response) => <any[]>response.json())
+            .retryWhen(error => error.delay(1000))
             .do(data => console.log('Viable Batch Details: ' + JSON.stringify(data)))
             .catch(this.handleError);
     }
@@ -41,6 +44,7 @@ export class InventoryService {
     getDrugInformation(storeId: number, drugId: number): Observable<any[]> {
         return this._http.get(`${this._apiUrl}stores/${storeId}/stocks/drugs/${drugId}/information`)
             .map((response: Response) => <any[]>response.json())
+            .retryWhen(error => error.delay(1000))
             .do(data => console.log('Drug Details: ' + JSON.stringify(data)))
             .catch(this.handleError);
     }
@@ -48,6 +52,7 @@ export class InventoryService {
     thisStore(id: number) {
         return this._http.get(this._storesApi + `/${id}`)
             .map((response: Response) => <Store[]>response.json())
+            .retryWhen(error => error.delay(1000))
             // .do(data => console.log('HERE : ' + JSON.stringify(data)))
             .catch(this.handleError);
     }
@@ -55,6 +60,7 @@ export class InventoryService {
     getDrugsbyStore(storeId: number): Observable<any> {
     return this._http.get(this._apiUrl + 'stores' + `/${storeId}` + '/stocks/drugs')
       .map((response: Response) => <StockDrugs[]>response.json())
+      .retryWhen(error => error.delay(1000))
     //   .do(data => console.log('drugs in store: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
