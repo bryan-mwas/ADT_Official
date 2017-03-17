@@ -26,7 +26,7 @@ export class ViewCdrrComponent implements OnInit {
         // Get the month from the date.
         let month = this.monthsList[parseInt(a[1], 10) - 1];
         let year = a[0];
-        let report_period: string = month+' '+year;
+        let report_period: string = month + ' ' + year;
         console.log(month, year);
         this.cdrrForm.patchValue({
           arv: cdrr['is_non_arv'],
@@ -36,8 +36,7 @@ export class ViewCdrrComponent implements OnInit {
     )
     this.cdrrForm = this._fb.group({
       arv: '',
-      reporting_period: [{value:'', disabled: true}]
-    })
+      reporting_period: [{ value: '', disabled: true }]
+    });
   }
-
 }

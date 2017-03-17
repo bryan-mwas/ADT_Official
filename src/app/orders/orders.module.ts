@@ -4,6 +4,7 @@ import { OrdersComponent } from './orders.component';
 import { UpdateCdrrComponent } from './update-cdrr/update-cdrr.component';
 import { UpdateMapComponent } from './update-map/update-map.component';
 import { ViewCdrrComponent } from './view-cdrr/view-cdrr.component';
+import { HighlightDirective } from './view-cdrr/cddr.directive';
 import { ViewMapComponent } from './view-map/view-map.component';
 import { routing } from "./orders.routing";
 import { SmartadminModule } from "../shared/smartadmin.module";
@@ -20,7 +21,8 @@ import { UtilsModule } from '../shared/utils/utils.module'; // For field filter 
     ViewMapComponent,
     ViewCdrrComponent,
     UpdateMapComponent,
-    UpdateCdrrComponent
+    UpdateCdrrComponent,
+    HighlightDirective
   ],
   imports: [
     CommonModule,

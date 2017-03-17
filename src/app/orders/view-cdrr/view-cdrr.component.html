@@ -1,4 +1,4 @@
-<div id="content" *ngIf="cdrr_item">
+<div id="content" class="container-fluid" *ngIf="cdrr_item">
     <sa-widgets-grid>
         <sa-widget [colorbutton]="false" [editbutton]="false" [togglebutton]="false" [deletebutton]="false" [fullscreenbutton]="true" [custombutton]="false" [sortable]="false" color="blueDark">
             <header>
@@ -43,95 +43,52 @@
                         </table>
                     </div>
                     <div class="table-responsive" style="overflow-x: hidden;">
-                        <table style="zoom: 90%" class="table table-bordered table-condensed table-fixed">
-                            <thead style="background:lightskyblue;">
+                        <table style="zoom: 90%" class="table table-bordered table-condensed cdrr-header">
+                            <thead>
                                 <tr>
-                                    <th rowspan="3" style="vertical-align:bottom">Drug Name</th>
-                                    <th rowspan="3" style="vertical-align:bottom">Unit Pack Size</th>
-                                    <th style="vertical-align:bottom">Beginning Balance</th>
-                                    <th style="vertical-align:bottom">Quantity Received This Period</th>
-                                    <th style="vertical-align:bottom">Total Quantity Dispensed this Period</th>
-                                    <th style="vertical-align:bottom">Losses(Damages, Expiries, Missing)</th>
-                                    <th style="vertical-align:bottom">Positive Adjustments(Stock Transfers from Other Facilities)</th>
-                                    <th style="vertical-align:bottom">Negative Adjustments(Borrowed from or Issued out to Other Facilities)</th>
-                                    <th style="vertical-align:bottom">End of Month Physical Count(For CS Dispensing Point, please exclude the central site store stocks)</th>
-                                    <th colspan="2" style="vertical-align:bottom">Drugs with Less than 6 Months to Expiry</th>
-                                    <th style="vertical-align:bottom">Days out of Stock this Month</th>
-                                    <th style="vertical-align:bottom">Quantity Required for RESUPPLY</th>
+                                    <th  rowspan="3" style="width: 100%; vertical-align:bottom">Drug Name</th>
+                                    <th  rowspan="3" style="width: 100%; vertical-align:bottom">Unit Pack Size</th>
+                                    <th  style="width: 100%;vertical-align:bottom;">Beginning Balance</th>
+                                    <th  style="width: 100%;vertical-align:bottom;">Quantity Received This Period</th>
+                                    <th  style="width: 100%;vertical-align:bottom;">Total Quantity Dispensed this Period</th>
+                                    <th  style="width: 100%;vertical-align:bottom;">Losses (Damages, Expiries, Missing)</th>
+                                    <th  style="width: 100%;vertical-align:bottom;">Positive Adjustments (Stock Transfers from Other Facilities)</th>
+                                    <th  style="width: 100%;vertical-align:bottom;">Negative Adjustments (Borrowed from or Issued out to Other Facilities)</th>
+                                    <th  style="width: 100%;vertical-align:bottom;">End of Month Physical Count(For CS Dispensing Point, please exclude the central site store stocks)</th>
+                                    <th  colspan="2" style="width: 100%; vertical-align:bottom">Drugs with Less than 6 Months to Expiry</th>
+                                    <th  style="width: 100%;vertical-align:bottom;">Days out of Stock this Month</th>
+                                    <th  style="width: 100%;vertical-align:bottom;">Quantity Required for RESUPPLY</th>
                                 </tr>
                                 <tr>
-                                    <th style="vertical-align:bottom">In Packs</th>
-                                    <th style="vertical-align:bottom">In Packs</th>
-                                    <th style="vertical-align:bottom">In Packs</th>
-                                    <th style="vertical-align:bottom">In Packs</th>
-                                    <th style="vertical-align:bottom">In Packs</th>
-                                    <th style="vertical-align:bottom">In Packs</th>
-                                    <th style="vertical-align:bottom">In Packs</th>
-                                    <th style="vertical-align:bottom">Quantity</th>
-                                    <th style="vertical-align:bottom">Expiry Date</th>
-                                    <th style="vertical-align:bottom">In Packs</th>
-                                    <th style="vertical-align:bottom">In Packs</th>
+                                    <th  style="width: 100%;vertical-align:bottom;">In Packs</th>
+                                    <th  style="width: 100%;vertical-align:bottom;">In Packs</th>
+                                    <th  style="width: 100%;vertical-align:bottom;">In Packs</th>
+                                    <th  style="width: 100%;vertical-align:bottom;">In Packs</th>
+                                    <th  style="width: 100%;vertical-align:bottom;">In Packs</th>
+                                    <th  style="width: 100%;vertical-align:bottom;">In Packs</th>
+                                    <th  style="width: 100%;vertical-align:bottom;">In Packs</th>
+                                    <th  style="width: 100%;vertical-align:bottom;">Quantity</th>
+                                    <th  style="width: 100%;vertical-align:bottom;">Expiry Date</th>
+                                    <th  style="width: 100%;vertical-align:bottom;">In Packs</th>
+                                    <th  style="width: 100%;vertical-align:bottom;">In Packs</th>
                                 </tr>
                                 <tr>
-                                    <th style="vertical-align:bottom">A</th>
-                                    <th style="vertical-align:bottom">B</th>
-                                    <th style="vertical-align:bottom">C</th>
-                                    <th style="vertical-align:bottom">D</th>
-                                    <th style="vertical-align:bottom">E</th>
-                                    <th style="vertical-align:bottom">F</th>
-                                    <th style="vertical-align:bottom">G</th>
-                                    <th style="vertical-align:bottom">In Unit Packs</th>
-                                    <th style="vertical-align:bottom">mm-yy</th>
-                                    <th style="vertical-align:bottom">H</th>
-                                    <th style="vertical-align:bottom">I</th>
+                                    <th  style="width: 100%;vertical-align:bottom;">A</th>
+                                    <th  style="width: 100%;vertical-align:bottom;">B</th>
+                                    <th  style="width: 100%;vertical-align:bottom;">C</th>
+                                    <th  style="width: 100%;vertical-align:bottom;">D</th>
+                                    <th  style="width: 100%;vertical-align:bottom;">E</th>
+                                    <th  style="width: 100%;vertical-align:bottom;">F</th>
+                                    <th  style="width: 100%;vertical-align:bottom;">G</th>
+                                    <th  style="width: 100%;vertical-align:bottom;">In Unit Packs</th>
+                                    <th  style="width: 100%;vertical-align:bottom;">mm-yy</th>
+                                    <th  style="width: 100%;vertical-align:bottom;">H</th>
+                                    <th  style="width: 100%;vertical-align:bottom;">I</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
+                                    <td></td>
                                     <td id="complex_table">
                                         <input type="text" id="input" class="form-control" />
                                     </td>
@@ -170,50 +127,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
+                                    <td></td>
                                     <td id="complex_table">
                                         <input type="text" id="input" class="form-control" />
                                     </td>
@@ -252,50 +166,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
+                                    <td></td>
                                     <td id="complex_table">
                                         <input type="text" id="input" class="form-control" />
                                     </td>
@@ -334,50 +205,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
+                                    <td></td>
                                     <td id="complex_table">
                                         <input type="text" id="input" class="form-control" />
                                     </td>
@@ -416,50 +244,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
+                                    <td></td>
                                     <td id="complex_table">
                                         <input type="text" id="input" class="form-control" />
                                     </td>
@@ -498,50 +283,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
+                                    <td></td>
                                     <td id="complex_table">
                                         <input type="text" id="input" class="form-control" />
                                     </td>
@@ -580,214 +322,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
+                                    <td></td>
                                     <td id="complex_table">
                                         <input type="text" id="input" class="form-control" />
                                     </td>

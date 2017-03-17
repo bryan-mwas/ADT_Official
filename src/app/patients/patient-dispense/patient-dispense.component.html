@@ -92,7 +92,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div *ngIf="dispenseForm.get('current_regimen_id').dirty" class="row">
+                                    <!--<div *ngIf="dispenseForm.get('current_regimen_id').dirty" class="row">
                                         <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                             <label><span style="color:red; font-weight:bold">*</span> Regimen Change Reason</label>
                                             <select class="form-control" id="select-1" formControlName="change_reason_id">
@@ -100,11 +100,18 @@
                                                 <option *ngFor="let reasons of reason" value={{reasons.id}}>{{reasons.name}}</option>
                                             </select>
                                         </div>
-                                    </div>
+                                    </div>-->
                                     <div class="row">
                                         <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                             <label>Appointment Adherance (%)</label>
                                             <input class="form-control" placeholder="autofilled" type="text" formControlName="appointment_adherance" readonly>
+                                        </div>
+                                        <div *ngIf="dispenseForm.get('current_regimen_id').dirty" class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                            <label><span style="color:red; font-weight:bold">*</span> Regimen Change Reason</label>
+                                            <select class="form-control" id="select-1" formControlName="change_reason_id">
+                                                <option selected>--Select One--</option>
+                                                <option *ngFor="let reasons of reason" value={{reasons.id}}>{{reasons.name}}</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </fieldset>
@@ -231,7 +238,7 @@
                                                                     <input #missing class="form-control" id="input" type="text" formControlName="missed_pill_count" (keyup)="checkMissedPills(missing.value, this.i)">
                                                                 </td>
                                                                 <td id="complex_table">
-                                                                    <button *ngIf="dispenseForm.controls.drugs.controls.length > 1" type="button" class="btn btn-danger" (click)="smartAlert('Are you sure?','delete_row',i)">Remove</button>
+                                                                    <button *ngIf="dispenseForm.controls.drugs.controls.length > 1" type="button" class="btn btn-danger" (click)="smartAlert('Are you sure?','delete_row', this.i)">Remove</button>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -262,6 +269,9 @@
                                                             <option selected>--Select One--</option>
                                                             <option *ngFor="let non_adhere of non_adherence" value="{{non_adhere.id}}">{{non_adhere.name}}</option>
                                                         </select>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-primary" (click)="lgModal.hide()">Proceed</button>
                                                 </div>
                                             </div>
                                         </div>
