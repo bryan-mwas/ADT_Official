@@ -284,7 +284,9 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
       missed_pill_count: ''
     });
   }
-
+  /**
+   * Tracks the last row in the drug details form array
+   */
   addRow() {
     // Proper way to access the individual form control in a form array
     let dispenseControl = this.rows.get(`${this.rows.length - 1}.quantity_out`);
@@ -303,20 +305,13 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
   }
 
   removeRow(i: number) {
-    if (i !== 0) {
-      const control = <FormArray>this.dispenseForm.controls['drugs'];
-      control.removeAt(i);
-    }
-    else {
-      alert('You cannot delete the first row. Try restting the fields');
-    }
+    const control = <FormArray>this.dispenseForm.controls['drugs'];
+    control.removeAt(i);
   }
   /**
-   * 
+   * Prepopulates the current array based on previous dispensed drugs
+   * @param drugs 
    */
-  logArrayElements(element, index, array) {
-    console.log('a[' + index + '] = ' + element);
-  }
   setDrugs(drugs: DrugsTable[]) {
     const drugsFGs = drugs.map(drugs => this.fb.group(drugs));
     console.log(drugsFGs)
@@ -338,7 +333,7 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
     // First Check if it is a weekend
     let app_date = new Date(date_to_set);
     if (app_date.getDay() == 6 || app_date.getDay() == 0) {
-      alert('That will be during the weekend. Please reschedule.');
+      this.errorAlert('That will be during the weekend. Please reschedule.');
     }
     else {
       this.setdate = date_to_set;
@@ -390,7 +385,7 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
       buttons: '[No][Yes]'
     }, (ButtonPressed) => {
       if (ButtonPressed === "Yes") {
-        if (type === 'delete_row' && optional) {
+        if (type === 'delete_row' && typeof optional != 'undefined') {
           this.removeRow(optional)
         }
       }
@@ -404,6 +399,14 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
       iconSmall: "fa fa-thumbs-up bounce animated",
       timeout: 4000
     });
+  }
+  warningAlert(val: string) {
+    $.SmartMessageBox({
+      title: "Warning!",
+      content: val,
+      buttons: '[OK]'
+    });
+
   }
   errorAlert(value: string) {
     $.smallBox({
@@ -439,11 +442,11 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
    */
   checkValidation(value: any, index: number) {
     if (this.rows.get(`${index}.quantity_out`).errors) {
-      this.errorAlert('Negative values are not allowed.');
+      this.warningAlert('Negative values are not allowed.');
     }
     let stock = this.rows.get(`${index}.balance_before`);
     if (+[value] > +[stock.value]) {
-      this.errorAlert('Qty dispensed cannot be more than stock on hand')
+      this.warningAlert('Qty dispensed cannot be more than stock on hand')
       this.is_greater = true;
     }
     else {
@@ -546,7 +549,8 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
    * Trigger modal if missed pills is greater than one
    */
   checkMissedPills(missed_pill_count: number, index: number) {
-    if (missed_pill_count > 0) {
+    let non_adherence = this.dispenseForm.get(`non_adherance_reason_id`);
+    if (missed_pill_count > 0 && non_adherence.value === '') {
       this.showChildModal();
     }
   }

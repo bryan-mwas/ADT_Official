@@ -110,11 +110,11 @@
                             <div class="dt-toolbar-footer">
                                 <div class="col-sm-6 col-xs-12">
                                     <div class="dataTables_info form-inline" id="DataTables_Table_1_info" role="status" aria-live="polite">
-                                        Current Page: <input type="number" class="form-control" min="0" [(ngModel)]="config.currentPage">
+                                        Current Page: <input style="width: 50%" type="number" class="form-control" min="0" [(ngModel)]="config.currentPage">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-6">
-                                    <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_1_paginate">
+                                    <div class="dataTables_info form-inline pull-right" id="DataTables_Table_1_paginate">
                                         <pagination-controls [maxSize]="maxSize" [directionLinks]="directionLinks" [autoHide]="autoHide" [previousLabel]="labels.previousLabel"
                                             [nextLabel]="labels.nextLabel" [screenReaderPaginationLabel]="labels.screenReaderPaginationLabel"
                                             [screenReaderPageLabel]="labels.screenReaderPageLabel" [screenReaderCurrentLabel]="labels.screenReaderCurrentLabel"
