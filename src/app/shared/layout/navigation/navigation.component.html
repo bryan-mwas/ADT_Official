@@ -67,154 +67,25 @@
             <a><i class="fa fa-lg fa-fw fa-folder-open-o" aria-hidden="true"></i> <span class="menu-item-parent"> REPORTS</span></a>
             <ul>
                <li>
-                  <a><i class="glyphicon glyphicon-list-alt"></i> Standard Reports</a>
-                  <ul>
-                     <li class="indent-text">
-                        <a><i class="fa fa-table"></i>Number of Patients Enrolled in a period</a>
-                     </li>
-                     <li class="indent-text">
-                        <a><i class="fa fa-table"></i>Number of Patients Started on ART in Period</a>
-                     </li>
-                     <li class="indent-text">
-                        <a><i class="fa fa-bar-chart-o"></i>Graph of Number of Patients Enrolled per Month in a given Year</a>
-                     </li>
-                     <li class="indent-text">
-                        <a><i class="fa fa-table"></i>Cummulative Number of Patients to Date</a>
-                     </li>
-                     <li class="indent-text">
-                        <a><i class="fa fa-table"></i>Number of Active Patients Receiving ART [by Regimen]</a>
-                     </li>
-                     <li class="indent-text">
-                        <a><i class="fa fa-table"></i>Family Plannig Summary</a>
-                     </li>
-                     <li class="indent-text">
-                        <a><i class="fa fa-table"></i>Patient Indications Summary</a>
-                     </li>
-                     <li class="indent-text">
-                        <a><i class="fa fa-table"></i>TB Stages Summary</a>
-                     </li>
-                     <li class="indent-text">
-                        <a><i class="fa fa-table"></i>Chronic Illness Summary</a>
-                     </li>
-                     <li class="indent-text">
-                        <a><i class="fa fa-table"></i>Patient Allergy Summary</a>
-                     </li>
-                     <li class="indent-text">
-                        <a><i class="fa fa-table"></i>Patient Status and Disclosure</a>
-                     </li>
-                     <li class="indent-text">
-                        <a><i class="fa fa-table"></i>Patient BMI Summary</a>
-                     </li>
-                     <li class="indent-text">
-                        <a><i class="fa fa-table"></i>Patient on Drug Prophylaxis</a>
-                     </li>
-                  </ul>
+                  <a [routerLink]="['/reports/standard']"><i class="glyphicon glyphicon-list-alt"></i> Standard Reports</a>                  
                </li>
                <li>
-                  <a><span class="menu-item-parent"><i class="glyphicon glyphicon-list-alt"></i> Visitng Patients</span></a>
-                  <ul>
-                     <li class="indent-text">
-                        <a><i class="fa fa-table"></i>List of Patients Scheduled to Visit</a>
-                     </li>
-                     <li class="indent-text">
-                        <a><i class="fa fa-table"></i>List of Patients Started [on a particular Date]</a>
-                     </li>
-                     <li class="indent-text">
-                        <a><i class="fa fa-table"></i>List of Patients who Visit for Refill</a>
-                     </li>
-                     <li class="indent-text">
-                        <a><i class="fa fa-table"></i>Patients Missing Appointments</a>
-                     </li>
-                     <li class="indent-text">
-                        <a><i class="fa fa-table"></i>Patients Visit Summary</a>
-                     </li>
-                  </ul>
+                  <a [routerLink]="['/reports/visiting-patients']"><span class="menu-item-parent"><i class="glyphicon glyphicon-list-alt"></i> Visiting Patients</span></a>                  
                </li>
                <li>
-                  <a><span class="menu-item-parent"><i class="glyphicon glyphicon-list-alt"></i> Early Warning Indicators</span></a>
-                  <ul>
-                     <li class="indent-text">
-                        <a><i class="fa fa-table"></i>Active Patients Who have changed regimen</a>
-                     </li>
-                     <li class="indent-text">
-                        <a><i class="fa fa-table"></i>List of Patients Starting [by regimen]</a>
-                     </li>
-                     <li class="indent-text">
-                        <a><i class="fa fa-table"></i>HIV Early Warning Indicators</a>
-                     </li>
-                     <li class="menu-item-parent indent-text">
-                        <a><i class="fa fa-bar-chart-o"></i>Patients Adherence Report</a>
-                        <ul>
-                           <li>
-                              <a><i class="fa fa-bar-chart-o"></i>Appointment</a>
-                           </li>
-                           <li>
-                              <a><i class="fa fa-bar-chart-o"></i>Pill Count</a>
-                           </li>
-                           <li>
-                              <a><i class="fa fa-bar-chart-o"></i>Missed Pill</a>
-                           </li>
-                        </ul>
-                     </li>
-                     <li class="indent-text">
-                        <a><i class="fa fa-table"></i>Patients Non Adherence Report</a>
-                     </li>
-                     <li class="indent-text">
-                        <a><i class="fa fa-table"></i>Lost to Followup report</a>
-                     </li>
-                  </ul>
+                  <a [routerLink]="['/reports/early-warning']"><span class="menu-item-parent"><i class="glyphicon glyphicon-list-alt"></i> Early Warning Indicators</span></a>
                </li>
                <li>
-                  <a><span class="menu-item-parent"><i class="glyphicon glyphicon-list-alt"></i> Drug Inventory</span></a>
-                  <ul>
-                     <li class="indent-text">
-                        <a><i class="fa fa-table"></i>Drug Consumption Report</a>
-                     </li>
-                     <li class="indent-text">
-                        <a><i class="fa fa-table"></i>Patient Drug Consumption Report</a>
-                     </li>
-                     <li class="indent-text">
-                        <a><i class="fa fa-table"></i>Drug Stock on Hand Report</a>
-                     </li>
-                     <li class="indent-text">
-                        <a><i class="fa fa-table"></i>Facility Summary Commodity Report</a>
-                     </li>
-                     <li class="indent-text">
-                        <a><i class="fa fa-table"></i>Short Dated Stocks &lt;6 Months to Expiry</a>
-                     </li>
-                     <li class="indent-text">
-                        <a><i class="fa fa-table"></i>List of Expired Drugs</a>
-                     </li>
-                     <li class="indent-text">
-                        <a><i class="fa fa-table"></i>Stock Consumption</a>
-                     </li>
-                     <li class="indent-text">
-                        <a><i class="fa fa-table"></i>Daily Drug Consumption</a>
-                     </li>
-                     <li class="indent-text">
-                        <a><i class="fa fa-table"></i>Drugs Issued at [place]</a>
-                     </li>
-                     <li class="indent-text">
-                        <a><i class="fa fa-table"></i>Drugs Received at [place]</a>
-                     </li>
-                  </ul>
+                  <a [routerLink]="['/reports/drug-inventory']"><span class="menu-item-parent"><i class="glyphicon glyphicon-list-alt"></i> Drug Inventory</span></a>                  
                </li>
                <li>
-                  <a><span class="menu-item-parent"><i class="glyphicon glyphicon-list-alt"></i> MOH FORMS</span></a>
-                  <ul>
-                     <li class="indent-text">
-                        <a><i class="fa fa-file-excel-o"></i>Get MOH 711</a>
-                     </li>
-                     <li class="indent-text">
-                        <a><i class="fa fa-file-excel-o"></i>Get MOH 731</a>
-                     </li>
-                  </ul>
+                  <a [routerLink]="['/reports/moh-forms']"><span class="menu-item-parent"><i class="glyphicon glyphicon-list-alt"></i> MOH FORMS</span></a>
                </li>
                <li>
-                  <a><span class="menu-item-parent"><i class="glyphicon glyphicon-list-alt"></i> Guidlines</span></a>
+                  <a><span class="menu-item-parent"><i class="glyphicon glyphicon-list-alt"></i> Guidelines</span></a>
                   <ul>
                      <li class="indent-text">
-                        <a><i class="fa fa-file-pdf-o"></i>List of Guidlines</a>
+                        <a [routerLink]="['/reports/guidelines']"><i class="fa fa-file-pdf-o"></i> List of Guidlines</a>
                      </li>
                   </ul>
                </li>

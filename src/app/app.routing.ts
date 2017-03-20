@@ -3,16 +3,16 @@
  */
 
 
-import {Routes, RouterModule} from '@angular/router';
-import {MainLayoutComponent} from "./shared/layout/app-layouts/main-layout.component";
-import {AuthLayoutComponent} from "./shared/layout/app-layouts/auth-layout.component";
-import {ModuleWithProviders} from "@angular/core";
+import { Routes, RouterModule } from '@angular/router';
+import { MainLayoutComponent } from './shared/layout/app-layouts/main-layout.component';
+import { AuthLayoutComponent } from './shared/layout/app-layouts/auth-layout.component';
+import { ModuleWithProviders } from '@angular/core';
 
 export const routes: Routes = [
   {
     path: '',
     component: MainLayoutComponent,
-    data: {pageTitle: 'Home'},
+    data: { pageTitle: 'Home' },
     children: [
       {
         path: '', redirectTo: 'home', pathMatch: 'full'
@@ -23,13 +23,14 @@ export const routes: Routes = [
       { path: 'profile', loadChildren: 'app/profile/profile.module#ProfileModule', data: { pageTitle: 'CDF Kiriari Dispensary /  Profile' } },
       { path: 'settings', loadChildren: 'app/settings/settings.module#SettingsModule', data: { pageTitle: 'CDF Kiriari Dispensary /  Settings' } },
       { path: 'orders', loadChildren: 'app/orders/orders.module#OrdersModule', data: { pageTitle: 'CDF Kiriari Dispensary /  Orders' } },
+      { path: 'reports', loadChildren: 'app/reports/reports.module#ReportsModule', data: { pageTitle: 'CDF Kiriari Dispensary /  Reports' } },
       // { path: 'faq', component: FaqComponent, data: { pageTitle: 'CDF Kiriari Dispensary /  Frequently Asked Questions' } }
     ]
   },
 
-  {path: 'auth', component: AuthLayoutComponent, loadChildren: 'app/+auth/auth.module#AuthModule'},
+  { path: 'auth', component: AuthLayoutComponent, loadChildren: 'app/+auth/auth.module#AuthModule' },
 
-  {path: '**', redirectTo: 'miscellaneous/error404'}
+  { path: '**', redirectTo: 'miscellaneous/error404' }
 
 ];
 

@@ -2,7 +2,8 @@
    <sa-widgets-grid>
       <div class="row">
          <article class="col-sm-12">
-            <sa-widget [editbutton]="false" color="darken">
+            <sa-widget [colorbutton]="false" [editbutton]="false" [togglebutton]="false" [deletebutton]="false" [fullscreenbutton]="false"
+            [custombutton]="false" [sortable]="false" color="blueDark">
                <header>
                   <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                   <h2>Inventory</h2>
@@ -32,7 +33,7 @@
                                  <th>Pack Size</th>
                                  <th>Supplier</th>
                                  <th>Dose</th>
-                                 <th>Action</th>
+                                 <th style="text-align: center">Action</th>
                               </tr>
                            </thead>
                            <tbody>
@@ -45,7 +46,7 @@
                                  <!-- TODO: Use the supplier -->
                                  <td>Kenya Pharma</td>
                                  <td>{{ drug.dose}}</td>
-                                 <td><a href="" [routerLink]="['/inventory/',store.id,'bin-card',drug.id]">View Bin Card</a></td>
+                                 <td style="text-align: center"><a href="" [routerLink]="['/inventory/',store.id,'bin-card',drug.id]" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i> View Bin Card</a></td>
                               </tr>
                            </tbody>
                         </table>

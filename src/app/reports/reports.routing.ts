@@ -18,6 +18,26 @@ export const routes: Routes = [
     path: 'early-warning',
     component: EarlyWarningIndicatorsComponent,
     data: { pageTitle: 'Early Warning Indicators' }
+  },
+  {
+    path: 'standard',
+    component: StandardComponent,
+    data: { pageTitle: 'Standard Reports' }
+  },
+  {
+    path: 'visiting-patients',
+    component: VisitingPatientsComponent,
+    data: { pageTitle: 'Visiting Patients' }
+  },
+  {
+    path: 'guidelines',
+    component: GuidelinesComponent,
+    data: { pageTitle: 'Guidelines' }
+  },
+  {
+    path: 'moh-forms',
+    component: MohFormsComponent,
+    data: { pageTitle: 'MOH Forms' }
   }
 ];
 
