@@ -53,7 +53,7 @@
                   </header>
                   <div>
                      <div class="widget-body no-padding">
-                        <div class="table-responsive">
+                        <div class="custom-scroll table-responsive" style="height:243px; overflow-y: scroll;">
                            <div class="dt-toolbar">
                               <div class="col-xs-12 col-sm-6 hidden-xs">
                                  <div id="datatable_fixed_column_filter" class="dataTables_filter">
@@ -79,11 +79,11 @@
                               <tbody *ngIf="batches > 1"><tr><th colspan="5" style="text-align: center">No Viable Batches</th></tr></tbody>
                               <tbody>
                                  <tr *ngFor="let batch of batches | fieldFilter:'name':binding">
-                                    <td>{{batch.name}}</td>
-                                    <td>{{batch.pack_size}}</td>
-                                    <td>{{batch.batch_number}}</td>
-                                    <td>{{batch.balance_after}}</td>
-                                    <td>{{batch.expiry_date}}</td>
+                                    <td>{{batch?.name}}</td>
+                                    <td>{{batch?.pack_size}}</td>
+                                    <td>{{batch?.batch_number}}</td>
+                                    <td>{{batch?.balance_after}}</td>
+                                    <td>{{batch?.expiry_date}}</td>
                                  </tr>
                               </tbody>
                            </table>
@@ -145,17 +145,17 @@
                         </thead>
                         <tbody *ngIf="transactions">
                            <tr *ngFor="let transaction of transactions">
-                              <td>{{transaction.ref_number}}</td>
-                              <td>{{transaction.transaction_date}}</td>
-                              <td>{{transaction.transaction_name}}</td>
-                              <td>{{transaction.batch_number}}</td>
-                              <td>{{transaction.expiry_date}}</td>
-                              <td>{{transaction.pack_size}}</td>
-                              <td>{{transaction.balance_before}}
-                              <td>{{transaction.quantity_packs}}</td>
-                              <td>{{transaction.balance_after}}</td>
-                              <td>{{transaction.unit_cost}}</td>
-                              <td>{{transaction.total_cost}}</td>
+                              <td>{{transaction?.ref_number}}</td>
+                              <td>{{transaction?.transaction_date}}</td>
+                              <td>{{transaction?.transaction_name}}</td>
+                              <td>{{transaction?.batch_number}}</td>
+                              <td>{{transaction?.expiry_date}}</td>
+                              <td>{{transaction?.pack_size}}</td>
+                              <td>{{transaction?.balance_before}}
+                              <td>{{transaction?.quantity_packs}}</td>
+                              <td>{{transaction?.balance_after}}</td>
+                              <td>{{transaction?.unit_cost}}</td>
+                              <td>{{transaction?.total_cost}}</td>
                            </tr>
                         </tbody>
                      </table>

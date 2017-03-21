@@ -121,7 +121,6 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     let today = new Date();
     let eDate = new Date(value);
     let eDateMS = eDate.getTime();
-    console.log('1: ' + today + '2: ' + eDate, eDateMS - today.getTime());
     if (eDateMS - today.getTime() < 15552000000) {
       this.errorAlert('The expiry date updated is within 6 months!');
     }
@@ -195,15 +194,14 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     this.rows.controls[+[val]].patchValue(
       {
         expiry_date: batch.expiry_date,
-        balance_before: batch.balance_after,
-        unit_cost: batch.unit_cost
+        balance_before: batch.balance_after
       }
     );
     if (this.rows.get(`${val}.expiry_date`).value !== null) {
       let today = new Date();
       let eDate = new Date(this.rows.get(`${val}.expiry_date`).value);
       let eDateMS = eDate.getTime();
-      console.log('1: ' + today + '2: ' + eDate, eDateMS - today.getTime());
+      // console.log('1: ' + today + '2: ' + eDate, eDateMS - today.getTime());
       if (eDateMS - today.getTime() < 15552000000) {
         this.errorAlert('The drug being transacted expires within 6 months!');
       }
