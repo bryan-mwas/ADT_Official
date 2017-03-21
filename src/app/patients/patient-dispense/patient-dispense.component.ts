@@ -281,7 +281,8 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
       balance_before: [{ value: '', disabled: true }],
       indication_id: '',
       comment: '',
-      missed_pill_count: ''
+      missed_pill_count: '',
+      stock_item_id: ''
     });
   }
   /**
@@ -477,7 +478,8 @@ export class PatientDispenseComponent implements OnInit, DoCheck {
     this.rows.controls[+[index]].patchValue({
       expiry_date: individualBatch.expiry_date,
       quantity_out: individualBatch.quantity_out,
-      balance_before: individualBatch.balance_before
+      balance_before: individualBatch.balance_before,
+      stock_item_id: individualBatch.id
     })
   }
   /**

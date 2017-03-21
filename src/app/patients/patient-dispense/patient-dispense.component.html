@@ -239,6 +239,7 @@
                                                                 </td>
                                                                 <td id="complex_table">
                                                                     <button *ngIf="dispenseForm.controls.drugs.controls.length > 1" type="button" class="btn btn-danger" (click)="smartAlert('Are you sure?','delete_row', this.i)">Remove</button>
+                                                                    <input class="form-control" id="input" type="hidden" formControlName="stock_item_id">
                                                                 </td>
                                                             </tr>
                                                         </tbody>

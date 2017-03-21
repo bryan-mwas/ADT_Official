@@ -37,44 +37,44 @@ export class PatientsService {
         return this._http.get(this._apiUrl + `visits/patients/${id}/items`)
             .map((response: Response) => <any[]>response.json())
             .do(data => console.log('Drugs History: ' + JSON.stringify(data)))
-            .catch(this.handleError);
+            .catch(this.catchBadResponse);
     }
     getAppointments(id: number) {
         return this._http.get(`${this._apiUrl}appointments/patients/${id}`)
             .map((response: Response) => <any[]>response.json())
             .do(data => console.log('Dispense history: ' + JSON.stringify(data)))
-            .catch(this.handleError);
+            .catch(this.catchBadResponse);
     }
     getPreviousVisits(id: number) {
         return this._http.get(`${this._apiUrl}visits/patients/${id}`)
             .map((response: Response) => <any[]>response.json())
             .do(data => console.log('Dispense history: ' + JSON.stringify(data)))
-            .catch(this.handleError);
+            .catch(this.catchBadResponse);
     }
     getLatestVisit(id: number) {
         return this._http.get(`${this._apiUrl}visits/patients/${id}/latest`)
             .map((response: Response) => <any[]>response.json())
             .do(data => console.log('Latest Visit: ' + JSON.stringify(data)))
-            .catch(this.handleError);
+            .catch(this.catchBadResponse);
     }
     getLatestAppointment(id: number) {
         return this._http.get(`${this._apiUrl}appointments/patients/${id}/latest`)
             .map((response: Response) => <any[]>response.json())
             .do(data => console.log('Appointment: ' + JSON.stringify(data)))
-            .catch(this.handleError);
+            .catch(this.catchBadResponse);
     }
     getViralLoad(id: number) {
         return this._http.get(`${this._apiUrl}patients/${id}/viralloads`)
             .map((response: Response) => <any[]>response.json())
             .do(data => console.log('Viral Load Data: ' + JSON.stringify(data)))
-            .catch(this.handleError);
+            .catch(this.catchBadResponse);
     }
 
     getStatus() {
         return this._http.get(this._statusApi)
             .map((response: Response) => <any[]>response.json())
             .do(data => console.log('Status: ' + JSON.stringify(data)))
-            .catch(this.handleError);
+            .catch(this.catchBadResponse);
     }
 
     getPatientCCC(id: number) {
@@ -86,29 +86,29 @@ export class PatientsService {
         return this._http.get(this._patientsList + id)
             .map((response: Response) => <Patient[]>response.json())
             // .do(data => console.log('All: ' + JSON.stringify(data)))
-            .catch(this.handleError);
+            .catch(this.catchBadResponse);
     }
 
     getFamilyPlan() {
         return this._http.get(this._familyPlanning)
             .map((response: Response) => <FamilyPlanning[]>response.json())
             // .do(data => console.log('All: ' + JSON.stringify(data)))
-            .catch(this.handleError);
+            .catch(this.catchBadResponse);
     }
 
     getPatients() {
         return this._http.get(this._addPatientRoute)
             .map((response: Response) => <Patient[]>response.json())
             .do(data => console.log('All: ' + JSON.stringify(data)))
-            .catch(this.handleError);
+            .catch(this.catchBadResponse);
     }
 
     getPatient(id: number) {
         return this._http.get(this._addPatientRoute + `/${id}`)
             .map((response: Response) => <Patient[]>response.json())
-            .retry()
+            // .retry()
             .do(data => console.log('All: ' + JSON.stringify(data)))
-            .catch(this.handleError);
+            .catch(this.catchBadResponse);
     }
 
     getLocation() {
@@ -116,7 +116,7 @@ export class PatientsService {
             .map((response: Response) => <PlaceOfBirth[]>response.json())
             .retry()
             // .do(data => console.log('All: ' + JSON.stringify(data)))
-            .catch(this.handleError);
+            .catch(this.catchBadResponse);
     }
 
     getServices() {
@@ -124,7 +124,7 @@ export class PatientsService {
             .map((response: Response) => <Service[]>response.json())
             .retry()
             // .do(data => console.log('All: ' + JSON.stringify(data)))
-            .catch(this.handleError);
+            .catch(this.catchBadResponse);
     }
 
     // Loops through the lists of services to get individual service properties
@@ -159,7 +159,7 @@ export class PatientsService {
             .map((response: Response) => <Source[]>response.json())
             .retry()
             .do(data => console.log('All: ' + JSON.stringify(data)))
-            .catch(this.handleError);
+            .catch(this.catchBadResponse);
     }
 
     getIllness(): Observable<Illness[]> {
@@ -167,7 +167,7 @@ export class PatientsService {
             .map((response: Response) => <Illness[]>response.json())
             .retry()
             .do(data => console.log('All: ' + JSON.stringify(data)))
-            .catch(this.handleError);
+            .catch(this.catchBadResponse);
     }
 
     getAllergies(): Observable<Allergies[]> {
@@ -175,7 +175,7 @@ export class PatientsService {
             .map((response: Response) => <Allergies[]>response.json())
             .retry()
             .do(data => console.log('All: ' + JSON.stringify(data)))
-            .catch(this.handleError);
+            .catch(this.catchBadResponse);
     }
 
     /**
@@ -189,7 +189,7 @@ export class PatientsService {
 
         return this._http.post(this._addPatientRoute, body, options) // ...using post request
             .map(() => body) // ...and calling .json() on the response to return data
-            .catch(this.handleError); //...errors if any
+            .catch(this.catchBadResponse); //...errors if any
     }
 
     /**
@@ -219,5 +219,14 @@ export class PatientsService {
         console.error(error);
         return Observable.throw(error.json().error || 'Server error');
     }
+
+    private catchBadResponse: (errorResponse: any) => Observable<any> = (errorResponse: any) => {
+        let res = <Response>errorResponse;
+        let err = res.json();
+        let emsg = err ?
+            (err.error ? err.error : JSON.stringify(err)) :
+            (res.statusText || 'unknown error');
+        return Observable.of(false);
+    };
 
 }
