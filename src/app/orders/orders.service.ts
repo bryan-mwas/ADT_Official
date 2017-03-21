@@ -24,6 +24,12 @@ export class OrdersService {
       .do(data => console.log('Category Drugs: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
+  getCdrrItem(id: number) {
+    return this._http.get(`${this._cdrrApi}/${id}/items`)
+      .map((response: Response) => <Order[]>response.json())
+      .do(data => console.log('All CDRRs: ' + JSON.stringify(data)))
+      .catch(this.handleError);
+  }
   getCdrrOrderDetails() {
     return this._http.get(this._cdrrApi)
       .map((response: Response) => <Order[]>response.json())
@@ -34,6 +40,7 @@ export class OrdersService {
     return this._http.get(`${this._cdrrApi}/${id}`)
       .map((response: Response) => <Order[]>response.json())
       .do(data => console.log('Single CDRR: ' + JSON.stringify(data)))
+      .retry()
       .catch(this.handleError);
   }
   getMapOrderDetails() {

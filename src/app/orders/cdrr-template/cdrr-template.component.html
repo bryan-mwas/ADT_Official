@@ -25,13 +25,13 @@
                                 </tr>
                                 <tr>
                                     <td><b>County:</b> Nairobi</td>
-                                    <td><b>District:</b> {{cdrr_item.facility['subcounty_name'] | uppercase}}</td>
+                                    <td><b>District:</b> {{cdrr_item.facility && cdrr_item.facility['subcounty_name'] | uppercase}}</td>
                                 </tr>
                                 <tr>
                                     <td colspan="2"><b>Programme Sponsor:</b> {{cdrr_item.supporter_name}}</td>
                                 </tr>
                                 <tr>
-                                    <td><b>Type of Service Provided at the Facility:</b> {{cdrr_item.facility['service'] | uppercase}}</td>
+                                    <td><b>Type of Service Provided at the Facility:</b> {{cdrr_item.facility && cdrr_item.facility['service'] | uppercase}}</td>
                                     <td><b>Non-ARV:</b>
                                         <input type="checkbox" formControlName="arv">
                                     </td>
@@ -104,7 +104,7 @@
                                     <td colspan="14" *ngIf="distinct.indexOf(i) > -1" style="text-align: center; font-weight: bold;">{{category_drugs[i]['category_name'] | uppercase}}</td>
                                 </tr>
                                 <tr [formGroupName]="i">
-                                    <td style="vertical-align: bottom;">
+                                    <td *ngIf="category_drugs[i]" style="vertical-align: bottom;">
                                          {{category_drugs[i]['drug_name']}}
                                     </td>
                                     <td id="complex_table">

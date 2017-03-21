@@ -17,7 +17,7 @@ export const routes: Routes = [
     },
     {
         path: 'update-cdrr/:id',
-        component: ViewCdrrComponent,
+        component: UpdateCdrrComponent,
         data: { pageTitle: 'Satellite Facility F-CDRR'}
     },
     {
@@ -27,7 +27,7 @@ export const routes: Routes = [
     },
     {
         path: 'update-map/:id',
-        component: ViewMapComponent,
+        component: UpdateMapComponent,
         data: { pageTitle: 'Satellite Facility MAP'}
     }
 ];
