@@ -10,11 +10,6 @@ export class HighlightDirective {
         this.highlight(null);
     }
 
-    @HostListener('onscoll') onscroll() {
-        alert('Aye');
-        this.highlight('lightbluesky');
-    }
-
     private highlight(color: string) {
         this.el.nativeElement.style.backgroundColor = color;
     }

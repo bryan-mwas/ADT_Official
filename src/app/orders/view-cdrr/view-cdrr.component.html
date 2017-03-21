@@ -1,6 +1,7 @@
 <div id="content" class="container-fluid" *ngIf="cdrr_item">
     <sa-widgets-grid>
-        <sa-widget [colorbutton]="false" [editbutton]="false" [togglebutton]="false" [deletebutton]="false" [fullscreenbutton]="true" [custombutton]="false" [sortable]="false" color="blueDark">
+        <sa-widget [colorbutton]="false" [editbutton]="false" [togglebutton]="false" [deletebutton]="false" [fullscreenbutton]="true"
+            [custombutton]="false" [sortable]="false" color="blueDark">
             <header>
                 <h2>{{cdrr_item.code+'#'+cdrr_item.id}}</h2>
             </header>
@@ -15,7 +16,8 @@
                         <table style="width: 100%" class="table table-bordered">
                             <tbody>
                                 <tr>
-                                    <th colspan="2" style="text-align: center">FACILITY CONSUMPTION DATA REPORT AND REQUEST (F-CDRR) FOR ANTIRETROVIRALS AND OPPORTUNISTIC INFECTION MEDICINES </th>
+                                    <th colspan="2" style="text-align: center">FACILITY CONSUMPTION DATA REPORT AND REQUEST (F-CDRR) FOR ANTIRETROVIRALS AND OPPORTUNISTIC
+                                        INFECTION MEDICINES </th>
                                 </tr>
                                 <tr>
                                     <td><b>Facility Name:</b> {{cdrr_item.facility_name | uppercase}}</td>
@@ -31,7 +33,7 @@
                                 <tr>
                                     <td><b>Type of Service Provided at the Facility:</b> {{cdrr_item.facility['service'] | uppercase}}</td>
                                     <td><b>Non-ARV:</b>
-                                        <input type='checkbox' formControlName="arv">
+                                        <input type="checkbox" formControlName="arv">
                                     </td>
                                 </tr>
                                 <tr class="form-inline">
@@ -43,321 +45,108 @@
                         </table>
                     </div>
                     <div class="table-responsive" style="overflow-x: hidden;">
-                        <table style="zoom: 90%" class="table table-bordered table-condensed cdrr-header">
-                            <thead>
-                                <tr>
-                                    <th  rowspan="3" style="width: 100%; vertical-align:bottom">Drug Name</th>
-                                    <th  rowspan="3" style="width: 100%; vertical-align:bottom">Unit Pack Size</th>
-                                    <th  style="width: 100%;vertical-align:bottom;">Beginning Balance</th>
-                                    <th  style="width: 100%;vertical-align:bottom;">Quantity Received This Period</th>
-                                    <th  style="width: 100%;vertical-align:bottom;">Total Quantity Dispensed this Period</th>
-                                    <th  style="width: 100%;vertical-align:bottom;">Losses (Damages, Expiries, Missing)</th>
-                                    <th  style="width: 100%;vertical-align:bottom;">Positive Adjustments (Stock Transfers from Other Facilities)</th>
-                                    <th  style="width: 100%;vertical-align:bottom;">Negative Adjustments (Borrowed from or Issued out to Other Facilities)</th>
-                                    <th  style="width: 100%;vertical-align:bottom;">End of Month Physical Count(For CS Dispensing Point, please exclude the central site store stocks)</th>
-                                    <th  colspan="2" style="width: 100%; vertical-align:bottom">Drugs with Less than 6 Months to Expiry</th>
-                                    <th  style="width: 100%;vertical-align:bottom;">Days out of Stock this Month</th>
-                                    <th  style="width: 100%;vertical-align:bottom;">Quantity Required for RESUPPLY</th>
+                        <table style="zoom: 90%;" class="table table-bordered table-condensed cdrr-header">
+                            <tbody formArrayName="drugs" *ngFor="let row of rows.controls; let i=index">
+                                <!--<thead style="text-align:left;">-->
+                                <tr colspan="14" style="vertical-align: bottom; background: lightskyblue;" *ngIf="distinct.indexOf(i) > -1">
+                                    <th rowspan="3" style="width:100%; vertical-align: bottom;">Drug Name</th>
+                                    <th rowspan="3" style="width:100%; vertical-align: bottom;">Unit Pack Size</th>
+                                    <th style="width: 100%; vertical-align: bottom;">Beginning Balance</th>
+                                    <th style="width: 100%; vertical-align: bottom;">Quantity <br>Received this period</th>
+                                    <th style="width:100%; vertical-align: bottom;" colspan="2">Total Quantity Dispensed <br>this period</th>
+                                    <th style="width:100%; vertical-align: bottom;">Losses <br>
+                                        <font style="font-weight:lighter; color:blue;">(Damages, Expiries, Missing)</font>
+                                    </th>
+                                    <!-- new column for the cdrr_array -->
+                                    <th style="width: 100%; vertical-align: bottom;">Positive<br> Adjustments<br>
+                                        <font style="font-weight:lighter; color:blue;"> (Stocks transfers from other facilities)</font>
+                                    </th>
+                                    <th style="width: 100%; vertical-align: bottom;">Negative <br>Adjustments<br>
+                                        <font style="font-weight:lighter; color:blue;"> (Borrowed from <br>or Issued out to Other Facilities)</font>
+                                    </th>
+                                    <!-- end of new column for the cdrr -->
+                                    <th style="width: 100%; vertical-align: bottom;">End of Month<br> Physical Count<br>
+                                        <font style="font-weight:lighter; color:blue;">(For CS <br>Dispensing <br>Point, please <br><strong>exclude</strong> the central
+                                            site Store stocks)</font>
+                                    </th>
+                                    <th style="width: 100%; vertical-align: bottom;" colspan="2">Drugs with less than 6 months to expiry</th>
+                                    <th style="width: 100%; vertical-align: bottom;">Days out of stock this Month</th>
+                                    <th style="width: 100%; vertical-align: bottom;">Quantity required for RESUPPLY</th>
                                 </tr>
-                                <tr>
-                                    <th  style="width: 100%;vertical-align:bottom;">In Packs</th>
-                                    <th  style="width: 100%;vertical-align:bottom;">In Packs</th>
-                                    <th  style="width: 100%;vertical-align:bottom;">In Packs</th>
-                                    <th  style="width: 100%;vertical-align:bottom;">In Packs</th>
-                                    <th  style="width: 100%;vertical-align:bottom;">In Packs</th>
-                                    <th  style="width: 100%;vertical-align:bottom;">In Packs</th>
-                                    <th  style="width: 100%;vertical-align:bottom;">In Packs</th>
-                                    <th  style="width: 100%;vertical-align:bottom;">Quantity</th>
-                                    <th  style="width: 100%;vertical-align:bottom;">Expiry Date</th>
-                                    <th  style="width: 100%;vertical-align:bottom;">In Packs</th>
-                                    <th  style="width: 100%;vertical-align:bottom;">In Packs</th>
+                                <tr colspan="14" style="vertical-align: bottom; background: lightskyblue;" *ngIf="distinct.indexOf(i) > -1">
+                                    <th style="width:100%; vertical-align: bottom;">In Packs</th>
+                                    <th style="width:100%; vertical-align: bottom;">In Packs</th>
+                                    <th colspan="2" style="width:100%; vertical-align: bottom;">In Packs</th>
+                                    <th style="width:100%; vertical-align: bottom;">In Packs</th>
+                                    <th style="width:100%; vertical-align: bottom;">In Packs</th>
+                                    <th style="width:100%; vertical-align: bottom;">In Packs</th>
+                                    <th style="width:100%; vertical-align: bottom;">In Packs</th>
+                                    <th style="width:100%; vertical-align: bottom;">Quantity</th>
+                                    <th style="width:100%; vertical-align: bottom;">Expiry Date</th>
+                                    <th style="width:100%; vertical-align: bottom;"></th>
+                                    <th style="width:100%; vertical-align: bottom;">In Packs</th>
                                 </tr>
-                                <tr>
-                                    <th  style="width: 100%;vertical-align:bottom;">A</th>
-                                    <th  style="width: 100%;vertical-align:bottom;">B</th>
-                                    <th  style="width: 100%;vertical-align:bottom;">C</th>
-                                    <th  style="width: 100%;vertical-align:bottom;">D</th>
-                                    <th  style="width: 100%;vertical-align:bottom;">E</th>
-                                    <th  style="width: 100%;vertical-align:bottom;">F</th>
-                                    <th  style="width: 100%;vertical-align:bottom;">G</th>
-                                    <th  style="width: 100%;vertical-align:bottom;">In Unit Packs</th>
-                                    <th  style="width: 100%;vertical-align:bottom;">mm-yy</th>
-                                    <th  style="width: 100%;vertical-align:bottom;">H</th>
-                                    <th  style="width: 100%;vertical-align:bottom;">I</th>
+                                <tr colspan="14" style="vertical-align: bottom; background: lightskyblue;" *ngIf="distinct.indexOf(i) > -1">
+                                    <th style="width:100%; vertical-align: bottom;">A</th>
+                                    <th style="width:100%; vertical-align: bottom;">B</th>
+                                    <th colspan="2" style="width:100%; vertical-align: bottom;">C</th>
+                                    <th style="width:100%; vertical-align: bottom;">D</th>
+                                    <th style="width:100%; vertical-align: bottom;">E</th>
+                                    <th style="width:100%; vertical-align: bottom;">F</th>
+                                    <th style="width:100%; vertical-align: bottom;">G</th>
+                                    <th style="width:100%; vertical-align: bottom;">In Unit Packs</th>
+                                    <th style="width:100%; vertical-align: bottom;">mm-yy</th>
+                                    <th style="width:100%; vertical-align: bottom;">H</th>
+                                    <th style="width:100%; vertical-align: bottom;">I</th>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
+                            <!--</thead>-->
+                                <tr style="background: #bcb6b2;">
+                                    <td colspan="14" *ngIf="distinct.indexOf(i) > -1" style="text-align: center; font-weight: bold;">{{category_drugs[i]['category_name'] | uppercase}}</td>
                                 </tr>
-                                <tr>
-                                    <td></td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
-                                    </td>
-                                    <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
+                                <tr [formGroupName]="i">
+                                    <td style="vertical-align: bottom;">
+                                         {{category_drugs[i]['drug_name']}}
                                     </td>
                                     <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
+                                        <input style="width:50px;" type="text" id="input" formControlName="pack_size" class="form-control" />
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
                                     <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
+                                        <input type="text" id="input" #bal formControlName="balance" (keyup)="calcBalance(bal.value, this.i)" class="form-control" />
                                     </td>
                                     <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
+                                        <input type="text" id="input" #received (change)="received(received.value, this.i)" formControlName="received" class="form-control" />
                                     </td>
                                     <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
+                                        <input style="width:50px;" type="text" id="input" formControlName="dispensed_packs" class="form-control" />
                                     </td>
                                     <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
+                                        <input style="width:50px;" #disunits (change)="disUnits(disunits.value, this.i)"  type="text" id="input" formControlName="dispensed_units" class="form-control" />
                                     </td>
                                     <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
+                                        <input type="text" #losses (change)="losses(losses.value, this.i)"  id="input" formControlName="losses" class="form-control" />
                                     </td>
                                     <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
+                                        <input type="text" #positive (change)="positiveAdjustments(positive.value, this.i)" id="input" formControlName="adjustments_pos" class="form-control" />
                                     </td>
                                     <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
+                                        <input type="text" #negative (change)="negativeAdjustments(negative.value, this.i)" id="input" formControlName="adjustments_neg" class="form-control" />
                                     </td>
                                     <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
+                                        <input type="text" id="input" formControlName="count" class="form-control" />
                                     </td>
                                     <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
+                                        <input type="text" id="input" formControlName="expiry_quantity" class="form-control" />
                                     </td>
                                     <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
+                                        <input type="text" id="input" formControlName="expiry_date" class="form-control" />
                                     </td>
                                     <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
+                                        <input type="text" id="input" formControlName="out_of_stock" class="form-control" />
                                     </td>
                                     <td id="complex_table">
-                                        <input type="text" id="input" class="form-control" />
+                                        <input type="text" id="input" formControlName="resupply" class="form-control" />
+                                        <input type="hidden" id="input" formControlName="category_id" class="form-control" />
+                                        <input type="hidden" id="input" formControlName="category_name" class="form-control" />
                                     </td>
                                 </tr>
                             </tbody>
@@ -393,6 +182,7 @@
                     </table>
                 </form>
             </div>
+            <pre>{{cdrrForm.value | json}}</pre>
         </sa-widget>
     </sa-widgets-grid>
 </div>

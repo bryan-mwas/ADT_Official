@@ -8,7 +8,7 @@ import { HighlightDirective } from './view-cdrr/cddr.directive';
 import { ViewMapComponent } from './view-map/view-map.component';
 import { routing } from "./orders.routing";
 import { SmartadminModule } from "../shared/smartadmin.module";
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SmartadminInputModule } from "../shared/forms/input/smartadmin-input.module";
 import { SmartadminDatatableModule } from "../shared/ui/datatable/smartadmin-datatable.module";
 import { OrdersService } from './orders.service';
@@ -29,6 +29,7 @@ import { UtilsModule } from '../shared/utils/utils.module'; // For field filter 
     routing,
     SmartadminModule,
     ReactiveFormsModule,
+    FormsModule,
     SmartadminInputModule,
     SmartadminDatatableModule,
     Ng2PaginationModule,

@@ -9,7 +9,7 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class OrdersService {
 
-  private _apiUrl = 'http://192.168.133.10/adt-core/lib/public/api/';
+  private _apiUrl = 'http://192.168.33.10/adt-core/lib/public/api/';
 
   private _cdrrApi = this._apiUrl + 'cdrr';
   private _mapsApi = this._apiUrl + 'maps';
@@ -18,7 +18,12 @@ export class OrdersService {
   constructor(private _http: Http) { }
 
   // Get
-
+  getCdrrCategoryDrugs() {
+    return this._http.get(`${this._cdrrApi}/categories/drugs`)
+      .map((response: Response) => <any[]>response.json())
+      .do(data => console.log('Category Drugs: ' + JSON.stringify(data)))
+      .catch(this.handleError);
+  }
   getCdrrOrderDetails() {
     return this._http.get(this._cdrrApi)
       .map((response: Response) => <Order[]>response.json())

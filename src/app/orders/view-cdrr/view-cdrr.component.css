@@ -1,5 +1,5 @@
-#input {display: inherit; padding: 5px; margin: 0; width: 100%;}
-#complex_table {margin: 0; padding: 2px;}
+#input {display: inherit; padding: 1px; margin: 0; width: 100%; text-align: center;}
+#complex_table {margin: 0; padding: 0px;}
 
 .cdrr-header thead th {
   background-color: lightskyblue;
