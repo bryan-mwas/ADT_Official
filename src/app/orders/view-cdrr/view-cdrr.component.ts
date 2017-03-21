@@ -137,7 +137,34 @@ export class ViewCdrrComponent implements OnInit, DoCheck {
       category_name: ''
     })
   }
-  calcBalance(val, index) { }
+  calcBalance(value: number, index: number, optional: string = null) {
+    // QUICK NOTE: if the string value is " ", parsing it (string) defaults to 0
+    let packs = +[this.rows.get(`${index}.pack_size`).value];
+    let balance = +[this.rows.get(`${index}.balance`).value];
+    let received = +[this.rows.get(`${index}.received`).value];
+    let positive = +[this.rows.get(`${index}.adjustments_pos`).value];
+    let negative = +[this.rows.get(`${index}.adjustments_neg`).value];
+    let losses = +[this.rows.get(`${index}.losses`).value];
+    let dispensed = +[this.rows.get(`${index}.dispensed_units`).value];
+    let dispensed_packs = +[this.rows.get(`${index}.dispensed_packs`).value];
+    let count = +[this.rows.get(`${index}.count`).value];
+
+    if (optional === 'dispensed') {
+      let new_dispensed_packs = packs * dispensed;
+      this.rows.controls[+[index]].patchValue({
+        dispensed_packs: new_dispensed_packs,
+      })
+    }
+    // Calculation of recent physical count and resupply respectively.
+    let new_count = (received + balance + positive) - (losses + dispensed + negative);
+    let resupply = (dispensed * 3) - count;
+    this.rows.controls[+[index]].patchValue({
+      count: new_count,
+      resupply: resupply
+    })
+
+    console.log(new_count);
+  }
   received(value: any, index: number) { }
   disUnits(value: any, index: number) { }
   losses(value: any, index: number) { }

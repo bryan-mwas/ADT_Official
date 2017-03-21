@@ -111,25 +111,25 @@
                                         <input style="width:50px;" type="text" id="input" formControlName="pack_size" class="form-control" />
                                     </td>
                                     <td id="complex_table">
-                                        <input type="text" id="input" #bal formControlName="balance" (keyup)="calcBalance(bal.value, this.i)" class="form-control" />
+                                        <input type="text" id="input" #bal (keyup)="calcBalance(bal.value, this.i)" formControlName="balance" class="form-control" />
                                     </td>
                                     <td id="complex_table">
-                                        <input type="text" id="input" #received (change)="received(received.value, this.i)" formControlName="received" class="form-control" />
+                                        <input type="text" id="input" #received (keyup)="calcBalance(received.value, this.i)" formControlName="received" class="form-control" />
                                     </td>
                                     <td id="complex_table">
                                         <input style="width:50px;" type="text" id="input" formControlName="dispensed_packs" class="form-control" />
                                     </td>
                                     <td id="complex_table">
-                                        <input style="width:50px;" #disunits (change)="disUnits(disunits.value, this.i)"  type="text" id="input" formControlName="dispensed_units" class="form-control" />
+                                        <input style="width:50px;" #disunits (keyup)="calcBalance(disunits.value, this.i, 'dispensed')"  type="text" id="input" formControlName="dispensed_units" class="form-control" />
                                     </td>
                                     <td id="complex_table">
-                                        <input type="text" #losses (change)="losses(losses.value, this.i)"  id="input" formControlName="losses" class="form-control" />
+                                        <input type="text" #losses (keyup)="calcBalance(losses.value, this.i)"  id="input" formControlName="losses" class="form-control" />
                                     </td>
                                     <td id="complex_table">
-                                        <input type="text" #positive (change)="positiveAdjustments(positive.value, this.i)" id="input" formControlName="adjustments_pos" class="form-control" />
+                                        <input type="text" #positive (keyup)="calcBalance(positive.value, this.i)" id="input" formControlName="adjustments_pos" class="form-control" />
                                     </td>
                                     <td id="complex_table">
-                                        <input type="text" #negative (change)="negativeAdjustments(negative.value, this.i)" id="input" formControlName="adjustments_neg" class="form-control" />
+                                        <input type="text" #negative (keyup)="calcBalance(negative.value, this.i)" id="input" formControlName="adjustments_neg" class="form-control" />
                                     </td>
                                     <td id="complex_table">
                                         <input type="text" id="input" formControlName="count" class="form-control" />
