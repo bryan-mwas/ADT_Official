@@ -76,7 +76,7 @@ export class CdrrTemplateComponent implements OnInit, OnChanges {
           return modified_drugs;
         })
         this.category_drugs = this.tmp;
-        this.setDrugs(this.category_drugs); // Populate drugs table
+        // this.setDrugs(this.category_drugs); // Populate drugs table
         var unique = {};
         var distinct = [];
         for (var i in this.category_drugs) {
@@ -139,8 +139,22 @@ export class CdrrTemplateComponent implements OnInit, OnChanges {
       this._ordersService.getCdrrItem(+[this.item[0]]).subscribe(
         (item: any[]) => {
           item.forEach(element => {
-            delete element['drug_unit']
+            delete element['drug_unit'];
+            element['category_id'] = '';
+            element['category_name'] = '';
+            element['pack_size'] = ''; // for now
           });
+          console.log(item)
+          this.setDrugs(item);
+          let a = this.rows.controls;
+          console.log(a)
+          for (let b of a) {
+            console.log(b);
+            // Iterate over the controls [Object type] and disable them.
+            for (var prop in b['controls']) {
+              b.get(`${prop}`).disable();
+            }
+          }
         }
       )
     }
