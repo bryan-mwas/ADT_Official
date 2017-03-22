@@ -12,6 +12,14 @@ declare var $: any;
 @Component({
     selector: 'patient-form',
     templateUrl: './shared-form.component.html',
+    styles: [`
+        .add {
+            background-color: #80f26d !important;
+        }
+        .edit {
+            background-color: #FF9 !important;
+        }
+    `],
     providers: [DatePipe]
 })
 
@@ -22,10 +30,13 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
     formType: string;
     @Input() patientData: string[];
     patientForm: FormGroup;
+    toggle_facilities: boolean = false;
+    toggle_isoniazid_dates: boolean = false;
 
     // Define properties first.
     patient: Patient;
     edit: boolean = false;
+    add: boolean = true;
     source = new Source;
     service = new Service
     regimen = new Regimen;
@@ -84,6 +95,7 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
         private fb: FormBuilder,
     ) { }
 
+
     ngOnInit(): void {
         this.patientWhostage = this._patientService.getWho_stage();
         this.status = this._patientService.getStatus();
@@ -94,7 +106,6 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
         this._patientService.getProphylaxis().subscribe(prophy => this.prophylaxisOptions = prophy);
         this._patientService.getSource().subscribe(source => this.patientSources = source);
         this._patientService.getServices().subscribe(service => { this.patientServices = service });
-        // this._patientService.getRegimen().subscribe(regimen => this.patientRegimen = regimen);
         // Form Builder Logic
         const form = this.patientForm;
         this.patientForm = this.fb.group({
@@ -118,11 +129,11 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
             gender: ['', Validators.required],
             is_pregnant: [''],
             is_tb: [''],
-            is_tb_tested: [''],
+            is_tb_tested: ['0'],
             is_sms: ['0'],
-            is_smoke: [''],
-            is_alcohol: [''],
-            status_id: [''],
+            is_smoke: ['0'],
+            is_alcohol: ['0'],
+            status_id: ['0'],
             enrollment_date: [this.today(), Validators.required],
             regimen_start_date: [this.today(), Validators.required],
             initial_regimen_id: ['', Validators.required],
@@ -133,7 +144,7 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
             who_stage_id: [''],
             prophylaxis: [{ value: [], disabled: false }],
             source_id: [''],
-            disclosure: [''],
+            disclosure: ['0'],
             spouse_ccc: [''],
             status: '',
             family_planning: [{ value: [], disabled: false }],
@@ -163,6 +174,20 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
             start_age: [{ value: '', disabled: true }],
             current_age: [{ value: '', disabled: true }]
         });
+        // Track source_id
+        this.patientForm.get('source_id').valueChanges.subscribe(
+            id => {
+                // Get the source name based on the [id].
+                let individual_source = this.patientSources.find(source => source.id === +[id])
+                if (individual_source.name.toLowerCase() === 'transfer in') {
+                    this.toggle_facilities = true;
+                }
+                else {
+                    // TODO: Clear the selected value in the transfer from field
+                    this.toggle_facilities = false;
+                }
+            }
+        )
         // Track appointment_date
         this.patientForm.get('appointment_date').valueChanges.subscribe(
             date => {
@@ -193,6 +218,15 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
                         }
                     }
                 }
+                // Trigger the toggle if isoniazid exists in the user's selection
+                let isoniazid = selectedOptions.find(val => val.name.toLowerCase() === "isoniazid");
+                if (typeof isoniazid !== "undefined") {
+                    this.toggle_isoniazid_dates = true;
+                }
+                else {
+                    this.toggle_isoniazid_dates = false;
+                }
+
             }
         )
         // Monitor the patient ccc_number
@@ -438,7 +472,7 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
         })
     }
     /**
-     * 
+     * NOT EFFICIENT WAY TOO MUCH CODE REUSE!!!!!
      */
     tbEndEditCalculator(val, tb_category = null, tb_phase = null) {
         let tbRange: number;
@@ -606,6 +640,7 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
         this.formType = this.patientData[1];
         if (this.formType == 'edit') {
             this.edit = true;
+            this.add = false;
         }
         this._patientService.getPatient(id).subscribe(val => this.patientValues(val));
         this._patientService.getLatestVisit(id).subscribe(val => {

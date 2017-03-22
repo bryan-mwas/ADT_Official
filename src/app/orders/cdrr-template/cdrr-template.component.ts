@@ -206,6 +206,6 @@ export class CdrrTemplateComponent implements OnInit, OnChanges, OnDestroy {
   ngOnDestroy() {
     // Restore the side nav menu before exiting.
     this._layoutService.onCollapseMenu();
-    alert('Have a nice one!');
+    // alert('Have a nice one!');
   }
 }
