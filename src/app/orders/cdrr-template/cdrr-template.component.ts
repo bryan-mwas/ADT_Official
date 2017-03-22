@@ -1,14 +1,14 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms'
 import { OrdersService } from '../orders.service';
-
+import { LayoutService } from '../../shared/layout/layout.service';
 @Component({
   selector: 'cdrr-template',
   templateUrl: './cdrr-template.component.html',
   styleUrls: ['./cdrr-template.component.css']
 })
-export class CdrrTemplateComponent implements OnInit, OnChanges {
+export class CdrrTemplateComponent implements OnInit, OnChanges, OnDestroy {
   @Input() public item: any[] = [];
   public cdrr_item: any[] = [];
   public cdrrForm: FormGroup;
@@ -16,6 +16,7 @@ export class CdrrTemplateComponent implements OnInit, OnChanges {
   public tmp: Object[] = [];
   public distinct: number[] = [];
   public monthsList = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  public formType: string = null;
   get rows(): FormArray {
     return <FormArray>this.cdrrForm.get('drugs');
   }
@@ -23,7 +24,8 @@ export class CdrrTemplateComponent implements OnInit, OnChanges {
   constructor(
     private _activatedRoute: ActivatedRoute,
     private _ordersService: OrdersService,
-    private _fb: FormBuilder
+    private _fb: FormBuilder,
+    private _layoutService: LayoutService
   ) { }
 
   setDrugs(drugs: any[]) {
@@ -36,6 +38,8 @@ export class CdrrTemplateComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    // Collapses the side menu.
+    this._layoutService.onCollapseMenu();
     this.cdrrForm = this._fb.group({
       arv: '',
       reporting_period: [{ value: '', disabled: true }],
@@ -46,7 +50,7 @@ export class CdrrTemplateComponent implements OnInit, OnChanges {
     );
     this._ordersService.getCdrrCategoryDrugs().subscribe(
       all => {
-        let categoryDrugs = Object.keys(all).map(function (k) { return all[k] }); // converts object to array
+        let categoryDrugs = Object.keys(all).map(k => all[k]); // converts object to array
         categoryDrugs.map(all_drugs => {
           all_drugs.forEach(el => {
             this.tmp.push(el)
@@ -76,7 +80,9 @@ export class CdrrTemplateComponent implements OnInit, OnChanges {
           return modified_drugs;
         })
         this.category_drugs = this.tmp;
-        // this.setDrugs(this.category_drugs); // Populate drugs table
+        if (this.formType === 'new') {
+          this.setDrugs(this.category_drugs); // Populate drugs table
+        }
         var unique = {};
         var distinct = [];
         for (var i in this.category_drugs) {
@@ -115,6 +121,7 @@ export class CdrrTemplateComponent implements OnInit, OnChanges {
   }
   ngOnChanges() {
     if (typeof this.item !== 'undefined') {
+      this.formType = this.item[1]; // Gets the value from the array.
       this._ordersService.getIndividualCdrrOrderDetails(+this.item[0]).subscribe(
         cdrr => {
           this.cdrr_item = cdrr;
@@ -135,28 +142,30 @@ export class CdrrTemplateComponent implements OnInit, OnChanges {
           }
         }
       );
-      // Load CDRR Items
-      this._ordersService.getCdrrItem(+[this.item[0]]).subscribe(
-        (item: any[]) => {
-          item.forEach(element => {
-            delete element['drug_unit'];
-            element['category_id'] = '';
-            element['category_name'] = '';
-            element['pack_size'] = ''; // for now
-          });
-          console.log(item)
-          this.setDrugs(item);
-          let a = this.rows.controls;
-          console.log(a)
-          for (let b of a) {
-            console.log(b);
-            // Iterate over the controls [Object type] and disable them.
-            for (var prop in b['controls']) {
-              b.get(`${prop}`).disable();
+      // Load CDRR Items and alter display based on the url. (EDIT, UPDATE or NEW CDRR)
+      if (this.formType === 'view' || this.formType === 'update') {
+        this._ordersService.getCdrrItem(+[this.item[0]]).subscribe(
+          (item: any[]) => {
+            item.forEach(element => {
+              delete element['drug_unit'];
+              element['category_id'] = '';
+              element['category_name'] = '';
+              element['pack_size'] = ''; // for now
+            });
+            this.setDrugs(item);
+            // Disables all the fields in the table.
+            if (this.formType === 'view') {
+              let drugs_control = this.rows.controls;
+              for (let drug_control of drugs_control) {
+                console.log(drug_control);
+                for (var prop in drug_control['controls']) { // Iterate over the controls [Object type] and disable them.
+                  drug_control.get(`${prop}`).disable();
+                }
+              }
             }
           }
-        }
-      )
+        );
+      }
     }
   }
   /**
@@ -185,12 +194,18 @@ export class CdrrTemplateComponent implements OnInit, OnChanges {
     }
     // Calculation of recent physical count and resupply respectively.
     let new_count = (received + balance + positive) - (losses + dispensed + negative);
-    let resupply = (dispensed * 3) - count;
+    let resupply = (dispensed * 3) - new_count;
     this.rows.controls[+[index]].patchValue({
       count: new_count,
       resupply: resupply
     })
 
     console.log(new_count);
+  }
+
+  ngOnDestroy() {
+    // Restore the side nav menu before exiting.
+    this._layoutService.onCollapseMenu();
+    alert('Have a nice one!');
   }
 }

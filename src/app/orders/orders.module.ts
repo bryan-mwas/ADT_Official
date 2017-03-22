@@ -4,6 +4,7 @@ import { OrdersComponent } from './orders.component';
 import { UpdateCdrrComponent } from './update-cdrr/update-cdrr.component';
 import { UpdateMapComponent } from './update-map/update-map.component';
 import { ViewCdrrComponent } from './view-cdrr/view-cdrr.component';
+import { NewCdrrComponent } from './new-cdrr/new-cdrr.component';
 import { MapTemplateComponent } from './map-template/map-template.component';
 import { CdrrTemplateComponent } from './cdrr-template/cdrr-template.component';
 import { HighlightDirective } from './cdrr-template/cddr.directive';
@@ -26,6 +27,7 @@ import { UtilsModule } from '../shared/utils/utils.module'; // For field filter 
     ViewCdrrComponent,
     UpdateMapComponent,
     UpdateCdrrComponent,
+    NewCdrrComponent,
     HighlightDirective
   ],
   imports: [

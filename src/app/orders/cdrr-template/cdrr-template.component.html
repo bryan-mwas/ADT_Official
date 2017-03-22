@@ -1,23 +1,21 @@
 <div id="content" class="container-fluid" *ngIf="cdrr_item">
     <sa-widgets-grid>
-        <sa-widget [colorbutton]="false" [editbutton]="false" [togglebutton]="false" [deletebutton]="false" [fullscreenbutton]="true"
-            [custombutton]="false" [sortable]="false" color="blueDark">
+        <sa-widget [colorbutton]="false" [editbutton]="false" [togglebutton]="false" [deletebutton]="false" [fullscreenbutton]="true" [custombutton]="false" [sortable]="false" color="blueDark">
             <header>
                 <h2>{{cdrr_item.code+'#'+cdrr_item.id}}</h2>
+                <div class="widget-toolbar">
+                  <a class="btn btn-primary btn-xs" [routerLink]="['/orders/update-cdrr/',cdrr_item.id]">Update</a>
+                    <a class="btn btn-success btn-xs" [routerLink]="['/orders/view-cdrr/',cdrr_item.id]">View</a>
+                    <a class="btn btn-danger btn-xs" href="#">Delete</a>
+               </div>
             </header>
             <div class="table-responsive" style="padding:12px; overflow-x:auto;">
-                <ul class="nav nav-pills">
-                    <li><a [routerLink]="['/orders/update-cdrr/',cdrr_item.id]">Update</a></li>
-                    <li class="active"><a [routerLink]="['/orders/view-cdrr']">View</a></li>
-                    <li><a href="#">Delete</a></li>
-                </ul>
                 <form novalidate [formGroup]="cdrrForm">
                     <div class="table-responsive">
                         <table style="width: 100%" class="table table-bordered">
                             <tbody>
                                 <tr>
-                                    <th colspan="2" style="text-align: center">FACILITY CONSUMPTION DATA REPORT AND REQUEST (F-CDRR) FOR ANTIRETROVIRALS AND OPPORTUNISTIC
-                                        INFECTION MEDICINES </th>
+                                    <th colspan="2" style="text-align: center">FACILITY CONSUMPTION DATA REPORT AND REQUEST (F-CDRR) FOR ANTIRETROVIRALS AND OPPORTUNISTIC INFECTION MEDICINES </th>
                                 </tr>
                                 <tr>
                                     <td><b>Facility Name:</b> {{cdrr_item.facility_name | uppercase}}</td>
@@ -52,20 +50,29 @@
                                     <th rowspan="3" style="width:100%; vertical-align: bottom;">Drug Name</th>
                                     <th rowspan="3" style="width:100%; vertical-align: bottom;">Unit Pack Size</th>
                                     <th style="width: 100%; vertical-align: bottom;">Beginning Balance</th>
-                                    <th style="width: 100%; vertical-align: bottom;">Quantity <br>Received this period</th>
-                                    <th style="width:100%; vertical-align: bottom;" colspan="2">Total Quantity Dispensed <br>this period</th>
-                                    <th style="width:100%; vertical-align: bottom;">Losses <br>
+                                    <th style="width: 100%; vertical-align: bottom;">Quantity
+                                        <br>Received this period</th>
+                                    <th style="width:100%; vertical-align: bottom;" colspan="2">Total Quantity Dispensed
+                                        <br>this period</th>
+                                    <th style="width:100%; vertical-align: bottom;">Losses
+                                        <br>
                                         <font style="font-weight:lighter; color:blue;">(Damages, Expiries, Missing)</font>
                                     </th>
                                     <!-- new column for the cdrr_array -->
-                                    <th style="width: 100%; vertical-align: bottom;">Positive<br> Adjustments<br>
+                                    <th style="width: 100%; vertical-align: bottom;">Positive
+                                        <br> Adjustments
+                                        <br>
                                         <font style="font-weight:lighter; color:blue;"> (Stocks transfers from other facilities)</font>
                                     </th>
-                                    <th style="width: 100%; vertical-align: bottom;">Negative <br>Adjustments<br>
+                                    <th style="width: 100%; vertical-align: bottom;">Negative
+                                        <br>Adjustments
+                                        <br>
                                         <font style="font-weight:lighter; color:blue;"> (Borrowed from <br>or Issued out to Other Facilities)</font>
                                     </th>
                                     <!-- end of new column for the cdrr -->
-                                    <th style="width: 100%; vertical-align: bottom;">End of Month<br> Physical Count<br>
+                                    <th style="width: 100%; vertical-align: bottom;">End of Month
+                                        <br> Physical Count
+                                        <br>
                                         <font style="font-weight:lighter; color:blue;">(For CS <br>Dispensing <br>Point, please <br><strong>exclude</strong> the central
                                             site Store stocks)</font>
                                     </th>
@@ -99,13 +106,13 @@
                                     <th style="width:100%; vertical-align: bottom;">H</th>
                                     <th style="width:100%; vertical-align: bottom;">I</th>
                                 </tr>
-                            <!--</thead>-->
+                                <!--</thead>-->
                                 <tr style="background: #bcb6b2;">
                                     <td colspan="14" *ngIf="distinct.indexOf(i) > -1" style="text-align: center; font-weight: bold;">{{category_drugs[i]['category_name'] | uppercase}}</td>
                                 </tr>
                                 <tr [formGroupName]="i">
                                     <td *ngIf="category_drugs[i]" style="vertical-align: bottom;">
-                                         {{category_drugs[i]['drug_name']}}
+                                        {{category_drugs[i]['drug_name']}}
                                     </td>
                                     <td id="complex_table">
                                         <input style="width:50px;" type="text" id="input" formControlName="pack_size" class="form-control" />
@@ -120,10 +127,10 @@
                                         <input style="width:50px;" type="text" id="input" formControlName="dispensed_packs" class="form-control" />
                                     </td>
                                     <td id="complex_table">
-                                        <input style="width:50px;" #disunits (keyup)="calcBalance(disunits.value, this.i, 'dispensed')"  type="text" id="input" formControlName="dispensed_units" class="form-control" />
+                                        <input style="width:50px;" #disunits (keyup)="calcBalance(disunits.value, this.i, 'dispensed')" type="text" id="input" formControlName="dispensed_units" class="form-control" />
                                     </td>
                                     <td id="complex_table">
-                                        <input type="text" #losses (keyup)="calcBalance(losses.value, this.i)"  id="input" formControlName="losses" class="form-control" />
+                                        <input type="text" #losses (keyup)="calcBalance(losses.value, this.i)" id="input" formControlName="losses" class="form-control" />
                                     </td>
                                     <td id="complex_table">
                                         <input type="text" #positive (keyup)="calcBalance(positive.value, this.i)" id="input" formControlName="adjustments_pos" class="form-control" />
