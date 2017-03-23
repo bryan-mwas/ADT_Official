@@ -32,3 +32,6 @@ testem.log
 #System Files
 .DS_Store
 Thumbs.db
+
+#Endpoint
+/src/app/core/config.ts
