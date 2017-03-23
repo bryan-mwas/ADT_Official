@@ -8,7 +8,7 @@
                   <span class="widget-icon"> <i class="fa fa-info-circle"></i> </span>
                   <h2>Drug Information</h2>
                </header>
-               <div role="content">
+               <div role="content" style="height: 25%">
                   <div class="widget-body no-padding">
                      <table class="table" id="drug_info">
                         <tbody>
@@ -51,9 +51,8 @@
                      <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                      <h2>Batch Information</h2>
                   </header>
-                  <div>
+                  <div style="height:25%; overflow-y: scroll;">
                      <div class="widget-body no-padding">
-                        <div class="custom-scroll table-responsive" style="height:243px; overflow-y: scroll;">
                            <div class="dt-toolbar">
                               <div class="col-xs-12 col-sm-6 hidden-xs">
                                  <div id="datatable_fixed_column_filter" class="dataTables_filter">
@@ -66,6 +65,7 @@
                                  </div>
                               </div>
                            </div>
+                        <!--<div class="table-responsive">-->
                            <table class="table table-bordered table-striped">
                               <thead>
                                  <tr>
@@ -76,7 +76,7 @@
                                     <th>Expiry Date</th>
                                  </tr>
                               </thead>
-                              <tbody *ngIf="batches > 1"><tr><th colspan="5" style="text-align: center">No Viable Batches</th></tr></tbody>
+                              <!--<tbody *ngIf=""><tr><th colspan="5" style="text-align: center">No Viable Batches</th></tr></tbody>-->
                               <tbody>
                                  <tr *ngFor="let batch of batches | fieldFilter:'name':binding">
                                     <td>{{batch?.name}}</td>
@@ -99,7 +99,7 @@
                                  </div>
                               </div>
                            </div>
-                        </div>
+                        <!--</div>-->
                      </div>
                   </div>
                   </sa-widget>

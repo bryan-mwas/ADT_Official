@@ -139,7 +139,7 @@
                            </div>
                         </td>
                         <td id="complex_table">
-                           <input #packs id="input" class="form-control" formControlName="quantity_packs" type="text" (keyup)="quantityValidator(packs.value, this.i)" (keyup)="quantityCalculator(packs, this.i)">
+                           <input #packs id="input" class="form-control" formControlName="quantity_packs" type="text" autocomplete="off" (keyup)="quantityValidator(packs.value, this.i)" (keyup)="quantityCalculator(packs, this.i)">
                         </td>
                         <td id="complex_table">
                            <input id="input" class="form-control" formControlName="quantity" type="text" readonly>
@@ -148,13 +148,13 @@
                            <input id="input" class="form-control" formControlName="balance_before" type="text" readonly>
                         </td>
                         <td id="complex_table">
-                           <input #cost id="input" class="form-control" formControlName="unit_cost" type="text" (keyup)="totalCalculator(cost, this.i)">
+                           <input #cost id="input" class="form-control" formControlName="unit_cost" type="text" autocomplete="off" (keyup)="totalCalculator(cost, this.i)">
                         </td>
                         <td id="complex_table">
                            <input id="input" class="form-control" formControlName="total" type="text" readonly>
                         </td>
                         <td id="complex_table">
-                           <input id="input" class="form-control" formControlName="comment" type="text">
+                           <input id="input" class="form-control" formControlName="comment" autocomplete="off" type="text">
                         </td>
                         <td id="complex_table">
                            <button *ngIf="stockTransactionsForm.controls.drugs.controls.length > 1" class="form-control" class="btn btn-danger btn-size" (click)="removeRow(this.i)">Remove</button>

@@ -76,7 +76,7 @@ export class StockTransactionsService {
   // }
 
   getDrugBatches(storeId: number, drugId: number): Observable<any> {
-    return this._http.get(this._storeURL + `/${storeId}` + '/stocks/drugs/' + `${drugId}` + '/all')
+    return this._http.get(this._storeURL + `/${storeId}` + '/stocks/drugs/' + `${drugId}` + '/now')
       .map((response: Response) => <StoreItem[]>response.json())
       .retryWhen(error => error.delay(1000))
       .catch(this.handleError);
