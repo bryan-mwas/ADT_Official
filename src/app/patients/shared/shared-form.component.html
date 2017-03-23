@@ -122,19 +122,19 @@
                                         </select>
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                        <label>Start weight (kg)</label>
+                                        <label>Start weight <span style="font-weight: bold;"><span style="font-weight: bold;">(kg)</span></span></label>
                                         <input class="form-control" placeholder="Current Weight" type="text" formControlName="initial_weight">
                                     </div>
                                     <div *ngIf="edit" class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                        <label><span style="color:red; font-weight:bold">*</span>Current Weight (kg)</label>
+                                        <label><span style="color:red; font-weight:bold">*</span>Current Weight <span style="font-weight: bold;">(kg)</span></label>
                                         <input class="form-control" placeholder="Weight" type="text" formControlName="current_weight">
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                        <label>Start Height (cm)</label>
+                                        <label>Start Height <span style="font-weight: bold;">(cm)</span></label>
                                         <input class="form-control" placeholder="Current Height" type="text" formControlName="initial_height">
                                     </div>
                                     <div *ngIf="edit" class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                        <label><span style="color:red; font-weight:bold">*</span>Current Height (cm)</label>
+                                        <label><span style="color:red; font-weight:bold">*</span>Current Height <span style="font-weight: bold;">(cm)</span></label>
                                         <input class="form-control" placeholder="Height" type="text" formControlName="current_height">
                                     </div>
                                     <div *ngIf="edit" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -222,7 +222,7 @@
                                             <label>Match to spouse in this ccc?</label>
                                             <input class="form-control" placeholder="Enter ccc number" formControlName="spouse_ccc" />
                                         </div>
-                                        <div [ngSwitch]="familyPlanning | async" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <div [ngSwitch]="familyPlanningOptions" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                             <label>Family planning method</label>
                                             <div *ngSwitchCase="null">
                                                 <div class="form-group">
@@ -231,11 +231,11 @@
                                                 </div>
                                             </div>
                                             <div *ngSwitchDefault>
-                                                <ss-multiselect-dropdown [options]="familyPlanning | async" [texts]="myTexts" [settings]="mySettings" formControlName="family_planning"></ss-multiselect-dropdown>
+                                                <ss-multiselect-dropdown [options]="familyPlanningOptions" [texts]="myTexts" [settings]="mySettings" formControlName="family_planning"></ss-multiselect-dropdown>
                                             </div>
                                         </div>
                                     </div>
-                                    <div [ngSwitch]="chronicIllness | async" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div [ngSwitch]="chronicIllnessOptions" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>Does Patient have other Chronic Illnesses</label>
                                         <div *ngSwitchCase="null">
                                             <div class="form-group">
@@ -244,7 +244,7 @@
                                             </div>
                                         </div>
                                         <div *ngSwitchDefault>
-                                            <ss-multiselect-dropdown [options]="chronicIllness | async" [texts]="myTexts" [settings]="mySettings" formControlName="illnesses"></ss-multiselect-dropdown>
+                                            <ss-multiselect-dropdown [options]="chronicIllnessOptions" [texts]="myTexts" [settings]="mySettings" formControlName="illnesses"></ss-multiselect-dropdown>
                                         </div>
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -269,7 +269,7 @@
                                         <label>List Them (Use commas to separate)</label>
                                         <textarea placeholder="Other Drugs (if any)" class="form-control" row="3" formControlName="drug_name" [readonly]="patientForm.get('is_drugs').value != true"></textarea>
                                     </div>
-                                    <div [ngSwitch]="allergiesList | async" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div [ngSwitch]="allergiesOptions" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>Drug Allergies/ADR</label>
                                         <div *ngSwitchCase="null">
                                             <div class="form-group">
@@ -278,7 +278,7 @@
                                             </div>
                                         </div>
                                         <div *ngSwitchDefault>
-                                            <ss-multiselect-dropdown [options]="allergiesList | async" [texts]="myTexts" [settings]="mySettings" formControlName="drug_id"></ss-multiselect-dropdown>
+                                            <ss-multiselect-dropdown [options]="allergiesOptions" [texts]="myTexts" [settings]="mySettings" formControlName="drug_id"></ss-multiselect-dropdown>
                                         </div>
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -446,7 +446,7 @@
                                             </div>
                                         </div>
                                         <div *ngSwitchDefault>
-                                            <select style="color:red; font-weight:bold" class="form-control" id="select-1" formControlName="service_id" (click)="setService(patientForm.get('service_id').value)">
+                                            <select style="color:red; font-weight:bold" class="form-control" id="select-1" formControlName="service_id">
                                                 <option *ngFor="let service of patientServices" value="{{service.id}}">{{service.name}}</option>
                                             </select>
                                         </div>
@@ -500,7 +500,7 @@
                                             </div>
                                         </div>
                                         <div *ngSwitchDefault>
-                                            <ss-multiselect-dropdown [options]="prophylaxisOptions" [texts]="myTexts" [settings]="mySettings" formControlName="prophylaxis"></ss-multiselect-dropdown>
+                                            <ss-multiselect-dropdown (click)="activateCheck()" [options]="prophylaxisOptions" [texts]="myTexts" [settings]="mySettings" formControlName="prophylaxis"></ss-multiselect-dropdown>
                                         </div>
                                     </div>
                                     <div *ngIf="toggle_isoniazid_dates">

@@ -11,7 +11,7 @@
                             <strong>Dispense</strong></h2>
                     </header>
                     <!-- widget div-->
-                    <div role="content">
+                    <div role="content" style="background-color: #FF8AE7 !important;">
                         <!-- widget edit box -->
                         <div class="jarviswidget-editbox">
                             <!-- This area used as dropdown edit box -->
@@ -60,11 +60,11 @@
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                            <label>Current Height (CM)</label>
+                                            <label>Current Height <span style="font-weight: bold;">(cm)</span></label>
                                             <input class="form-control" placeholder="autofilled" formControlName="current_height" type="text">
                                         </div>
                                         <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                            <label><span style="color:red; font-weight:bold">*</span> Current Weight (KG)</label>
+                                            <label><span style="color:red; font-weight:bold">*</span> Current Weight <span style="font-weight: bold;">(kg)</span></label>
                                             <input class="form-control" placeholder="autofilled" formControlName="current_weight" type="text">
                                         </div>
                                     </div>
@@ -140,7 +140,7 @@
                                                     <table class="table table-bordered">
                                                         <thead>
                                                             <tr>
-                                                                <th [ngStyle]="{width:'70%'}">Drug Dispensed</th>
+                                                                <th>Drug Dispensed</th>
                                                                 <th>Quantity Dispensed</th>
                                                             </tr>
                                                         </thead>
@@ -150,6 +150,9 @@
                                                                 <td>{{item.stock_item.quantity_out}}</td>
                                                             </tr>
                                                         </tbody>
+                                                        <tr *ngIf="!dispense_history || dispense_history.length === 0" style="text-align: center; font-weight: bold;">
+                                                            <td colspan="2">No data available</td>
+                                                        </tr>
                                                     </table>
                                                 </div>
                                             </div>

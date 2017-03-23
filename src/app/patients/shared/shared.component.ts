@@ -32,6 +32,7 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
     patientForm: FormGroup;
     toggle_facilities: boolean = false;
     toggle_isoniazid_dates: boolean = false;
+    toggle_prophylaxis_check: boolean = false;
 
     // Define properties first.
     patient: Patient;
@@ -46,7 +47,7 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
     patientSources: Source[];
     patientRegimen: Observable<Regimen[]>;
     patientWhostage: Observable<Who_stage[]>;
-    familyPlanning: Observable<IMultiSelectOption[]>;
+    familyPlanningOptions: IMultiSelectOption[];
     birth_place: Observable<PlaceOfBirth[]>;
     // Variables to multiselect controls
     family_planning_list: string[];
@@ -59,9 +60,9 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
 
     selectedOptions: string[]; // Default selection
 
-    chronicIllness: Observable<IMultiSelectOption[]>;
+    chronicIllnessOptions: IMultiSelectOption[];
 
-    allergiesList: Observable<IMultiSelectOption[]>;
+    allergiesOptions: IMultiSelectOption[];
     prophylaxisOptions: IMultiSelectOption[];
 
     mySettings: IMultiSelectSettings = {
@@ -100,9 +101,9 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
         this.patientWhostage = this._patientService.getWho_stage();
         this.status = this._patientService.getStatus();
         this.birth_place = this._patientService.getLocation();
-        this.familyPlanning = this._patientService.getFamilyPlan();
-        this.chronicIllness = this._patientService.getIllness();
-        this.allergiesList = this._patientService.getAllergies();
+        this._patientService.getFamilyPlan().subscribe(resp => this.familyPlanningOptions = resp);
+        this._patientService.getIllness().subscribe(resp => this.chronicIllnessOptions = resp);
+        this._patientService.getAllergies().subscribe(allergies => this.allergiesOptions = allergies);
         this._patientService.getProphylaxis().subscribe(prophy => this.prophylaxisOptions = prophy);
         this._patientService.getSource().subscribe(source => this.patientSources = source);
         this._patientService.getServices().subscribe(service => { this.patientServices = service });
@@ -178,55 +179,65 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
         this.patientForm.get('source_id').valueChanges.subscribe(
             id => {
                 // Get the source name based on the [id].
-                let individual_source = this.patientSources.find(source => source.id === +[id])
-                if (individual_source.name.toLowerCase() === 'transfer in') {
-                    this.toggle_facilities = true;
-                }
-                else {
-                    // TODO: Clear the selected value in the transfer from field
-                    this.toggle_facilities = false;
+                if (typeof this.patientSources !== 'undefined') {
+                    let individual_source = this.patientSources.find(source => source.id === +[id])
+                    if (individual_source.name.toLowerCase() === 'transfer in') {
+                        this.toggle_facilities = true;
+                    }
+                    else {
+                        // TODO: Clear the selected value in the transfer from field
+                        this.toggle_facilities = false;
+                    }
                 }
             }
         )
         // Track appointment_date
         this.patientForm.get('appointment_date').valueChanges.subscribe(
             date => {
-                this.patientForm.patchValue({
-                    days_to: this.dateDiff(date)
-                })
+                if (new Date(date).toString().toLocaleLowerCase() === 'invalid date') {
+                    alert('Invalid appointment date');
+                }
+                else {
+                    this.patientForm.patchValue({
+                        days_to: this.dateDiff(date)
+                    })
+                }
             }
         )
+        // Watch for changes to the service_id value. Triggers loading of regimens belonging to respective service
+        this.patientForm.get('service_id').valueChanges.subscribe(service_id => this.setService(service_id));
         // Track for edit changes in prophylaxis control
         this.patientForm.get('prophylaxis').valueChanges.subscribe(
             value => {
-                let last = value[value.length - 1]; // Recent value selected by the user
-                let selectedOptions = this.prophylaxisOptions.filter(option => value.indexOf(option.id) >= 0); // Returns an array with details of selected options
-                let latestSelection = selectedOptions.find(val => val.id === last); // Get id and name of the recent selection
-                if (typeof latestSelection !== 'undefined') {
-                    if (latestSelection.name.toLowerCase() === 'dapsone') {
-                        let cotrimoxazole = selectedOptions.find(val => val.name.toLowerCase() === 'cotrimoxazole');
-                        // Checks if cotrimoxazole is present and removes it from the selected options
-                        if (typeof cotrimoxazole !== 'undefined') {
-                            value.splice(value.indexOf(cotrimoxazole.id), 1);
+                if (this.toggle_prophylaxis_check) {
+                    let last = value[value.length - 1]; // Recent value selected by the user
+                    let selectedOptions = this.prophylaxisOptions.filter(option => value.indexOf(option.id) >= 0); // Returns an array with details of selected options
+                    let latestSelection = selectedOptions.find(val => val.id === last); // Get id and name of the recent selection
+                    if (typeof latestSelection !== 'undefined') {
+                        if (latestSelection.name.toLowerCase() === 'dapsone') {
+                            let cotrimoxazole = selectedOptions.find(val => val.name.toLowerCase() === 'cotrimoxazole');
+                            // Checks if cotrimoxazole is present and removes it from the selected options
+                            if (typeof cotrimoxazole !== 'undefined') {
+                                value.splice(value.indexOf(cotrimoxazole.id), 1);
+                            }
+                        }
+                        if (latestSelection.name.toLowerCase() === 'cotrimoxazole') {
+                            let dapsone = selectedOptions.find(val => val.name.toLowerCase() === "dapsone");
+                            // Checks if dapsone is present and removes it from the selected options
+                            if (typeof dapsone !== 'undefined') {
+                                value.splice(value.indexOf(dapsone.id), 1);
+                            }
                         }
                     }
-                    if (latestSelection.name.toLowerCase() === 'cotrimoxazole') {
-                        let dapsone = selectedOptions.find(val => val.name.toLowerCase() === "dapsone");
-                        // Checks if dapsone is present and removes it from the selected options
-                        if (typeof dapsone !== 'undefined') {
-                            value.splice(value.indexOf(dapsone.id), 1);
-                        }
+                    // Trigger the toggle if isoniazid exists in the user's selection
+                    let isoniazid = selectedOptions.find(val => val.name.toLowerCase() === "isoniazid");
+                    if (typeof isoniazid !== "undefined") {
+                        this.toggle_isoniazid_dates = true;
+                    }
+                    else {
+                        this.toggle_isoniazid_dates = false;
                     }
                 }
-                // Trigger the toggle if isoniazid exists in the user's selection
-                let isoniazid = selectedOptions.find(val => val.name.toLowerCase() === "isoniazid");
-                if (typeof isoniazid !== "undefined") {
-                    this.toggle_isoniazid_dates = true;
-                }
-                else {
-                    this.toggle_isoniazid_dates = false;
-                }
-
             }
         )
         // Monitor the patient ccc_number
@@ -309,13 +320,20 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
      */
     patientValues(patient: Patient) {
         this.setDate(patient.birth_date, 'birthday');
-        this.setDate(patient.next_appointment_date, 'appointment');
         if (patient.next_appointment_date) {
-            this.patientForm.patchValue({
-                days_to: this.dateDiff(patient.next_appointment_date)
-            })
+            if (new Date(patient.next_appointment_date).toString().toLocaleLowerCase() !== 'invalid date') {
+                this.setDate(patient.next_appointment_date, 'appointment');
+                this.patientForm.patchValue({
+                    days_to: this.dateDiff(patient.next_appointment_date)
+                })
+            }
+            else {
+                this.patientForm.patchValue({
+                    days_to: 0
+                })
+            }
         }
-        if (patient.tb != null) {
+        if (patient.tb !== null) {
             // Added this on 6th March. I anticipate no need for tb_end
             this.setDate(patient.tb.start_date, 'tb_start');
             this.tbEndEditCalculator(patient.tb.start_date, patient.tb.category, patient.tb.phase)
@@ -324,27 +342,27 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
                 tb_phase: patient.tb.phase
             })
         }
-        if (patient.other_drug != null) {
+        if (patient.other_drug !== null) {
             this.patientForm.patchValue({
                 drug_name: patient.other_drug.drug_name,
             })
         }
-        if (patient.other_drug_allergy != null) {
+        if (patient.other_drug_allergy !== null) {
             this.patientForm.patchValue({
                 allergy_name: patient.other_drug_allergy.allergy_name,
             })
         }
-        if (patient.service != null) {
+        if (patient.service !== null) {
             this.patientForm.patchValue({
                 service_id: patient.service.id,
             })
         }
-        if (patient.place_of_birth != null) {
+        if (patient.place_of_birth !== null) {
             this.patientForm.patchValue({
                 county_sub_id: patient.place_of_birth.id,
             })
         }
-        if (patient.prophylaxis != null || []) {
+        if (patient.prophylaxis !== null && patient.prophylaxis.length !== 0) {
             let selectedOptions: number[] = [];
             for (let item of patient.prophylaxis) {
                 selectedOptions.push(item.id);
@@ -353,7 +371,7 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
                 prophylaxis: selectedOptions,
             })
         }
-        if (patient.drug_allergy != null || []) {
+        if (patient.drug_allergy !== null && patient.drug_allergy.length !== 0) {
             let selectedOptions: number[] = [];
             for (let item of patient.drug_allergy) {
                 selectedOptions.push(item.drug_id);
@@ -362,7 +380,7 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
                 drug_id: selectedOptions,
             })
         }
-        if (patient.birth_date != null) {
+        if (patient.birth_date !== null) {
             let dob: any = new Date(patient.birth_date);
             let today: any = new Date();
             let age_in_years: number;
@@ -378,7 +396,7 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
                 current_age: age_in_years
             });
         }
-        if (patient.illnesses != null || []) {
+        if (patient.illnesses !== null && patient.illnesses.length !== 0) {
             let selectedOptions: number[] = [];
             for (let item of patient.illnesses) {
                 selectedOptions.push(item['illness_id']);
@@ -387,7 +405,7 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
                 illnesses: selectedOptions,
             })
         }
-        if (patient.family_planning != null || []) {
+        if (patient.family_planning !== null && patient.family_planning.length !== 0) {
             let selectedOptions: number[] = [];
             for (let item of patient.family_planning) {
                 selectedOptions.push(item['family_planning_id']);
@@ -396,10 +414,11 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
                 family_planning: selectedOptions,
             })
         }
-        if (patient.first_visit != null) {
+        if (patient.first_visit !== null && typeof patient.first_visit !== 'undefined') {
             this.patientForm.patchValue({
                 initial_weight: patient.first_visit['current_weight'],
-                initial_height: patient.first_visit['current_height']
+                initial_height: patient.first_visit['current_height'],
+                initial_regimen_id: patient.first_visit['current_regimen_id']
             })
         }
         this.patientForm.patchValue({
@@ -423,8 +442,6 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
             is_alcohol: patient.is_alcohol,
             enrollment_date: patient.enrollment_date,
             regimen_start_date: patient.enrollment_date,
-            initial_regimen_id: patient.regimen_id,
-            current_regimen_id: patient.regimen_id, // TODO: Revise
             facility_id: 1,
             supporter_id: 1,
             who_stage_id: patient.who_stage_id,
@@ -648,13 +665,14 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
             if (typeof latest_visit !== 'undefined') {
                 this.patientForm.patchValue({
                     current_weight: latest_visit.current_weight,
-                    current_height: latest_visit.current_height
+                    current_height: latest_visit.current_height,
+                    current_regimen_id: latest_visit.current_regimen_id
                 })
             }
             else {
                 console.log('Patient is yet to visit')
             }
-        })
+        });
     }
 
     onChange(value: any): void {
@@ -667,5 +685,12 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
             content: `You have currently selected ${current}, ${previous} will be disabled`,
             buttons: '[OK]'
         });
+    }
+    /**
+     * Checks for cotrimoxazole and dapsone selection
+     * Triggers display of the isoniazid start and end dates.
+     */
+    activateCheck() {
+        this.toggle_prophylaxis_check = true;
     }
 }
