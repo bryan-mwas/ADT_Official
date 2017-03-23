@@ -1,1 +1,25 @@
-<p>PengPeng</p>
+<div id="content">
+   <sa-widgets-grid>
+      <div class="row">
+         <article class="col-sm-12">
+            <sa-widget [colorbutton]="false" [editbutton]="false" [togglebutton]="false" [deletebutton]="false" [fullscreenbutton]="false"
+            [custombutton]="false" [sortable]="false" color="blueDark">
+            <header>
+               <span class="widget-icon"> <i class="fa fa-history"></i> </span>
+               <h2>Standard Reports</h2>
+            </header>
+            <div>
+               <div class="widget-body no-padding">
+                  <form novalidate [formGroup]="standardReport">
+                     <label>Select Report</label>
+                     <select style="width: 50%" formControlName="type" class="form-control" id="select-1">
+                        <option value="0" selected> Select a Report </option>
+                     </select>
+                  </form>
+               </div>
+            </div>
+            </sa-widget>
+         </article>
+      </div>
+   </sa-widgets-grid>
+</div>

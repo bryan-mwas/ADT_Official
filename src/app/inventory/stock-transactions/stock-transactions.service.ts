@@ -36,7 +36,7 @@ export class StockTransactionsService {
     return this.getTransactionTypes()
       .map((transaction: Transaction[]) => transaction.find(p => p.id === id))
       .retryWhen(error => error.delay(1000))
-      .do(data => console.log('transaction: ' + JSON.stringify(data)))
+      // .do(data => console.log('transaction: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
 
@@ -75,8 +75,16 @@ export class StockTransactionsService {
   //     .catch(this.handleError);
   // }
 
-  getDrugBatches(storeId: number, drugId: number): Observable<any> {
+  getBatchDetails(storeId: number, drugId: number): Observable<any> {
     return this._http.get(this._storeURL + `/${storeId}` + '/stocks/drugs/' + `${drugId}` + '/all')
+      .map((response: Response) => <StoreItem[]>response.json())
+      // .do(data => console.log('all Batches: ' + JSON.stringify(data)))
+      .retryWhen(error => error.delay(1000))
+      .catch(this.handleError);
+  }
+
+  getDrugBatches(storeId: number, drugId: number): Observable<any> {
+    return this._http.get(this._storeURL + `/${storeId}` + '/stocks/drugs/' + `${drugId}` + '/now')
       .map((response: Response) => <StoreItem[]>response.json())
       .retryWhen(error => error.delay(1000))
       .catch(this.handleError);
@@ -86,7 +94,7 @@ export class StockTransactionsService {
     return this.getDrugsbyStore(storeId)
       .map((stockItem: StockItem[]) => stockItem.find(b => b.batch_number === batchNo))
       .retryWhen(error => error.delay(1000))
-      .do(data => console.log('pengBatch: ' + JSON.stringify(data)))
+      // .do(data => console.log('pengBatch: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
 

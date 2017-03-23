@@ -1,10 +1,11 @@
-import { Component, OnInit, DoCheck } from '@angular/core';
+import { Component, OnInit, DoCheck, OnDestroy } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Types, Transaction, StockItem, Drug, StoreItem, Store } from './transactions';
 import { StockTransactionsService } from './stock-transactions.service';
 import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/takeWhile';
 import { Observable } from 'rxjs/Observable';
 
 declare var $: any;
@@ -15,7 +16,7 @@ declare var $: any;
   styleUrls: ['./stock-transactions.component.css'],
   providers: [StockTransactionsService, DatePipe]
 })
-export class StockTransactionsComponent implements OnInit, DoCheck {
+export class StockTransactionsComponent implements OnInit, DoCheck, OnDestroy {
 
   stockTransactionsForm: FormGroup;
   i: number; // Index Tracker
@@ -38,9 +39,11 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     // minDate: new Date(),
     beforeShowDay: $.datepicker.noWeekends
   };
+  private negative: boolean = true;
   private storesList: Observable<string[]>;
   private transactionTypes: Transaction[];
   private drugsList: Observable<string[]>;
+  private allBatches: Observable<string[]>;
   // private storeItems: StoreItem;
   private batchList: Observable<string[]>;
   private indiv: Observable<string[]>;
@@ -50,7 +53,9 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     private _transactionService: StockTransactionsService,
     private _route: ActivatedRoute,
     private _datePipe: DatePipe,
-    private _router: Router) { }
+    private _router: Router) {
+      _route.params.subscribe(params => this.ngOnInit());
+     }
 
   ngOnInit() {
     this._route.params
@@ -66,6 +71,10 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     });
     this._transactionService.getTransactionTypes().subscribe(data => this.transactionTypes = data);
     this._transactionService.getStores().subscribe(z => this.storesList = z);
+  }
+
+  ngOnDestroy(){
+    confirm('Are you sure you want to leave this page?');
   }
 
   buildRow(): FormGroup {
@@ -101,7 +110,6 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
 
   removeRow(i: number) {
     const control = <FormArray>this.stockTransactionsForm.controls['drugs'];
-    control.disable();
     control.removeAt(i);
   }
 
@@ -149,13 +157,14 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     this.rows.controls[+[index]].reset();
     let e = this.transactionTypes.find(val => val.id === +[value]);
     if (+[e['effect']] === 0) {
-      // alert(e);
+      this.negative = true;
       this._route.params
         .switchMap((params: Params) => this._transactionService.getDrugsbyStore(+params['id']))
         .subscribe(z => this.drugsList = z);
     } else {
       this.rows.controls[+[index]].reset();
       this._transactionService.getDrugs().subscribe(d => this.drugsList = d);
+      this.negative = false;
     }
   }
 
@@ -165,12 +174,17 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
     );
     this._route.params
       .switchMap((params: Params) => this._transactionService.getDrugBatches(+params['id'], +[id]))
+      .takeWhile(() => this.negative === true)
       .subscribe(i => this.batchList = i);
+    this._route.params
+        .switchMap((params: Params) => this._transactionService.getBatchDetails(+params['id'], this.rows.get(`${index}.drug_id`).value))
+        .takeWhile(() => this.negative === true)
+        .subscribe(p => this.allBatches = p);
   }
 
   getBatchDetails(batchNo: string, index: number) {
-    let b = this.drugsList.find(val => val['batch_number'] === batchNo);
-    if (b) {
+    let b = this.allBatches.find(val => val['batch_number'] === batchNo);
+    if (b && this.negative === true) {
       this.patchBatch(b, index);
     }
   }
@@ -289,5 +303,6 @@ export class StockTransactionsComponent implements OnInit, DoCheck {
   // Yucky Zone
 
   ngDoCheck() {
+    // console.log(this.negative)
   }
 }
