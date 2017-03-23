@@ -144,7 +144,7 @@
                                                                 <th>Quantity Dispensed</th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody *ngIf="dispense_history && dispense_history[0]">
+                                                        <tbody *ngIf="dispense_history && dispense_history[0] && dispense_history[0].visit_item">
                                                             <tr *ngFor="let item of dispense_history[0].visit_item">
                                                                 <td>{{item.stock_item.drug_name || 'N/A'}}</td>
                                                                 <td>{{item.stock_item.quantity_out}}</td>

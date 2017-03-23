@@ -4,11 +4,17 @@ import { UpdateCdrrComponent } from './update-cdrr/update-cdrr.component';
 import { UpdateMapComponent } from './update-map/update-map.component';
 import { ViewCdrrComponent } from './view-cdrr/view-cdrr.component';
 import { ViewMapComponent } from './view-map/view-map.component';
+import { NewCdrrComponent } from './new-cdrr/new-cdrr.component';
 
 export const routes: Routes = [
     {
         path: '',
         component: OrdersComponent
+    },
+    {
+        path: 'new-cdrr/:id',
+        component: NewCdrrComponent,
+        data: { pageTitle: 'Satellite Facility F-CDRR'}
     },
     {
         path: 'view-cdrr/:id',
@@ -17,7 +23,7 @@ export const routes: Routes = [
     },
     {
         path: 'update-cdrr/:id',
-        component: ViewCdrrComponent,
+        component: UpdateCdrrComponent,
         data: { pageTitle: 'Satellite Facility F-CDRR'}
     },
     {
@@ -27,7 +33,7 @@ export const routes: Routes = [
     },
     {
         path: 'update-map/:id',
-        component: ViewMapComponent,
+        component: UpdateMapComponent,
         data: { pageTitle: 'Satellite Facility MAP'}
     }
 ];

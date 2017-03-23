@@ -1,15 +1,22 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
+import { FormBuilder, FormGroup, FormArray } from '@angular/forms'
+import { OrdersService } from '../orders.service';
 
 @Component({
-  selector: 'app-update-cdrr',
-  templateUrl: './update-cdrr.component.html',
-  styleUrls: ['./update-cdrr.component.css']
+  template: `<cdrr-template [item]="cdrr_item"></cdrr-template>`
 })
 export class UpdateCdrrComponent implements OnInit {
-
-  constructor() { }
-
+  public cdrr_item: any[] = [];
+  constructor(
+    private _activatedRoute: ActivatedRoute,
+    private _ordersService: OrdersService,
+  ) { }
   ngOnInit() {
+    this._activatedRoute.params.subscribe(
+      params => {
+        this.cdrr_item.push(params['id'], 'update')
+      }
+    )
   }
-
 }

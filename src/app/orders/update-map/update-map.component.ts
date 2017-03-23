@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-update-map',
-  templateUrl: './update-map.component.html',
-  styleUrls: ['./update-map.component.css']
+  template: `<map-template></map-template>`
 })
 export class UpdateMapComponent implements OnInit {
 

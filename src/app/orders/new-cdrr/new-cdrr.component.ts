@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { FormBuilder, FormGroup, FormArray } from '@angular/forms'
+// import { FormBuilder, FormGroup, FormArray } from '@angular/forms'
 import { OrdersService } from '../orders.service';
-
 @Component({
-    template: `<cdrr-template [item]="cdrr_item"></cdrr-template>`
+    template: `<cdrr-template [item]="new_item"></cdrr-template>`
 })
-export class ViewCdrrComponent implements OnInit {
-    public cdrr_item: any[] = [];
+export class NewCdrrComponent implements OnInit {
+    public new_item: string[] = [];
     constructor(
         private _activatedRoute: ActivatedRoute,
         private _ordersService: OrdersService,
@@ -15,7 +14,7 @@ export class ViewCdrrComponent implements OnInit {
     ngOnInit() {
         this._activatedRoute.params.subscribe(
             params => {
-                this.cdrr_item.push(params['id'], 'view')
+                this.new_item.push(params['id'], 'new')
             }
         )
     }

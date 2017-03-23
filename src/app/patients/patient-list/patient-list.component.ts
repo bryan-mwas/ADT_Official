@@ -77,4 +77,9 @@ export class PatientListComponent implements OnInit, DoCheck {
       timeout: 4000
     });
   }
+
+  onPageChange(number: number) {
+    console.log('change to page', number);
+    this.config.currentPage = number;
+  }
 }
