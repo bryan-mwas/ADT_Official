@@ -28,7 +28,7 @@ export class OrdersComponent implements OnInit {
     }
   }
 
-  //Advanced
+  // pagination controls
   public maxSize: number = 7;
   public directionLinks: boolean = true;
   public autoHide: boolean = false;

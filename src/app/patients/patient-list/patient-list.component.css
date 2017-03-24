@@ -1,3 +1,6 @@
 #input {display: inherit; padding: 5px; margin: 0; width: 100%;}
 #complex_table {margin: 0; padding: 6px;}
 #no_scroll {overflow: visible}
+.header-color {
+    background: #2B597E;
+}

@@ -2,11 +2,33 @@
 <div id="content" *ngIf="patients">
     <sa-widgets-grid>
         <article class="col-sm-12">
-            <sa-widget [editbutton]="false" [colorbutton]="false" [editbutton]="false" [togglebutton]="false" [deletebutton]="false"
-                [custombutton]="false" color="blueDark">
-                <header><span class="widget-icon"> <i class="fa fa-table"></i> </span>
+            <sa-widget 
+            [editbutton]="false" 
+            [colorbutton]="false" 
+            [editbutton]="false" 
+            [togglebutton]="false"
+            [deletebutton]="false" 
+            [custombutton]="false" 
+            [togglebutton]="false" 
+            color="blueDark"
+            [fullscreenbutton]="false"
+            >
+                <header class="header-color"><span class="widget-icon"> <i class="fa fa-table"></i> </span>
                     <h2>Patients</h2>
                     <div class="widget-toolbar">
+                        <a class="btn btn-success" [routerLink]=""><span style="font-weight: bold;">Export Patients List</span></a>
+                    </div>
+                    <div class="widget-toolbar">
+                        <div class="btn-group" dropdown>
+                            <button id="single-button" type="button" class="btn btn-xs btn-default" dropdownToggle>
+                                <span style="font-weight: bold;">Filter Patients Based on Status: {{status_binding | uppercase}}</span> <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                            </button>
+                            <ul dropdownMenu role="menu" style="right: 0px;" aria-labelledby="single-button">
+                            <li role="menuitem"><a class="dropdown-item" (click)="changeStatus('active')">Active</a></li>
+                            <li role="menuitem"><a class="dropdown-item" (click)="changeStatus('inactive')">Inactive</a></li>
+                            <li role="menuitem"><a class="dropdown-item" (click)="changeStatus('')">All</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </header>
                 <div>
@@ -25,6 +47,18 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-6 hidden-xs">
                                     <div class="pull-right form-inline">
+                                        <label for="show_item" style="font-weight: bold;">
+                                            Items per Page:
+                                        </label>
+                                        <!--<input type="number" class="input" min="0" [(ngModel)]="config.itemsPerPage">-->
+                                        <select name="show_item" class="form-control" [(ngModel)]="config.itemsPerPage">
+                                            <option [value]="10">10</option>
+                                            <option [value]="25">25</option>
+                                            <option [value]="50">50</option>
+                                            <option [value]="100">100</option>
+                                        </select>
+                                    </div>
+                                    <!--<div class="pull-right form-inline">
                                         <label for="status_binding">
                                             Filter Patients Based on Status:
                                         </label>
@@ -33,7 +67,7 @@
                                             <option value="inactive">Inactive</option>
                                             <option value="">All</option>
                                         </select>
-                                    </div>
+                                    </div>-->
                                 </div>
                             </div>
                             <table class="table table-bordered table-striped">
@@ -66,7 +100,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let patient of patients | fieldFilter:'patient_name':patient_name | fieldFilter:'phone_number':contact | fieldFilter:'ccc_number':ccc_no | fieldFilter:'service_id':regimen | fieldFilter:'current_status_name':status_binding | fieldFilter:'all':binding | paginate: { itemsPerPage: 10, currentPage: p }">
+                                    <tr *ngFor="let patient of patients | fieldFilter:'patient_name':patient_name | fieldFilter:'phone_number':contact | fieldFilter:'ccc_number':ccc_no | fieldFilter:'service_id':regimen | fieldFilter:'current_status_name':status_binding | fieldFilter:'all':binding | paginate: config">
                                         <td>{{patient.ccc_number }}</td>
                                         <td>{{patient.first_name+' '+patient.other_name+' '+patient.last_name}}</td>
                                         <td>{{patient.next_appointment != null && patient.next_appointment.appointment_date}}</td>
@@ -115,12 +149,12 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-6">
                                     <div class="dataTables_info form-inline pull-right" id="DataTables_Table_1_paginate">
-                                        <!--<pagination-controls [maxSize]="maxSize" [directionLinks]="directionLinks" [autoHide]="autoHide" [previousLabel]="labels.previousLabel"
+                                        <pagination-controls [maxSize]="maxSize" [directionLinks]="directionLinks" [autoHide]="autoHide" [previousLabel]="labels.previousLabel"
                                             [nextLabel]="labels.nextLabel" [screenReaderPaginationLabel]="labels.screenReaderPaginationLabel"
                                             [screenReaderPageLabel]="labels.screenReaderPageLabel" [screenReaderCurrentLabel]="labels.screenReaderCurrentLabel"
                                             (pageChange)="onPageChange($event)">
-                                        </pagination-controls>-->
-                                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                                        </pagination-controls>
+                                        <!--<pagination-controls (pageChange)="p = $event"></pagination-controls>-->
                                     </div>
                                 </div>
                             </div>

@@ -48,20 +48,12 @@
                                         <label>Place of birth</label>
                                         <input class="form-control" [(ngModel)]="patient.place_of_birth.name" name="place_of_birth" disabled>
                                     </div>
-                                    <!--<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-										<label>Age (Years)</label>
-										<input class="form-control" placeholder="Age (Years)" type="text" [(ngModel)]="patient.age_in_years" name="ageYears" disabled="disabled">
-									</div>
-									<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-										<label>Age (Months)</label>
-										<input class="form-control" placeholder="Age (Months)" type="text" [(ngModel)]="patient.age_in_months" name="ageMonths" disabled="disabled">
-									</div>-->
                                     <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label><span style="color:red; font-weight:bold">*</span> Gender</label>
                                         <select class="form-control" [(ngModel)]="patient.gender" name="gender" disabled>
-											<option value="male">Male</option>
-											<option value="female">Female</option>
-											</select>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                        </select>
                                     </div>
                                     <div *ngIf="patient.gender === 'Female'" class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                         <label>Pregnant?</label>
@@ -71,11 +63,19 @@
                                         </select>
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Start Age</label>
+                                        <input class="form-control" placeholder="Weight" type="text" value="{{getAge(patient.birth_date)}}" name="start_age" disabled>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label><span style="color:red; font-weight:bold">*</span> Current Age</label>
+                                        <input class="form-control" placeholder="Weight" type="text" value="{{getAge(patient.birth_date)}}" name="current_age" disabled>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                         <label>Start weight (KG)</label>
                                         <input class="form-control" placeholder="Weight" type="text" value="{{patient.first_visit != null && patient.first_visit.current_weight}}" name="start_weight" disabled>
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                        <label><span style="color:red; font-weight:bold">*</span> Current Weight (KG)</label>
+                                        <label><span style="color:red; font-weight:bold">*</span> Current Weight <span style="font-weight: bold;">(kg)</span></label>
                                         <input class="form-control" placeholder="Weight" type="text" [(ngModel)]="latest_visit && latest_visit.current_weight" name="current_weight" disabled>
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -83,7 +83,7 @@
                                         <input class="form-control" placeholder="Weight" type="text" value="{{patient.first_visit != null && patient.first_visit.current_height}}" name="weight" disabled>
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                        <label><span style="color:red; font-weight:bold">*</span>Current Height (CM)</label>
+                                        <label><span style="color:red; font-weight:bold">*</span>Current Height <span style="font-weight: bold;">(cm)</span></label>
                                         <input class="form-control" placeholder="Height" type="text" [(ngModel)]="latest_visit && latest_visit.current_height" name="height" disabled>
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -296,17 +296,17 @@
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 0px;">
                                         <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                        <label>Date of next appointment:</label>
-                                        <div class="input-group">
-                                            <input  type="text" name="appointment_date" placeholder="Select a date" class="form-control" value="{{patient.next_appointment_date}}" disabled>
+                                            <label>Date of next appointment:</label>
+                                            <div class="input-group">
+                                                <input type="text" name="appointment_date" placeholder="Select a date" class="form-control" value="{{patient.next_appointment_date}}" disabled>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                        <label>Days to next appointment</label>
-                                        <div class="input-group">
-                                            <input  type="text" name="days_to" placeholder="" [(ngModel)]="days_to" class="form-control" readonly>
+                                        <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                            <label>Days to next appointment</label>
+                                            <div class="input-group">
+                                                <input type="text" name="days_to" placeholder="" [(ngModel)]="days_to" class="form-control" readonly>
+                                            </div>
                                         </div>
-                                    </div>
                                     </div>
                                 </fieldset>
 
@@ -339,9 +339,9 @@
                                         <label><span style="color:red; font-weight:bold">*</span> Type of Service</label>
                                         <input type="text" class="form-control" [(ngModel)]="patient?.service['name']" name="service" disabled>
                                     </div>
-                                    <div *ngIf="patient.start_regimen" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div *ngIf="patient.first_visit" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>Start Regimen</label>
-										<input type="text" class="form-control" [(ngModel)]="patient.start_regimen.name" name="start regimen" disabled>
+                                        <input type="text" class="form-control" [(ngModel)]="patient.first_visit.current_regimen_name" placeholder="N/A" name="start regimen" disabled>
                                     </div>
                                     <div *ngIf="patient.service.name == 'PEP'" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>Pep reason</label>
@@ -356,9 +356,9 @@
                                         <label>Start Regimen Date</label>
                                         <input type="text" name="regimen_date" placeholder="Regimen start date" class="form-control datepicker" [(ngModel)]="patient.enrollment_date" disabled>
                                     </div>
-									<div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div *ngIf="latest_visit" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>Current Regimen</label>
-                                        <input type="text" name="regimen_date" placeholder="Regimen start date" class="form-control" disabled>
+                                        <input type="text" name="current_regimen_id" [(ngModel)]="latest_visit.current_regimen_name" placeholder="N/A" class="form-control" disabled>
                                     </div>
                                     <div *ngIf="patient.service_type != 'PEP'" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>WHO Stage</label>
@@ -405,7 +405,7 @@
                                                     <a class="mdl-navigation__link" [routerLink]="['/patients/edit/',patient.id]">Edit Patient Record</a>
                                                 </li>
                                                 <li class="active pull-right">
-                                                        <a *ngIf="patient.current_status_name=='active'" class="mdl-navigation__link" [routerLink]="['/patients/dispense/',patient.id]">Dispense to Patient</a>
+                                                    <a *ngIf="patient.current_status_name=='active'" class="mdl-navigation__link" [routerLink]="['/patients/dispense/',patient.id]">Dispense to Patient</a>
                                                 </li>
                                             </ul>
                                             <tabset class="padding-5">
@@ -415,45 +415,91 @@
                                                     </header>
                                                     <div>
                                                         <div class="widget-body no-padding">
-                                                            <div class="table-responsive">
-                                                            <table class="table table-bordered table-striped">
-                                                                <thead>
+                                                            <div class="table-responsive" style="overflow-x: hidden;">
+                                                                <div class="dt-toolbar">
+                                                                    <div class="row">
+                                                                        <div class="col-xs-12 col-sm-6 hidden-xs">
+                                                                            <div class="pull-left form-inline">
+                                                                                <div id="datatable_fixed_column_filter" class="dataTables_filter">
+                                                                                    <label>
+                                                                                        <span class="input-group-addon">
+                                                                    <i class="glyphicon glyphicon-search"></i>
+                                                                </span>
+                                                                                        <input type="search" class="form-control" [(ngModel)]="binding" [ngModelOptions]="{standalone: true}" placeholder="Search" aria-controls="datatable_fixed_column">
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-xs-12 col-sm-6 hidden-xs">
+                                                                            <div class="pull-right form-inline">
+                                                                                <label for="show_item" style="font-weight: bold;">
+                                                                                    Items per Page:
+                                                                                </label>
+                                                                                <!--<input type="number" class="input" min="0" [(ngModel)]="config.itemsPerPage">-->
+                                                                                <select name="show_item" class="form-control" [(ngModel)]="config.itemsPerPage" [ngModelOptions]="{standalone: true}">
+                                                                                    <option [value]="10">10</option>
+                                                                                    <option [value]="25">25</option>
+                                                                                    <option [value]="50">50</option>
+                                                                                    <option [value]="100">100</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <table class="table table-bordered table-striped">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th style="width: 100%">Date</th>
+                                                                            <th style="width: 100%">Purpose of Visit</th>
+                                                                            <th style="width: 100%">Dose</th>
+                                                                            <th style="width: 100%">Duration</th>
+                                                                            <th style="width: 100%">Action</th>
+                                                                            <th style="width: 100%">Drug</th>
+                                                                            <th style="width: 100%">Qty</th>
+                                                                            <th style="width: 100%">Weight</th>
+                                                                            <th style="width: 100%">Current Regimen</th>
+                                                                            <th style="width: 100%">BatchNo</th>
+                                                                            <th style="width: 100%">Pill Count</th>
+                                                                            <th style="width: 100%">Adherence</th>
+                                                                            <th style="width: 100%">Operator</th>
+                                                                            <th style="width: 100%">Reasons For Change</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody *ngIf="dispense_history">
+                                                                        <tr *ngFor="let history of dispense_history | paginate: config">
+                                                                            <td id="">{{history.visit_date}}</td>
+                                                                            <td id="">{{history.purpose_name}}</td>
+                                                                            <td id="">{{history.visit_item && history.visit_item[0] && history.visit_item[0].dose_id || 'N/A'}}</td>
+                                                                            <td id="">{{history.visit_item && history.visit_item[0] && history.visit_item[0].duration}}</td>
+                                                                            <td id=""><a class="btn btn-primary btn-xs" href="#" [routerLink]="['/patients/dispense-edit/',history.patient_id]">EDIT</a></td>
+                                                                            <td id="">{{history.visit_item && history.visit_item[0] && history.visit_item[0].stock_item && history.visit_item[0].stock_item.drug_name || 'N/A'}}</td>
+                                                                            <td id="">{{history.visit_item && history.visit_item[0] && history.visit_item[0].stock_item && history.visit_item[0].stock_item.quantity_packs}}</td>
+                                                                            <td id="">{{history.current_weight}}</td>
+                                                                            <td id="">{{history.current_regimen_id}}</td>
+                                                                            <td id="">{{history.visit_item && history.visit_item[0] && history.visit_item[0].stock_item && history.visit_item[0].stock_item.batch_number || 'N/A'}}</td>
+                                                                            <td id="">{{history.visit_item && history.visit_item[0] && history.visit_item[0].stock_item && history.visit_item[0].actual_pill_count}}</td>
+                                                                            <td id="">{{history.appointment_adherence}}</td>
+                                                                            <td id="">{{history.user_id}}</td>
+                                                                            <td id="">{{history.change_reason_id}}</td>
+                                                                        </tr>
+                                                                    </tbody>
                                                                     <tr>
-                                                                        <th style="width: 100%">Date</th>
-                                                                        <th style="width: 100%">Purpose of Visit</th>
-                                                                        <th style="width: 100%">Dose</th>
-                                                                        <th style="width: 100%">Duration</th>
-                                                                        <th style="width: 100%">Action</th>
-                                                                        <th style="width: 100%">Drug</th>
-                                                                        <th style="width: 100%">Qty</th>
-                                                                        <th style="width: 100%">Weight</th>
-                                                                        <th style="width: 100%">Current Regimen</th>
-                                                                        <th style="width: 100%">BatchNo</th>
-                                                                        <th style="width: 100%">Pill Count</th>
-                                                                        <th style="width: 100%">Adherence</th>
-                                                                        <th style="width: 100%">Operator</th>
-                                                                        <th style="width: 100%">Reasons For Change</th>
+                                                                        <td colspan="14" style="text-align: center; font-weight: bold;"> No data available</td>
                                                                     </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr *ngFor="let history of dispense_history">
-                                                                        <td id="">{{history.visit_date}}</td>
-                                                                        <td id="">{{history.purpose_name}}</td>
-                                                                        <td id="">{{history.visit_item && history.visit_item[0] && history.visit_item[0].dose_id || 'N/A'}}</td>
-                                                                        <td id="">{{history.visit_item && history.visit_item[0] && history.visit_item[0].duration}}</td>
-                                                                        <td id=""><a class="btn btn-primary btn-xs" href="#" [routerLink]="['/patients/dispense-edit/',history.patient_id]">EDIT</a></td>
-                                                                        <td id="">{{history.visit_item && history.visit_item[0] && history.visit_item[0].stock_item &&  history.visit_item[0].stock_item.drug_name || 'N/A'}}</td>
-                                                                        <td id="">{{history.visit_item && history.visit_item[0] && history.visit_item[0].stock_item &&  history.visit_item[0].stock_item.quantity_packs}}</td>
-                                                                        <td id="">{{history.current_weight}}</td>
-                                                                        <td id="">{{history.current_regimen_id}}</td>
-                                                                        <td id="">{{history.visit_item && history.visit_item[0] && history.visit_item[0].stock_item &&  history.visit_item[0].stock_item.batch_number || 'N/A'}}</td>
-                                                                        <td id="">{{history.visit_item && history.visit_item[0] && history.visit_item[0].stock_item &&  history.visit_item[0].actual_pill_count}}</td>
-                                                                        <td id="">{{history.appointment_adherence}}</td>
-                                                                        <td id="">{{history.user_id}}</td>
-                                                                        <td id="">{{history.change_reason_id}}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
+                                                                </table>
+                                                                <div class="dt-toolbar-footer">
+                                                                    <div class="col-sm-6 col-xs-12">
+                                                                        <div class="dataTables_info form-inline" id="DataTables_Table_1_info" role="status" aria-live="polite">
+                                                                            <!--Current Page: <input type="number" class="form-control" min="0" [(ngModel)]="config.currentPage" [ngModelOptions]="{standalone: true}">-->
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-xs-12 col-sm-6">
+                                                                        <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_1_paginate">
+                                                                            <pagination-controls [maxSize]="maxSize" [directionLinks]="directionLinks" [autoHide]="autoHide" [previousLabel]="labels.previousLabel" [nextLabel]="labels.nextLabel" [screenReaderPaginationLabel]="labels.screenReaderPaginationLabel" [screenReaderPageLabel]="labels.screenReaderPageLabel" [screenReaderCurrentLabel]="labels.screenReaderCurrentLabel" (pageChange)="onPageChange($event)">
+                                                                            </pagination-controls>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -507,7 +553,7 @@
                                                             </div>
                                                             <div class="modal-body">
                                                                 <h3 style="text-align: center;">Patient Information</h3>
-                                                                
+
                                                                 <div class="row">
                                                                     <div class="col-md-12">
                                                                         <div class="form-group">
@@ -540,7 +586,7 @@
                                                                                 </tbody>
                                                                             </table>
                                                                             <h3 style="text-align: center;">Patient Pill Count History</h3>
-                                                                            
+
                                                                             <table class="table table-hover table-bordered table-striped table-condensed" style="zoom:90%;">
                                                                                 <thead>
                                                                                     <tr>
@@ -561,8 +607,8 @@
                                                                                 <tbody>
                                                                                     <tr *ngFor="let history of dispense_history">
                                                                                         <td>{{history.visit_date}}</td>
-                                                                                        <td>{{history.visit_item && history.visit_item[0] && history.visit_item[0].stock_item &&  history.visit_item[0].stock_item.drug_name || 'N/A'}}</td>
-                                                                                        <td>{{history.visit_item && history.visit_item[0] && history.visit_item[0].stock_item &&  history.visit_item[0].stock_item.quantity_out}}</td>
+                                                                                        <td>{{history.visit_item && history.visit_item[0] && history.visit_item[0].stock_item && history.visit_item[0].stock_item.drug_name || 'N/A'}}</td>
+                                                                                        <td>{{history.visit_item && history.visit_item[0] && history.visit_item[0].stock_item && history.visit_item[0].stock_item.quantity_out}}</td>
                                                                                         <td>{{history.visit_item && history.visit_item[0] && history.visit_item[0].actual_pill_count}}</td>
                                                                                         <td>{{history.visit_item && history.visit_item[0] && history.visit_item[0].missed_pill_count}}</td>
                                                                                         <td></td>
@@ -573,7 +619,7 @@
                                                                                 </tbody>
                                                                             </table>
                                                                             <h3 style="text-align: center;">Patient Regimen Change Reason</h3>
-                                                                
+
                                                                             <table class="table table-hover table-bordered table-striped table-condensed" style="zoom:90%;">
                                                                                 <thead>
                                                                                     <tr>
@@ -593,7 +639,7 @@
                                                                                 </tbody>
                                                                             </table>
                                                                             <h3 style="text-align: center;">Patient Appointment History</h3>
-                                                                
+
                                                                             <table class="table table-hover table-bordered table-striped table-condensed" style="zoom:90%;">
                                                                                 <thead>
                                                                                     <tr>
