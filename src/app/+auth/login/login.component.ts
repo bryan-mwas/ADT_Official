@@ -25,6 +25,7 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+    alert('ehh');
     this.loading = true;
     this._authenticationService.login(this.model.email, this.model.password)
       .subscribe(result => {
