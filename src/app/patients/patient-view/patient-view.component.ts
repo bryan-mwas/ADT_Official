@@ -46,11 +46,11 @@ export class PatientViewComponent implements OnInit, DoCheck {
       .switchMap((params: Params) => this._patientService.getPatient(+params['id']))
       .subscribe(patient => {
         this.patient = patient;
-          if (patient.current_status_name) {
-            if (patient.current_status_name !== 'active') {
-              this.smartModEg3();
-            }
+        if (patient.current_status_name) {
+          if (patient.current_status_name !== 'active') {
+            this.smartModEg3();
           }
+        }
         if (patient.first_visit) {
           let a = patient.first_visit.current_weight;
           let b = patient.first_visit.current_height
@@ -134,9 +134,15 @@ export class PatientViewComponent implements OnInit, DoCheck {
     };
     return Math.floor((diff / divideBy['d']) + 1);
   }
-  getAge(value: any): any {
+  getAge(value: any, optional: any = null): any {
     let dob: any = new Date(value);
-    let today: any = new Date();
+    let today: any;
+    if (optional !== null) {
+      today = new Date(optional);
+    }
+    else {
+      today = new Date();
+    }
     let age_in_years: number;
     let age_in_months: number;
 

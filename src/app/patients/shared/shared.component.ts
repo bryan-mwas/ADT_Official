@@ -7,6 +7,7 @@ import { Patient, Service, Status, Regimen, Prophylaxis, Who_stage, Source, Illn
 import { IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts } from 'angular-2-dropdown-multiselect';
 import { Observable } from 'rxjs/Observable';
 import { LayoutService } from '../../shared/layout/layout.service';
+import 'rxjs/add/operator/takeWhile';
 
 declare var $: any;
 
@@ -206,7 +207,8 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
             }
         )
         // Track source_id
-        this.patientForm.get('source_id').valueChanges.subscribe(
+        this.patientForm.get('source_id').valueChanges
+        .subscribe(
             id => {
                 // Get the source name based on the [id].
                 if (typeof this.patientSources !== 'undefined') {
@@ -235,7 +237,9 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
             }
         )
         // Watch for changes to the service_id value. Triggers loading of regimens belonging to respective service
-        this.patientForm.get('service_id').valueChanges.subscribe(service_id => {
+        this.patientForm.get('service_id').valueChanges
+        .takeWhile(() => typeof this.patientSources !== 'undefined')
+        .subscribe(service_id => {
             this.setService(service_id);
             let pep = this.patientServices.find(service => service.name.toLowerCase() === 'pep');
             let prep = this.patientServices.find(service => service.name.toLowerCase() === 'prep');
