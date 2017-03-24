@@ -1,4 +1,4 @@
 #input {display: block; padding: 5px; margin: 0; width: 100%; }
 select {display: block; padding: 5px; margin: 0; width: 100%; }
-#complex_table {margin: 0; padding: 0;}
+#complex_table {margin: 0; padding: 2px;}
 .warning {color:antiquewhite; font-weight: bold; background:#d70909; }

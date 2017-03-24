@@ -35,3 +35,4 @@ Thumbs.db
 
 #Endpoint
 /src/app/core/config.ts
+src/app/core/config.ts
