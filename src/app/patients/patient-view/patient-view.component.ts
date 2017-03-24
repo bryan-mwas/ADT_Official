@@ -3,6 +3,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Patient } from '../patients';
 import { PatientsService } from '../patients.service';
 import 'rxjs/add/operator/switchMap';
+import { PaginationInstance } from 'ng2-pagination';
 declare var $: any;
 
 @Component({
@@ -20,6 +21,21 @@ export class PatientViewComponent implements OnInit, DoCheck {
   latest_visit;
   latest_bsa;
   start_bsa;
+  //Pagination Controls
+  public maxSize: number = 7;
+  public directionLinks: boolean = true;
+  public autoHide: boolean = false;
+  public config: PaginationInstance = {
+    itemsPerPage: 10,
+    currentPage: 1
+  };
+  public labels: any = {
+    previousLabel: 'Previous',
+    nextLabel: 'Next',
+    screenReaderPaginationLabel: 'Pagination',
+    screenReaderPageLabel: 'page',
+    screenReaderCurrentLabel: `You're on page`
+  };
 
   constructor(private route: ActivatedRoute,
     private _router: Router,
@@ -47,7 +63,7 @@ export class PatientViewComponent implements OnInit, DoCheck {
       .switchMap((params: Params) => this._patientService.getLatestVisit(+params['id']))
       .subscribe(a => {
         let latest = a[a.length - 1]
-        this.latest_visit = latest
+        this.latest_visit = latest;
         if (typeof latest !== 'undefined' && latest.current_weight && latest.current_height) {
           this.latest_bsa = Math.sqrt((latest.current_height * latest.current_weight) / 3600);
         }

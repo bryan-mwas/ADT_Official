@@ -19,7 +19,7 @@ export class PatientListComponent implements OnInit, DoCheck {
   patient_name: string;
   contact: string;
   regimen: string;
-  status_binding: string = '';
+  status_binding: string = 'active';
 
   //Advanced
   public maxSize: number = 7;
@@ -81,5 +81,11 @@ export class PatientListComponent implements OnInit, DoCheck {
   onPageChange(number: number) {
     console.log('change to page', number);
     this.config.currentPage = number;
+  }
+  /**
+     * Changes status for filtering
+     */
+  changeStatus(value: string) {
+    this.status_binding = value;
   }
 }

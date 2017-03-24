@@ -6,6 +6,7 @@ import { PatientsService } from '../patients.service';
 import { Patient, Service, Status, Regimen, Prophylaxis, Who_stage, Source, Illness, Allergies, FamilyPlanning, PlaceOfBirth } from '../patients';
 import { IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts } from 'angular-2-dropdown-multiselect';
 import { Observable } from 'rxjs/Observable';
+import { LayoutService } from '../../shared/layout/layout.service';
 
 declare var $: any;
 
@@ -33,6 +34,10 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
     toggle_facilities: boolean = false;
     toggle_isoniazid_dates: boolean = false;
     toggle_prophylaxis_check: boolean = false;
+    toggle_pep: boolean = false;
+    toggle_prep: boolean = false;
+    toggle_oi: boolean = false;
+    dispense: boolean = false;
 
     // Define properties first.
     patient: Patient;
@@ -49,6 +54,7 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
     patientWhostage: Observable<Who_stage[]>;
     familyPlanningOptions: IMultiSelectOption[];
     birth_place: Observable<PlaceOfBirth[]>;
+    facilities: Observable<Object[]>;
     // Variables to multiselect controls
     family_planning_list: string[];
     chronic_illness_list: string[];
@@ -57,6 +63,7 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
     status: Observable<any[]>;
 
     ccc_number_warning: string = null;
+    spouse_match_alert: string = null;
 
     selectedOptions: string[]; // Default selection
 
@@ -94,12 +101,15 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
         private route: ActivatedRoute,
         private _patientService: PatientsService,
         private fb: FormBuilder,
+        private _layoutService: LayoutService
     ) { }
 
 
     ngOnInit(): void {
+        this._layoutService.onCollapseMenu();
         this.patientWhostage = this._patientService.getWho_stage();
         this.status = this._patientService.getStatus();
+        this.facilities = this._patientService.getFacilities();
         this.birth_place = this._patientService.getLocation();
         this._patientService.getFamilyPlan().subscribe(resp => this.familyPlanningOptions = resp);
         this._patientService.getIllness().subscribe(resp => this.chronicIllnessOptions = resp);
@@ -128,13 +138,13 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
             phone_number: ['07', [Validators.required]],
             physical_address: [''],
             gender: ['', Validators.required],
-            is_pregnant: [''],
-            is_tb: [''],
+            is_pregnant: ['0'],
+            is_tb: ['0'],
             is_tb_tested: ['0'],
             is_sms: ['0'],
             is_smoke: ['0'],
             is_alcohol: ['0'],
-            status_id: ['1'],
+            status_id: ['1'], // defaults to active
             enrollment_date: [this.today(), Validators.required],
             regimen_start_date: [this.today(), Validators.required],
             initial_regimen_id: ['', Validators.required],
@@ -173,8 +183,28 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
             days_to: [{ value: '', disabled: true }],
             ccc_notify: [{ value: '', disabled: true }],
             start_age: [{ value: '', disabled: true }],
-            current_age: [{ value: '', disabled: true }]
+            current_age: [{ value: '', disabled: true }],
+            prep_reason: '',
+            is_prep_tested: '0'
         });
+        // Track pregnancy to trigger PMTCT if one is pregnant
+        this.patientForm.get('is_pregnant').valueChanges.subscribe(
+            is_pregnant => {
+                if (+[is_pregnant] === 1) {
+                    let pmtct = this.patientServices.find(service => service.name.toLowerCase() === 'pmtct');
+                    if (typeof pmtct !== 'undefined') {
+                        this.patientForm.patchValue({
+                            service_id: pmtct.id
+                        });
+                    }
+                }
+                else {
+                    this.patientForm.patchValue({
+                        service_id: ''
+                    });
+                }
+            }
+        )
         // Track source_id
         this.patientForm.get('source_id').valueChanges.subscribe(
             id => {
@@ -205,7 +235,52 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
             }
         )
         // Watch for changes to the service_id value. Triggers loading of regimens belonging to respective service
-        this.patientForm.get('service_id').valueChanges.subscribe(service_id => this.setService(service_id));
+        this.patientForm.get('service_id').valueChanges.subscribe(service_id => {
+            this.setService(service_id);
+            let pep = this.patientServices.find(service => service.name.toLowerCase() === 'pep');
+            let prep = this.patientServices.find(service => service.name.toLowerCase() === 'prep');
+            let oi = this.patientServices.find(service => service.name.toLowerCase() === 'oi only');
+            if (typeof pep !== 'undefined') {
+                if (pep.id === +[service_id]) {
+                    this.toggle_pep = true;
+                }
+                else {
+                    this.toggle_pep = false;
+                }
+            }
+            if (typeof prep !== 'undefined') {
+                if (prep.id === +[service_id]) {
+                    this.toggle_prep = true;
+                }
+                else {
+                    this.toggle_prep = false;
+                }
+            }
+            if (typeof oi !== 'undefined') {
+                if (oi.id === +[service_id]) {
+                    this.toggle_oi = true;
+                }
+                else {
+                    this.toggle_oi = false;
+                }
+            }
+        });
+        // Matches spouse to ccc_number
+        this.patientForm.get('spouse_ccc').valueChanges.subscribe(
+            value => {
+                this._patientService.getPatientCCC(value).subscribe(
+                    response => {
+                        if (response.msg == 'true') {
+                            this.spouse_match_alert = 'The value matches an existing patient';
+                        }
+                        else {
+                            this.spouse_match_alert = null;
+                        }
+                    },
+                    err => console.error(err)
+                );
+            }
+        );
         // Track for edit changes in prophylaxis control
         this.patientForm.get('prophylaxis').valueChanges.subscribe(
             value => {
@@ -254,9 +329,9 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
                             }
                         },
                         err => console.error(err)
-                    )
+                    );
                 }
-            )
+            );
         }
 
         this.patientForm.get('status').valueChanges.subscribe(
@@ -625,12 +700,18 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
                 (error) => { console.log("Error happened" + error) }
             );
         }
+        // this.onSaveComplete();
     }
 
     onSaveComplete() {
         // this.patientForm.reset();
         this.notification('created');
-        this.router.navigateByUrl('/patients/list');
+        if (this.dispense) {
+            this.router.navigateByUrl(`/patients/dispense`);
+        }
+        else {
+            this.router.navigateByUrl('/patients/list');
+        }
         console.log('Created a new patient...');
     }
 
@@ -692,5 +773,11 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
      */
     activateCheck() {
         this.toggle_prophylaxis_check = true;
+    }
+    /**
+     * Enable the dispense redirection when dispense action's selected
+     */
+    toggleDispense() {
+        this.dispense = true;
     }
 }

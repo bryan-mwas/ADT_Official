@@ -33,6 +33,12 @@ export class PatientsService {
     /**
      * GET Section
      */
+    getFacilities() {
+        return this._http.get(this._apiUrl+'facilities')
+            .map((response: Response) => <any[]>response.json())
+            .do(data => console.log('Facilities: ' + JSON.stringify(data)))
+            .catch(this.handleError);
+    }
     getDrugsHistory(id: number) {
         return this._http.get(this._apiUrl + `visits/patients/${id}/items`)
             .map((response: Response) => <any[]>response.json())

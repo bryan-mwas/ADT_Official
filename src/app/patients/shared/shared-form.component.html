@@ -5,7 +5,7 @@
             <!-- ADD PATIENT WIDGET START -->
             <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <!-- Widget ID (each widget will need unique ID)-->
-                <sa-widget [colorbutton]="false" [deletebutton]="false" [custombutton]="false" [editbutton]="false">
+                <sa-widget [colorbutton]="false" [deletebutton]="false" [custombutton]="false" [editbutton]="false" [fullscreenbutton]="false">
                     <!-- widget options:
                         usage: <sa-widget id="wid-id-0" [editbutton]="false">
                         [colorbutton]="false"
@@ -19,7 +19,7 @@
                     -->
                     <header>
                         <h2><strong>Patients</strong></h2>
-                        <h6 style="text-align:right">(Fields Marked with <span style="color:red; font-weight:bold">*</span>  Asterisks are )</h6>
+                        <h6 style="text-align:right">(Fields Marked with <span style="color:red; font-weight:bold">*</span>  Asterisks are required )</h6>
                     </header>
                     <!-- widget div-->
                     <div role="content" [ngClass]="{'add':add , 'edit':edit}">
@@ -221,6 +221,11 @@
                                         <div *ngIf="patientForm.get('status').value == 'concordant'" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                             <label>Match to spouse in this ccc?</label>
                                             <input class="form-control" placeholder="Enter ccc number" formControlName="spouse_ccc" />
+                                        </div>
+                                        <div *ngIf="spouse_match_alert !== null" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                            <alert type="info" dismissible="true">
+                                                {{spouse_match_alert}}.
+                                            </alert>
                                         </div>
                                         <div [ngSwitch]="familyPlanningOptions" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                             <label>Family planning method</label>
@@ -430,12 +435,20 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div *ngIf="toggle_facilities" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div *ngIf="toggle_facilities" [ngSwitch]="facilities | async" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>Transfer From:</label>
-                                        <select style="color:red; font-weight:bold" class="form-control" id="select-1" formControlName="source_id">
-                                            <option *ngFor="let source of patientSources" value="{{source.id}}">{{source.name}}</option>
-                                            <input type="hidden" value="{{source.name}}">
-                                        </select>
+                                        <div *ngSwitchCase="null">
+                                            <div class="form-group">
+                                                <i class="fa fa-cog fa-spin fa-2x fa-fw"></i>
+                                                <span>Loading...</span>
+                                            </div>
+                                        </div>
+                                        <div *ngSwitchDefault>
+                                            <select style="color:red; font-weight:bold" class="form-control" id="select-1" formControlName="facility_id">
+                                                <option *ngFor="let facility of facilities | async" value="{{facility.id}}">{{facility.name}}</option>
+                                                <input type="hidden" value="{{source.name}}">
+                                            </select>
+                                        </div>
                                     </div>
                                     <div [ngSwitch]="patientServices" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label><span style="color:red; font-weight:bold">*</span> Type of Service</label>
@@ -457,7 +470,7 @@
                                             <option *ngFor="let regimens of regimen.regimen" value="{{regimens.id}}">{{regimens.name}}</option>
                                         </select>
                                     </div>
-                                    <div *ngIf="regimen && patientForm.get('service_id').value == 2" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div *ngIf="toggle_pep" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>Pep reason</label>
                                         <select class="form-control" id="select-1" formControlName="pep_reason">
                                             <option selected>--Select--</option>
@@ -466,7 +479,23 @@
                                             <option value="Other Reason">Other Reason</option>
                                         </select>
                                     </div>
-                                    <div *ngIf="patientForm.get('service_id').value != 4" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div *ngIf="toggle_prep" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>PREP reason</label>
+                                        <select class="form-control" id="select-1" formControlName="prep_reason">
+                                            <option selected>--Select--</option>
+                                            <option value="Occupational">Occupational</option>
+                                            <option value="Sexual Assault">Sexual Assault</option>
+                                            <option value="Other Reason">Other Reason</option>
+                                        </select>
+                                    </div>
+                                    <div *ngIf="toggle_prep" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>Have you been tested?</label>
+                                        <select class="form-control" id="select-1" formControlName="is_prep_tested">
+                                            <option value="1">Yes</option>
+                                            <option value="0">No</option>
+                                        </select>
+                                    </div>
+                                    <div *ngIf="!toggle_oi" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>Start Regimen Date</label>
                                         <input id="reg_date" type="text" formControlName="regimen_start_date" placeholder="Regimen start date" class="form-control datepicker" [saUiDatepicker]="{ dateFormat: 'yy-mm-dd', maxDate: 'new Date()' }" (selectDate)='setDate($event,"regimen")'>
                                     </div>
@@ -477,7 +506,7 @@
                                             <option *ngFor="let regimens of regimen.regimen" value="{{regimens.id}}">{{regimens.name}}</option>
                                         </select>
                                     </div>
-                                    <div *ngIf="regimen && regimen.name != 'PEP'" [ngSwitch]="patientWhostage" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div *ngIf="!toggle_pep" [ngSwitch]="patientWhostage" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>WHO Stage</label>
                                         <div *ngSwitchCase="null">
                                             <div class="form-group">
@@ -491,7 +520,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div *ngIf="regimen && patientForm.get('service_id').value != 2" [ngSwitch]="prophylaxisOptions" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div *ngIf="!toggle_pep && !toggle_prep" [ngSwitch]="prophylaxisOptions" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>Drug Prophylaxis</label>
                                         <div *ngSwitchCase="null">
                                             <div class="form-group">
@@ -525,7 +554,7 @@
                                         <button class="btn btn-primary" type="submit" [disabled]="!patientForm.valid || isClickedOnce">
                                             <i class="fa fa-save"></i> Save
                                         </button>
-                                        <button class="btn btn-primary" type="button" [disabled]="isClickedOnce" (click)="isClickedOnce = true">
+                                        <button class="btn btn-primary" type="submit" [disabled]="isClickedOnce" (click)="toggleDispense()">
                                             <i class="fa fa-save"></i> Dispense
                                         </button>
                                         <input type="reset" class="btn btn-danger button_size" value="Reset">
