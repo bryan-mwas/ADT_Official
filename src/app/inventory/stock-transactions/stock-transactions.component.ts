@@ -31,7 +31,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck, OnDestroy {
     changeYear: true,
     yearRange: 'c:c+20',
     minDate: new Date()
-  }
+  };
   dateOptions: Object = {
     dateFormat: 'yy-mm-dd',
     changeMonth: true,
