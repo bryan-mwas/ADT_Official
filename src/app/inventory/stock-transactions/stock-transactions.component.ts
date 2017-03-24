@@ -166,6 +166,10 @@ export class StockTransactionsComponent implements OnInit, DoCheck, OnDestroy {
       this._transactionService.getDrugs().subscribe(d => this.drugsList = d);
       this.negative = false;
     }
+    if (this.rows.get('store').value !== null || this.rows.get('store_id').value !== null) {
+      this.rows.get('store').reset();
+      this.rows.get('store_id').reset();
+    }
   }
 
   getIndividualDrug(id: number, index: number) {

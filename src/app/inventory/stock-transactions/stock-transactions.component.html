@@ -157,7 +157,7 @@
                            <input id="input" class="form-control" formControlName="comment" autocomplete="off" type="text">
                         </td>
                         <td id="complex_table">
-                           <button *ngIf="stockTransactionsForm.controls.drugs.controls.length > 1" class="form-control" class="btn btn-danger btn-size" (click)="removeRow(this.i)">Remove</button>
+                           <button *ngIf="stockTransactionsForm.controls.drugs.controls.length > 0" class="form-control" class="btn btn-danger btn-size" (click)="removeRow(this.i)">Remove</button>
                         </td>
                         </tr>
                      </tbody>
@@ -196,7 +196,7 @@
       </div>
       </form>
    </sa-widgets-grid>
-   <!--<pre>
+   <pre>
        {{ stockTransactionsForm.value | json}}
-   </pre>-->
+   </pre>
 </div>
