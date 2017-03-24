@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from "@angular/router";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-forgot',
@@ -15,6 +15,6 @@ export class ForgotComponent implements OnInit {
 
   submit(event){
     event.preventDefault();
-    this.router.navigate(['/dashboard/analytics'])
+    this.router.navigate(['/dashboard/analytics']);
   }
 }

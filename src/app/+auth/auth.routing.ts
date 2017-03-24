@@ -1,10 +1,10 @@
-import {Routes, RouterModule} from "@angular/router";
-import {LoginComponent} from "./login/login.component";
-import {RegisterComponent} from "./register/register.component";
-import {ForgotComponent} from "./forgot/forgot.component";
-import {LockedComponent} from "./locked/locked.component";
+import { Routes, RouterModule } from '@angular/router';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { ForgotComponent } from './forgot/forgot.component';
+import { LockedComponent } from './locked/locked.component';
 
-export const routes:Routes = [
+export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent

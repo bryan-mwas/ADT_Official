@@ -11,10 +11,25 @@
             <div>
                <div class="widget-body no-padding">
                   <form novalidate [formGroup]="standardReport">
+                      <div style="width: 100%; text-align: center">
                      <label>Select Report</label>
-                     <select style="width: 50%" formControlName="type" class="form-control" id="select-1">
+                     <select style="width: 50%; align-self: center" formControlName="type" class="form-control" id="select-1">
                         <option value="0" selected> Select a Report </option>
+                        <option value="1">Number of Patients Enrolled in Period</option>
+                        <option value="2">Number of Patients Started on ART in Period</option>
+                        <option value="3">Graph of Number of Patients Enrolled Per Month in Given Year</option>
+                        <option value="4">Cumulative Number of Patients to Date</option>
+                        <option value="5">Number of Patients Receiving ART (by Regimen)</option>
+                        <option value="6">Family Planning Summary</option>
+                        <option value="7">Patient Indication Summary</option>
+                        <option value="8">TB Stages Summary</option>
+                        <option value="9">Chronic Illnesses Summary</option>
+                        <option value="10">Patient Allergy Summary</option>
+                        <option value="11">Patient Status and Disclosure</option>
+                        <option value="12">Patient BMI Summary</option>
+                        <option value="13">Patients on Drug Prophylaxis</option>
                      </select>
+                      </div>
                   </form>
                </div>
             </div>
@@ -22,4 +37,5 @@
          </article>
       </div>
    </sa-widgets-grid>
+   <pre>{{ standardReport.value | json }}</pre>
 </div>
