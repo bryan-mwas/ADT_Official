@@ -4,7 +4,7 @@ import { LoginComponent } from './login/login.component';
 import { LockedComponent } from './locked/locked.component';
 import { RegisterComponent } from './register/register.component';
 import { ForgotComponent } from './forgot/forgot.component';
-import {routing} from "./auth.routing";
+import { routing } from './auth.routing';
 import { AuthComponent } from './auth.component';
 
 @NgModule({
@@ -13,7 +13,9 @@ import { AuthComponent } from './auth.component';
 
     routing,
   ],
-  declarations: [LoginComponent, LockedComponent,
+  declarations: [
+    LoginComponent,
+    LockedComponent,
     RegisterComponent, ForgotComponent, AuthComponent]
 })
 export class AuthModule { }

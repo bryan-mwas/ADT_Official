@@ -31,7 +31,7 @@ export class StockTransactionsComponent implements OnInit, DoCheck, OnDestroy {
     changeYear: true,
     yearRange: 'c:c+20',
     minDate: new Date()
-  }
+  };
   dateOptions: Object = {
     dateFormat: 'yy-mm-dd',
     changeMonth: true,
@@ -165,6 +165,10 @@ export class StockTransactionsComponent implements OnInit, DoCheck, OnDestroy {
       this.rows.controls[+[index]].reset();
       this._transactionService.getDrugs().subscribe(d => this.drugsList = d);
       this.negative = false;
+    }
+    if (this.rows.get('store').value !== null || this.rows.get('store_id').value !== null) {
+      this.rows.get('store').reset();
+      this.rows.get('store_id').reset();
     }
   }
 
