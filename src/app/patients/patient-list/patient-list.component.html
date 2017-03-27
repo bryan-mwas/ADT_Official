@@ -2,17 +2,7 @@
 <div id="content" *ngIf="patients">
     <sa-widgets-grid>
         <article class="col-sm-12">
-            <sa-widget 
-            [editbutton]="false" 
-            [colorbutton]="false" 
-            [editbutton]="false" 
-            [togglebutton]="false"
-            [deletebutton]="false" 
-            [custombutton]="false" 
-            [togglebutton]="false" 
-            color="blueDark"
-            [fullscreenbutton]="false"
-            >
+            <sa-widget [editbutton]="false" [colorbutton]="false" [editbutton]="false" [togglebutton]="false" [deletebutton]="false" [custombutton]="false" [togglebutton]="false" color="blueDark" [fullscreenbutton]="false">
                 <header class="header-color"><span class="widget-icon"> <i class="fa fa-table"></i> </span>
                     <h2>Patients</h2>
                     <div class="widget-toolbar">
@@ -24,9 +14,9 @@
                                 <span style="font-weight: bold;">Filter Patients Based on Status: {{status_binding | uppercase}}</span> <i class="fa fa-chevron-down" aria-hidden="true"></i>
                             </button>
                             <ul dropdownMenu role="menu" style="right: 0px;" aria-labelledby="single-button">
-                            <li role="menuitem"><a class="dropdown-item" (click)="changeStatus('active')">Active</a></li>
-                            <li role="menuitem"><a class="dropdown-item" (click)="changeStatus('inactive')">Inactive</a></li>
-                            <li role="menuitem"><a class="dropdown-item" (click)="changeStatus('')">All</a></li>
+                                <li role="menuitem"><a class="dropdown-item" (click)="changeStatus('active')">Active</a></li>
+                                <li role="menuitem"><a class="dropdown-item" (click)="changeStatus('inactive')">Inactive</a></li>
+                                <li role="menuitem"><a class="dropdown-item" (click)="changeStatus('')">All</a></li>
                             </ul>
                         </div>
                     </div>
@@ -100,7 +90,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let patient of patients | fieldFilter:'patient_name':patient_name | fieldFilter:'phone_number':contact | fieldFilter:'ccc_number':ccc_no | fieldFilter:'service_id':regimen | fieldFilter:'current_status_name':status_binding | fieldFilter:'all':binding | paginate: config">
+                                    <tr *ngFor="let patient of patients | fieldFilter:'patient_name':patient_name | fieldFilter:'phone_number':contact | fieldFilter:'ccc_number':ccc_no | fieldFilter:'service_id':regimen | fieldFilter:'current_status_name':status_binding | fieldFilter:'all':binding | paginate: config; let i = index;">
                                         <td>{{patient.ccc_number }}</td>
                                         <td>{{patient.first_name+' '+patient.other_name+' '+patient.last_name}}</td>
                                         <td>{{patient.next_appointment != null && patient.next_appointment.appointment_date}}</td>
@@ -109,13 +99,20 @@
                                         <td>{{patient.current_status_name}}</td>
                                         <td>
                                             <div class="btn-group" dropdown>
-                                                <button id="single-button" type="button" class="btn btn-xs btn-primary" dropdownToggle>
+                                                <button *ngIf="!trigger_status[i]" id="single-button" type="button" class="btn btn-xs btn-primary" dropdownToggle>
                                                     Choose Status <span class="caret"></span>
                                                 </button>
-                                                <ul dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu-right">
+                                                <button *ngIf="trigger_status[i]" id="single-button" type="button" class="btn btn-xs btn-warning" dropdownToggle>
+                                                    Choose Status <span class="caret"></span>
+                                                </button>
+                                                <ul *ngIf="!trigger_status[i]" dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu-right">
                                                     <li *ngIf="patient.current_status_name == 'active'" role="menuitem"><a href="" [routerLink]="['/patients/dispense',patient.id]">Dispense</a></li>
                                                     <li role="menuitem"><a href="" [routerLink]="['/patients/detail',patient.id]">Detail</a></li>
                                                     <li role="menuitem"><a href="" [routerLink]="['/patients/edit',patient.id]">Edit</a></li>
+                                                    <li role="menuitem"><a type="button" (click)="triggerOptions(i)">Disable</a></li>
+                                                </ul>
+                                                <ul *ngIf="trigger_status[i]" dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu-right">
+                                                    <li *ngIf="patient.current_status_name == 'active'" role="menuitem"><a type="button" (click)="triggerOptions(i)">Enable</a></li>
                                                     <li role="menuitem"><a type="button" data-toggle="modal" attr.data-target="#confirmDelete{{patient.id}}">Disable</a></li>
                                                 </ul>
                                             </div>
@@ -149,10 +146,7 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-6">
                                     <div class="dataTables_info form-inline pull-right" id="DataTables_Table_1_paginate">
-                                        <pagination-controls [maxSize]="maxSize" [directionLinks]="directionLinks" [autoHide]="autoHide" [previousLabel]="labels.previousLabel"
-                                            [nextLabel]="labels.nextLabel" [screenReaderPaginationLabel]="labels.screenReaderPaginationLabel"
-                                            [screenReaderPageLabel]="labels.screenReaderPageLabel" [screenReaderCurrentLabel]="labels.screenReaderCurrentLabel"
-                                            (pageChange)="onPageChange($event)">
+                                        <pagination-controls [maxSize]="maxSize" [directionLinks]="directionLinks" [autoHide]="autoHide" [previousLabel]="labels.previousLabel" [nextLabel]="labels.nextLabel" [screenReaderPaginationLabel]="labels.screenReaderPaginationLabel" [screenReaderPageLabel]="labels.screenReaderPageLabel" [screenReaderCurrentLabel]="labels.screenReaderCurrentLabel" (pageChange)="onPageChange($event)">
                                         </pagination-controls>
                                         <!--<pagination-controls (pageChange)="p = $event"></pagination-controls>-->
                                     </div>
@@ -161,7 +155,7 @@
                         </div>
                     </div>
                 </div>
-                </sa-widget>
+            </sa-widget>
         </article>
     </sa-widgets-grid>
 </div>

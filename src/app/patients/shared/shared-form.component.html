@@ -5,7 +5,7 @@
             <!-- ADD PATIENT WIDGET START -->
             <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <!-- Widget ID (each widget will need unique ID)-->
-                <sa-widget [colorbutton]="false" [deletebutton]="false" [custombutton]="false" [editbutton]="false" [fullscreenbutton]="false">
+                <sa-widget [colorbutton]="false" [deletebutton]="false" [togglebutton]="false" [custombutton]="false" [editbutton]="false" [fullscreenbutton]="false" [collapsed]="false">
                     <!-- widget options:
                         usage: <sa-widget id="wid-id-0" [editbutton]="false">
                         [colorbutton]="false"
@@ -122,7 +122,8 @@
                                         </select>
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                        <label>Start weight <span style="font-weight: bold;"><span style="font-weight: bold;">(kg)</span></span></label>
+                                        <label>Start weight <span style="font-weight: bold;"><span style="font-weight: bold;">(kg)</span></span>
+                                        </label>
                                         <input class="form-control" placeholder="Current Weight" type="text" formControlName="initial_weight">
                                     </div>
                                     <div *ngIf="edit" class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">

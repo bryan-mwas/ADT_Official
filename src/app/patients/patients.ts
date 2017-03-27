@@ -51,8 +51,8 @@ export class Patient {
     family_planning: string[];
     support_group?: string;
     alternate_number?: number;
-    other_drug: any;
-    other_illness?: string;
+    other_drug?: Object;
+    other_illnesses?: Object;
     other_drug_allergy: any;
     illnesses: Illness[];
     drug_allergy: any[];

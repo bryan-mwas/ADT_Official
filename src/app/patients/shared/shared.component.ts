@@ -191,24 +191,25 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
         // Track pregnancy to trigger PMTCT if one is pregnant
         this.patientForm.get('is_pregnant').valueChanges.subscribe(
             is_pregnant => {
-                if (+[is_pregnant] === 1) {
-                    let pmtct = this.patientServices.find(service => service.name.toLowerCase() === 'pmtct');
-                    if (typeof pmtct !== 'undefined') {
-                        this.patientForm.patchValue({
-                            service_id: pmtct.id
-                        });
-                    }
-                }
-                else {
-                    this.patientForm.patchValue({
-                        service_id: ''
-                    });
-                }
+                // if (+[is_pregnant] === 1) {
+                //     let pmtct = this.patientServices.find(service => service.name.toLowerCase() === 'pmtct');
+                //     if (typeof pmtct !== 'undefined') {
+                //         this.patientForm.patchValue({
+                //             service_id: pmtct.id
+                //         });
+                //     }
+                // }
+                // else {
+                //     this.patientForm.patchValue({
+                //         service_id: ''
+                //     });
+                // }
             }
         )
         // Track source_id
         this.patientForm.get('source_id').valueChanges
-        .subscribe(
+            .takeWhile(() => typeof this.patientSources !== 'undefined')
+            .subscribe(
             id => {
                 // Get the source name based on the [id].
                 if (typeof this.patientSources !== 'undefined') {
@@ -222,7 +223,7 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
                     }
                 }
             }
-        )
+            )
         // Track appointment_date
         this.patientForm.get('appointment_date').valueChanges.subscribe(
             date => {
@@ -238,37 +239,37 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
         )
         // Watch for changes to the service_id value. Triggers loading of regimens belonging to respective service
         this.patientForm.get('service_id').valueChanges
-        .takeWhile(() => typeof this.patientSources !== 'undefined')
-        .subscribe(service_id => {
-            this.setService(service_id);
-            let pep = this.patientServices.find(service => service.name.toLowerCase() === 'pep');
-            let prep = this.patientServices.find(service => service.name.toLowerCase() === 'prep');
-            let oi = this.patientServices.find(service => service.name.toLowerCase() === 'oi only');
-            if (typeof pep !== 'undefined') {
-                if (pep.id === +[service_id]) {
-                    this.toggle_pep = true;
+            .takeWhile(() => typeof this.patientSources !== 'undefined')
+            .subscribe(service_id => {
+                this.setService(service_id);
+                let pep = this.patientServices.find(service => service.name.toLowerCase() === 'pep');
+                let prep = this.patientServices.find(service => service.name.toLowerCase() === 'prep');
+                let oi = this.patientServices.find(service => service.name.toLowerCase() === 'oi only');
+                if (typeof pep !== 'undefined') {
+                    if (pep.id === +[service_id]) {
+                        this.toggle_pep = true;
+                    }
+                    else {
+                        this.toggle_pep = false;
+                    }
                 }
-                else {
-                    this.toggle_pep = false;
+                if (typeof prep !== 'undefined') {
+                    if (prep.id === +[service_id]) {
+                        this.toggle_prep = true;
+                    }
+                    else {
+                        this.toggle_prep = false;
+                    }
                 }
-            }
-            if (typeof prep !== 'undefined') {
-                if (prep.id === +[service_id]) {
-                    this.toggle_prep = true;
+                if (typeof oi !== 'undefined') {
+                    if (oi.id === +[service_id]) {
+                        this.toggle_oi = true;
+                    }
+                    else {
+                        this.toggle_oi = false;
+                    }
                 }
-                else {
-                    this.toggle_prep = false;
-                }
-            }
-            if (typeof oi !== 'undefined') {
-                if (oi.id === +[service_id]) {
-                    this.toggle_oi = true;
-                }
-                else {
-                    this.toggle_oi = false;
-                }
-            }
-        });
+            });
         // Matches spouse to ccc_number
         this.patientForm.get('spouse_ccc').valueChanges.subscribe(
             value => {
@@ -595,13 +596,19 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
      */
     dateCalc(value, days_to_add) {
         let new_date = new Date(value);
-        // console.log(new_date)
-        let start_date = new Date(new_date.getFullYear(), new_date.getMonth(), new_date.getDate()).getTime();
-        console.log(start_date)
-        console.log('Days to add ' + days_to_add);
-        let expected_end_date = new Date((1000 * 60 * 60 * 24 * days_to_add) + start_date);
-        console.log(expected_end_date)
-        return this._datePipe.transform(expected_end_date, 'y-MM-dd');
+        if (new_date.toString().toLocaleLowerCase() !== 'invalid date') {
+            // console.log(new_date)
+            let start_date = new Date(new_date.getFullYear(), new_date.getMonth(), new_date.getDate()).getTime();
+            console.log(start_date)
+            console.log('Days to add ' + days_to_add);
+            let expected_end_date = new Date((1000 * 60 * 60 * 24 * days_to_add) + start_date);
+            console.log(expected_end_date)
+            return this._datePipe.transform(expected_end_date, 'y-MM-dd');
+        }
+        else {
+            console.log(`There's invalid date!`);
+            // alert('I goot you!');
+        }
     }
 
     dateDiff(todate) {

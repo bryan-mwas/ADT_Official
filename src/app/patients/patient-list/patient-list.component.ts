@@ -11,6 +11,7 @@ declare var $: any;
   templateUrl: './patient-list.component.html',
   styleUrls: ['./patient-list.component.css']
 })
+
 export class PatientListComponent implements OnInit, DoCheck {
   patients: any;
   binding: string;
@@ -20,7 +21,7 @@ export class PatientListComponent implements OnInit, DoCheck {
   contact: string;
   regimen: string;
   status_binding: string = 'active';
-
+  trigger_status: boolean[] = [];
   //Advanced
   public maxSize: number = 7;
   public directionLinks: boolean = true;
@@ -40,6 +41,8 @@ export class PatientListComponent implements OnInit, DoCheck {
   constructor(protected service: PatientsService) { }
 
   ngOnInit() {
+    // Prefill an array.
+    this.trigger_status.fill(false);
     this.service.getPatients().subscribe(p => this.patients = p);
     console.log('I got: ' + this.patients)
   }
@@ -87,5 +90,11 @@ export class PatientListComponent implements OnInit, DoCheck {
      */
   changeStatus(value: string) {
     this.status_binding = value;
+  }
+  /**
+   * Trigger Enable | disable
+   */
+  triggerOptions(index) {
+    this.trigger_status[index] = !this.trigger_status[index];
   }
 }

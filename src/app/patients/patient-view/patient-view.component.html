@@ -17,8 +17,7 @@
                                     <legend>Patient Information and Demographics</legend>
                                     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                         <label>Medical Record No.</label>
-                                        <input class="form-control" placeholder="Medical Record No." type="text" [(ngModel)]="patient.id" name="medicalRecordNumber"
-                                            disabled>
+                                        <input class="form-control" placeholder="Medical Record No." type="text" [(ngModel)]="patient.id" name="medicalRecordNumber" disabled>
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                         <label><span style="color:red; font-weight:bold">*</span> Patient Number CCC</label>
@@ -65,8 +64,7 @@
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                         <label>Start Age</label>
-                                        <input class="form-control" placeholder="Weight" type="text" value="{{getAge(patient.birth_date, patient.enrollment_date)}}"
-                                            name="start_age" disabled>
+                                        <input class="form-control" placeholder="Weight" type="text" value="{{getAge(patient.birth_date, patient.enrollment_date)}}" name="start_age" disabled>
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                         <label><span style="color:red; font-weight:bold">*</span> Current Age</label>
@@ -74,38 +72,31 @@
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                         <label>Start weight (KG)</label>
-                                        <input class="form-control" placeholder="Weight" type="text" value="{{patient.first_visit != null && patient.first_visit.current_weight}}"
-                                            name="start_weight" disabled>
+                                        <input class="form-control" placeholder="Weight" type="text" value="{{patient.first_visit != null && patient.first_visit.current_weight}}" name="start_weight" disabled>
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                         <label><span style="color:red; font-weight:bold">*</span> Current Weight <span style="font-weight: bold;">(kg)</span></label>
-                                        <input class="form-control" placeholder="Weight" type="text" [(ngModel)]="latest_visit && latest_visit.current_weight" name="current_weight"
-                                            disabled>
+                                        <input class="form-control" placeholder="Weight" type="text" [(ngModel)]="latest_visit && latest_visit.current_weight" name="current_weight" disabled>
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                         <label>Start height (KG)</label>
-                                        <input class="form-control" placeholder="Weight" type="text" value="{{patient.first_visit != null && patient.first_visit.current_height}}"
-                                            name="weight" disabled>
+                                        <input class="form-control" placeholder="Weight" type="text" value="{{patient.first_visit != null && patient.first_visit.current_height}}" name="weight" disabled>
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                         <label><span style="color:red; font-weight:bold">*</span>Current Height <span style="font-weight: bold;">(cm)</span></label>
-                                        <input class="form-control" placeholder="Height" type="text" [(ngModel)]="latest_visit && latest_visit.current_height" name="height"
-                                            disabled>
+                                        <input class="form-control" placeholder="Height" type="text" [(ngModel)]="latest_visit && latest_visit.current_height" name="height" disabled>
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>Start Body Surface Area (MSQ)</label>
-                                        <input class="form-control" placeholder="<<auto generate>>" [(ngModel)]="start_bsa" type="text" disabled="disabled " name="initial_bsa"
-                                            disabled />
+                                        <input class="form-control" placeholder="<<auto generate>>" [(ngModel)]="start_bsa" type="text" disabled="disabled " name="initial_bsa" disabled />
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>Current Body Surface Area (MSQ)</label>
-                                        <input class="form-control" placeholder="<<auto generate>>" [(ngModel)]="latest_bsa" type="text" disabled="disabled " name="current_bsa"
-                                            disabled />
+                                        <input class="form-control" placeholder="<<auto generate>>" [(ngModel)]="latest_bsa" type="text" disabled="disabled " name="current_bsa" disabled />
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-5 col-md-5 col-lg-5">
                                         <label>Phone Contact</label>
-                                        <input class="form-control" placeholder="e.g 0712345678" type="text" [(ngModel)]="patient.phone_number" name="phone_number"
-                                            disabled>
+                                        <input class="form-control" placeholder="e.g 0712345678" type="text" [(ngModel)]="patient.phone_number" name="phone_number" disabled>
                                     </div>
                                     <div class=" form-group col-xs-12 col-sm-7 col-md-7 col-lg-7">
                                         <div class="row">
@@ -127,13 +118,11 @@
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>Patients Physical Contact(s)</label>
-                                        <textarea class="form-control" placeholder="n/a" rows="3" [(ngModel)]="patient.physical_address" name="physical_address"
-                                            disabled></textarea>
+                                        <textarea class="form-control" placeholder="n/a" rows="3" [(ngModel)]="patient.physical_address" name="physical_address" disabled></textarea>
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>Patients Alternate Contact(s)</label>
-                                        <textarea class="form-control" placeholder="n/a" rows="3" [(ngModel)]="patient.alternate_contact" name="alternate_contact"
-                                            disabled></textarea>
+                                        <textarea class="form-control" placeholder="n/a" rows="3" [(ngModel)]="patient.alternate_contact" name="alternate_contact" disabled></textarea>
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>Does patient belong to any support group?</label>
@@ -178,8 +167,7 @@
                                         </div>
                                         <div *ngIf="patient.status == 'concordant'" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                             <label>Match to spouse in this ccc?</label>
-                                            <input class="form-control" placeholder="Enter ccc number" [(ngModel)]="patient.spouse_ccc" type="text" name="spouse_ccc"
-                                                disabled/>
+                                            <input class="form-control" placeholder="Enter ccc number" [(ngModel)]="patient.spouse_ccc" type="text" name="spouse_ccc" disabled/>
                                         </div>
                                         <!-- Pretty verbose! Bummer! -->
                                         <div *ngIf="patient.family_planning" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -197,12 +185,19 @@
                                         </div>
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>If other Illnesses</label>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label class="checkbox-inline">
                                             <input type="checkbox" [(ngModel)]="patient.is_illness" name="is_illness" disabled>Click Here</label>
                                     </div>
-                                    <div *ngIf="patient.other_illnesses" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div *ngIf="patient?.other_illnesses" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>List Them Below (Type and enter to add tag)</label>
                                         <textarea class="form-control" rows="2" [(ngModel)]="patient.other_illnesses.other_illness" name="other_illness" [disabled]="patient.is_illness != true"></textarea>
+                                    </div>
+                                    <div *ngIf="!patient?.other_illnesses" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label style="font-weight: bold; text-align: center;">No patient illnesses</label>
+                                        <!--<textarea class="form-control" rows="2" [(ngModel)]="patient.other_illnesses.other_illness" name="other_illness" [disabled]="patient.is_illness != true"></textarea>-->
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>Is Patient Taking any Other Drugs?</label>
@@ -213,9 +208,9 @@
                                     </div>
                                     <div *ngIf="patient?.other_drug" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>List Them</label>
-                                        <textarea class="form-control" rows="2" [(ngModel)]="patient.other_drug.drug_name" name="drugs" [disabled]="patient.is_drugs != true"></textarea>
+                                        <textarea class="form-control" rows="2" [(ngModel)]="patient.other_drug.drug_name" name="drugs" disabled></textarea>
                                     </div>
-                                    <div *ngIf="patient.drug_allergy" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div *ngIf="patient?.drug_allergy" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>Drug Allergies/ADR</label>
                                         <div class="well">
                                             <div *ngFor="let allergy of patient?.drug_allergy">{{allergy.name}}</div>
@@ -281,8 +276,7 @@
                                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                                     <label>End of phase:</label>
                                                     <div class="input-group">
-                                                        <input type="text" placeholder="End phase" class="form-control datepicker" [(ngModel)]="patient?.tb.end_date" name="tb_end"
-                                                            disabled>
+                                                        <input type="text" placeholder="End phase" class="form-control datepicker" [(ngModel)]="patient?.tb.end_date" name="tb_end" disabled>
                                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                     </div>
                                                 </div>
@@ -292,8 +286,7 @@
                                                     <div class="form-group">
                                                         <label>Start of phase:</label>
                                                         <div class="input-group">
-                                                            <input type="text" placeholder="Start phase" class="form-control datepicker" [(ngModel)]="patient?.tb.start_date" name="tb_start"
-                                                                disabled>
+                                                            <input type="text" placeholder="Start phase" class="form-control datepicker" [(ngModel)]="patient?.tb.start_date" name="tb_start" disabled>
                                                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                         </div>
                                                     </div>
@@ -301,8 +294,7 @@
                                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                                     <label>End of phase:</label>
                                                     <div class="input-group">
-                                                        <input type="text" placeholder="End phase" class="form-control datepicker" [(ngModel)]="patient?.tb.end_date" name="tb_end"
-                                                            disabled>
+                                                        <input type="text" placeholder="End phase" class="form-control datepicker" [(ngModel)]="patient?.tb.end_date" name="tb_end" disabled>
                                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                     </div>
                                                 </div>
@@ -313,8 +305,7 @@
                                         <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                             <label>Date of next appointment:</label>
                                             <div class="input-group">
-                                                <input type="text" name="appointment_date" placeholder="Select a date" class="form-control" value="{{patient.next_appointment_date}}"
-                                                    disabled>
+                                                <input type="text" name="appointment_date" placeholder="Select a date" class="form-control" value="{{patient.next_appointment_date}}" disabled>
                                             </div>
                                         </div>
                                         <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
@@ -332,8 +323,7 @@
                                     <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label><span style="color:red; font-weight:bold">*</span> Enrollment date:</label>
                                         <div class="input-group">
-                                            <input type="text" name="enrollment_date" [(ngModel)]="patient.enrollment_date" placeholder="Select a date" class="form-control"
-                                                disabled>
+                                            <input type="text" name="enrollment_date" [(ngModel)]="patient.enrollment_date" placeholder="Select a date" class="form-control" disabled>
                                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                         </div>
                                     </div>
@@ -358,8 +348,7 @@
                                     </div>
                                     <div *ngIf="patient.first_visit" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>Start Regimen</label>
-                                        <input type="text" class="form-control" [(ngModel)]="patient.first_visit.current_regimen_name" placeholder="N/A" name="start regimen"
-                                            disabled>
+                                        <input type="text" class="form-control" [(ngModel)]="patient.first_visit.current_regimen_name" placeholder="N/A" name="start regimen" disabled>
                                     </div>
                                     <div *ngIf="patient.service.name == 'PEP'" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>Pep reason</label>
@@ -372,13 +361,11 @@
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>Start Regimen Date</label>
-                                        <input type="text" name="regimen_date" placeholder="Regimen start date" class="form-control datepicker" [(ngModel)]="patient.enrollment_date"
-                                            disabled>
+                                        <input type="text" name="regimen_date" placeholder="Regimen start date" class="form-control datepicker" [(ngModel)]="patient.enrollment_date" disabled>
                                     </div>
                                     <div *ngIf="latest_visit" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>Current Regimen</label>
-                                        <input type="text" name="current_regimen_id" [(ngModel)]="latest_visit.current_regimen_name" placeholder="N/A" class="form-control"
-                                            disabled>
+                                        <input type="text" name="current_regimen_id" [(ngModel)]="latest_visit.current_regimen_name" placeholder="N/A" class="form-control" disabled>
                                     </div>
                                     <div *ngIf="patient.service_type != 'PEP'" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>WHO Stage</label>
@@ -395,8 +382,7 @@
                                             <div class="form-group">
                                                 <label>Isoniazid start date:</label>
                                                 <div class="input-group">
-                                                    <input type="text" name="enrollment_date" placeholder="Start date" class="form-control datepicker" [saUiDatepicker]="{ dateFormat: 'dd/mm/yy', maxDate: 'new Date()' }"
-                                                        (selectDate)='setDate($event,"isoniazid_start")' disabled>
+                                                    <input type="text" name="enrollment_date" placeholder="Start date" class="form-control datepicker" [saUiDatepicker]="{ dateFormat: 'dd/mm/yy', maxDate: 'new Date()' }" (selectDate)='setDate($event,"isoniazid_start")' disabled>
                                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                 </div>
                                             </div>
@@ -404,8 +390,7 @@
                                         <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                             <label>Isoniazid end date:</label>
                                             <div class="input-group">
-                                                <input type="text" name="enrollment_date" placeholder="End date" class="form-control datepicker" [saUiDatepicker]="{ dateFormat: 'dd/mm/yy' }"
-                                                    (selectDate)='setDate($event, "isoniazid_end")' disabled>
+                                                <input type="text" name="enrollment_date" placeholder="End date" class="form-control datepicker" [saUiDatepicker]="{ dateFormat: 'dd/mm/yy' }" (selectDate)='setDate($event, "isoniazid_end")' disabled>
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                             </div>
                                         </div>
@@ -431,8 +416,7 @@
                                                 </li>
                                             </ul>
                                             <tabset class="padding-5">
-                                                <sa-widget [editbutton]="false" [colorbutton]="false" [editbutton]="false" [togglebutton]="false" [deletebutton]="false"
-                                                    [custombutton]="false" [togglebutton]="false" color="blueDark" [fullscreenbutton]="false">
+                                                <sa-widget [editbutton]="false" [colorbutton]="false" [editbutton]="false" [togglebutton]="false" [deletebutton]="false" [custombutton]="false" [togglebutton]="false" color="blueDark" [fullscreenbutton]="false">
                                                     <header><span class="widget-icon"> <i class="fa fa-table"></i> </span>
                                                         <h2>Dispensing History</h2>
                                                     </header>
@@ -492,23 +476,15 @@
                                                                         <tr *ngFor="let history of dispense_history | paginate: config">
                                                                             <td id="">{{history.visit_date}}</td>
                                                                             <td id="">{{history.purpose_name}}</td>
-                                                                            <td id="">{{history.visit_item && history.visit_item[0]
-                                                                                && history.visit_item[0].dose_id || 'N/A'}}</td>
-                                                                            <td id="">{{history.visit_item && history.visit_item[0]
-                                                                                && history.visit_item[0].duration}}</td>
+                                                                            <td id="">{{history.visit_item && history.visit_item[0] && history.visit_item[0].dose_id || 'N/A'}}</td>
+                                                                            <td id="">{{history.visit_item && history.visit_item[0] && history.visit_item[0].duration}}</td>
                                                                             <td id=""><a class="btn btn-primary btn-xs" href="#" [routerLink]="['/patients/dispense-edit/',history.patient_id]">EDIT</a></td>
-                                                                            <td id="">{{history.visit_item && history.visit_item[0]
-                                                                                && history.visit_item[0].stock_item && history.visit_item[0].stock_item.drug_name
-                                                                                || 'N/A'}}</td>
-                                                                            <td id="">{{history.visit_item && history.visit_item[0]
-                                                                                && history.visit_item[0].stock_item && history.visit_item[0].stock_item.quantity_packs}}</td>
+                                                                            <td id="">{{history.visit_item && history.visit_item[0] && history.visit_item[0].stock_item && history.visit_item[0].stock_item.drug_name || 'N/A'}}</td>
+                                                                            <td id="">{{history.visit_item && history.visit_item[0] && history.visit_item[0].stock_item && history.visit_item[0].stock_item.quantity_packs}}</td>
                                                                             <td id="">{{history.current_weight}}</td>
                                                                             <td id="">{{history.current_regimen_id}}</td>
-                                                                            <td id="">{{history.visit_item && history.visit_item[0]
-                                                                                && history.visit_item[0].stock_item && history.visit_item[0].stock_item.batch_number
-                                                                                || 'N/A'}}</td>
-                                                                            <td id="">{{history.visit_item && history.visit_item[0]
-                                                                                && history.visit_item[0].stock_item && history.visit_item[0].actual_pill_count}}</td>
+                                                                            <td id="">{{history.visit_item && history.visit_item[0] && history.visit_item[0].stock_item && history.visit_item[0].stock_item.batch_number || 'N/A'}}</td>
+                                                                            <td id="">{{history.visit_item && history.visit_item[0] && history.visit_item[0].stock_item && history.visit_item[0].actual_pill_count}}</td>
                                                                             <td id="">{{history.appointment_adherence}}</td>
                                                                             <td id="">{{history.user_id}}</td>
                                                                             <td id="">{{history.change_reason_id}}</td>
@@ -526,11 +502,7 @@
                                                                     </div>
                                                                     <div class="col-xs-12 col-sm-6">
                                                                         <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_1_paginate">
-                                                                            <pagination-controls [maxSize]="maxSize" [directionLinks]="directionLinks" [autoHide]="autoHide" [previousLabel]="labels.previousLabel"
-                                                                                [nextLabel]="labels.nextLabel" [screenReaderPaginationLabel]="labels.screenReaderPaginationLabel"
-                                                                                [screenReaderPageLabel]="labels.screenReaderPageLabel"
-                                                                                [screenReaderCurrentLabel]="labels.screenReaderCurrentLabel"
-                                                                                (pageChange)="onPageChange($event)">
+                                                                            <pagination-controls [maxSize]="maxSize" [directionLinks]="directionLinks" [autoHide]="autoHide" [previousLabel]="labels.previousLabel" [nextLabel]="labels.nextLabel" [screenReaderPaginationLabel]="labels.screenReaderPaginationLabel" [screenReaderPageLabel]="labels.screenReaderPageLabel" [screenReaderCurrentLabel]="labels.screenReaderCurrentLabel" (pageChange)="onPageChange($event)">
                                                                             </pagination-controls>
                                                                         </div>
                                                                     </div>
@@ -615,8 +587,8 @@
                                                                                         <td>{{getAge(patient.birth_date)}}</td>
                                                                                         <td>{{patient.enrollment_date}}</td>
                                                                                         <td>{{patient.current_status_name}}</td>
-                                                                                        <td>{{latest_viral_load?.test_date ||
-                                                                                            'n/a'}}</td>
+                                                                                        <td>{{latest_viral_load?.test_date || 'n/a'}}
+                                                                                        </td>
                                                                                         <td>{{latest_viral_load?.result || 'n/a'}}</td>
                                                                                     </tr>
                                                                                 </tbody>
@@ -643,17 +615,10 @@
                                                                                 <tbody>
                                                                                     <tr *ngFor="let history of dispense_history">
                                                                                         <td>{{history.visit_date}}</td>
-                                                                                        <td>{{history.visit_item && history.visit_item[0]
-                                                                                            && history.visit_item[0].stock_item
-                                                                                            && history.visit_item[0].stock_item.drug_name
-                                                                                            || 'N/A'}}</td>
-                                                                                        <td>{{history.visit_item && history.visit_item[0]
-                                                                                            && history.visit_item[0].stock_item
-                                                                                            && history.visit_item[0].stock_item.quantity_out}}</td>
-                                                                                        <td>{{history.visit_item && history.visit_item[0]
-                                                                                            && history.visit_item[0].actual_pill_count}}</td>
-                                                                                        <td>{{history.visit_item && history.visit_item[0]
-                                                                                            && history.visit_item[0].missed_pill_count}}</td>
+                                                                                        <td>{{history.visit_item && history.visit_item[0] && history.visit_item[0].stock_item && history.visit_item[0].stock_item.drug_name || 'N/A'}}</td>
+                                                                                        <td>{{history.visit_item && history.visit_item[0] && history.visit_item[0].stock_item && history.visit_item[0].stock_item.quantity_out}}</td>
+                                                                                        <td>{{history.visit_item && history.visit_item[0] && history.visit_item[0].actual_pill_count}}</td>
+                                                                                        <td>{{history.visit_item && history.visit_item[0] && history.visit_item[0].missed_pill_count}}</td>
                                                                                         <td></td>
                                                                                         <td></td>
                                                                                         <td>{{history.appointment_adherence}}</td>
@@ -675,16 +640,9 @@
                                                                                 <tbody>
                                                                                     <tr *ngFor="let regimen_change of dispense_history">
                                                                                         <td>{{regimen_change.visit_date}}</td>
-                                                                                        <td>{{regimen_change.regimen_change &&
-                                                                                            regimen_change.regimen_change[0]
-                                                                                            && regimen_change.regimen_change[0].last_regimen_name
-                                                                                            || 'N/A'}}</td>
-                                                                                        <td>{{regimen_change.current_regimen_id}}
-                                                                                            NAMES MISSING</td>
-                                                                                        <td>{{regimen_change.regimen_change &&
-                                                                                            regimen_change.regimen_change[0]
-                                                                                            && regimen_change.regimen_change[0].change_reason_name
-                                                                                            || 'N/A'}}</td>
+                                                                                        <td>{{regimen_change.regimen_change && regimen_change.regimen_change[0] && regimen_change.regimen_change[0].last_regimen_name || 'N/A'}}</td>
+                                                                                        <td>{{regimen_change.current_regimen_id}} NAMES MISSING</td>
+                                                                                        <td>{{regimen_change.regimen_change && regimen_change.regimen_change[0] && regimen_change.regimen_change[0].change_reason_name || 'N/A'}}</td>
                                                                                     </tr>
                                                                                 </tbody>
                                                                             </table>
