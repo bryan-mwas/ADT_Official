@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, DoCheck, ViewChild, AfterViewChecked, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, DoCheck, OnChanges, OnDestroy } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params } from '@angular/router';
@@ -107,7 +107,7 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
 
 
     ngOnInit(): void {
-        this._layoutService.onCollapseMenu();
+        this._layoutService.onCollapseMenu();   // Hide the sidebar
         this.patientWhostage = this._patientService.getWho_stage();
         this.status = this._patientService.getStatus();
         this.facilities = this._patientService.getFacilities();
@@ -422,6 +422,11 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
                 tb_phase: patient.tb.phase
             })
         }
+        if (patient.other_illnesses !== null) {
+            this.patientForm.patchValue({
+                other_illness: patient.other_illnesses['illness_name'],
+            })
+        }
         if (patient.other_drug !== null) {
             this.patientForm.patchValue({
                 drug_name: patient.other_drug['drug_name'],
@@ -532,7 +537,6 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
             status: patient.status,
             support_group: patient.support_group,
             alternate_number: patient.alternate_number,
-            other_illness: patient.other_illnesses['illness_name'],
             pep_reason: patient.pep_reason,
             isoniazid_start: patient.isoniazid_start,
             isoniazid_end: patient.isoniazid_end,
@@ -790,5 +794,12 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
      */
     toggleDispense() {
         this.dispense = true;
+    }
+    /**
+     * Triggered when moving to the next page
+     * Restores the sidebar
+     */
+    ngOnDestroy() {
+        this._layoutService.onCollapseMenu();
     }
 }

@@ -95,6 +95,7 @@ export class PatientListComponent implements OnInit, DoCheck {
    * Trigger Enable | disable
    */
   triggerOptions(index) {
+    alert(index);
     this.trigger_status[index] = !this.trigger_status[index];
   }
 }

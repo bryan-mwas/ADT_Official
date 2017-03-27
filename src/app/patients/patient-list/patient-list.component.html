@@ -26,17 +26,7 @@
                         <div id="no_scroll" class="table-responsive">
                             <div class="dt-toolbar">
                                 <div class="col-xs-12 col-sm-6 hidden-xs">
-                                    <div id="datatable_fixed_column_filter" class="dataTables_filter">
-                                        <label>
-                                            <span class="input-group-addon">
-                                                  <i class="glyphicon glyphicon-search"></i>
-                                            </span>
-                                            <input type="search" class="form-control" [(ngModel)]="binding" placeholder="Search" aria-controls="datatable_fixed_column">
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-6 hidden-xs">
-                                    <div class="pull-right form-inline">
+                                    <div class="pull-left form-inline">
                                         <label for="show_item" style="font-weight: bold;">
                                             Items per Page:
                                         </label>
@@ -48,16 +38,16 @@
                                             <option [value]="100">100</option>
                                         </select>
                                     </div>
-                                    <!--<div class="pull-right form-inline">
-                                        <label for="status_binding">
-                                            Filter Patients Based on Status:
+                                </div>
+                                <div class="col-xs-12 col-sm-6 hidden-xs">
+                                    <div id="datatable_fixed_column_filter" class="dataTables_filter">
+                                        <label>
+                                            <span class="input-group-addon">
+                                                  <i class="glyphicon glyphicon-search"></i>
+                                            </span>
+                                            <input type="search" class="form-control" [(ngModel)]="binding" placeholder="Search" aria-controls="datatable_fixed_column">
                                         </label>
-                                        <select name="status_binding" class="form-control" [(ngModel)]="status_binding">
-                                            <option value="active">Active</option>
-                                            <option value="inactive">Inactive</option>
-                                            <option value="">All</option>
-                                        </select>
-                                    </div>-->
+                                    </div>
                                 </div>
                             </div>
                             <table class="table table-bordered table-striped">
@@ -90,7 +80,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let patient of patients | fieldFilter:'patient_name':patient_name | fieldFilter:'phone_number':contact | fieldFilter:'ccc_number':ccc_no | fieldFilter:'service_id':regimen | fieldFilter:'current_status_name':status_binding | fieldFilter:'all':binding | paginate: config; let i = index;">
+                                    <tr *ngFor="let patient of patients | fieldFilter:'patient_name':patient_name | fieldFilter:'phone_number':contact | fieldFilter:'ccc_number':ccc_no | fieldFilter:'service_id':regimen | fieldFilter:'current_status_name':status_binding | fieldFilter:'all':binding | paginate: config">
                                         <td>{{patient.ccc_number }}</td>
                                         <td>{{patient.first_name+' '+patient.other_name+' '+patient.last_name}}</td>
                                         <td>{{patient.next_appointment != null && patient.next_appointment.appointment_date}}</td>
@@ -99,20 +89,20 @@
                                         <td>{{patient.current_status_name}}</td>
                                         <td>
                                             <div class="btn-group" dropdown>
-                                                <button *ngIf="!trigger_status[i]" id="single-button" type="button" class="btn btn-xs btn-primary" dropdownToggle>
+                                                <button *ngIf="!trigger_status[patient.id]" id="single-button" type="button" class="btn btn-xs btn-primary" dropdownToggle>
                                                     Choose Status <span class="caret"></span>
                                                 </button>
-                                                <button *ngIf="trigger_status[i]" id="single-button" type="button" class="btn btn-xs btn-warning" dropdownToggle>
+                                                <button *ngIf="trigger_status[patient.id]" id="single-button" type="button" class="btn btn-xs btn-warning" dropdownToggle>
                                                     Choose Status <span class="caret"></span>
                                                 </button>
-                                                <ul *ngIf="!trigger_status[i]" dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu-right">
+                                                <ul *ngIf="!trigger_status[patient.id]" dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu-right">
                                                     <li *ngIf="patient.current_status_name == 'active'" role="menuitem"><a href="" [routerLink]="['/patients/dispense',patient.id]">Dispense</a></li>
                                                     <li role="menuitem"><a href="" [routerLink]="['/patients/detail',patient.id]">Detail</a></li>
                                                     <li role="menuitem"><a href="" [routerLink]="['/patients/edit',patient.id]">Edit</a></li>
-                                                    <li role="menuitem"><a type="button" (click)="triggerOptions(i)">Disable</a></li>
+                                                    <li role="menuitem"><a type="button" (click)="triggerOptions(patient.id)">Disable</a></li>
                                                 </ul>
-                                                <ul *ngIf="trigger_status[i]" dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu-right">
-                                                    <li *ngIf="patient.current_status_name == 'active'" role="menuitem"><a type="button" (click)="triggerOptions(i)">Enable</a></li>
+                                                <ul *ngIf="trigger_status[patient.id]" dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu-right">
+                                                    <li role="menuitem"><a type="button" (click)="triggerOptions(patient.id)">Enable</a></li>
                                                     <li role="menuitem"><a type="button" data-toggle="modal" attr.data-target="#confirmDelete{{patient.id}}">Disable</a></li>
                                                 </ul>
                                             </div>

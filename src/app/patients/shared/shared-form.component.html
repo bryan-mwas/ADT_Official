@@ -555,7 +555,7 @@
                                         <button class="btn btn-primary" type="submit" [disabled]="!patientForm.valid || isClickedOnce">
                                             <i class="fa fa-save"></i> Save
                                         </button>
-                                        <button class="btn btn-primary" type="submit" [disabled]="isClickedOnce" (click)="toggleDispense()">
+                                        <button class="btn btn-primary" type="submit" [disabled]="!patientForm.valid || isClickedOnce" (click)="toggleDispense()">
                                             <i class="fa fa-save"></i> Dispense
                                         </button>
                                         <input type="reset" class="btn btn-danger button_size" value="Reset">

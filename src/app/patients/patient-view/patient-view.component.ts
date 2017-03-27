@@ -1,16 +1,17 @@
-import { Component, OnInit, DoCheck } from '@angular/core';
+import { Component, OnInit, DoCheck, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Patient } from '../patients';
 import { PatientsService } from '../patients.service';
 import 'rxjs/add/operator/switchMap';
 import { PaginationInstance } from 'ng2-pagination';
+import { LayoutService } from '../../shared/layout/layout.service';
 declare var $: any;
 
 @Component({
   selector: 'app-patient-view',
   templateUrl: 'patient-view.component.html'
 })
-export class PatientViewComponent implements OnInit, DoCheck {
+export class PatientViewComponent implements OnInit, DoCheck, OnDestroy {
   patient = new Patient();
   viral_load: any[];
   errorMessage: string;
@@ -37,11 +38,15 @@ export class PatientViewComponent implements OnInit, DoCheck {
     screenReaderCurrentLabel: `You're on page`
   };
 
-  constructor(private route: ActivatedRoute,
+  constructor(
+    private route: ActivatedRoute,
     private _router: Router,
-    private _patientService: PatientsService) { }
+    private _patientService: PatientsService,
+    private _layoutService: LayoutService
+    ) { }
 
   ngOnInit() {
+    this._layoutService.onCollapseMenu();
     this.route.params
       .switchMap((params: Params) => this._patientService.getPatient(+params['id']))
       .subscribe(patient => {
@@ -152,5 +157,12 @@ export class PatientViewComponent implements OnInit, DoCheck {
     age_in_months = (today.getMonth() + y1 * 12) - (dob.getMonth() + y2 * 12);
 
     return age_in_years;
+  }
+
+  /**
+   * Restores sidebar after navigation
+   */
+  ngOnDestroy(): void {
+    this._layoutService.onCollapseMenu();
   }
 }
