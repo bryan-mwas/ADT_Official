@@ -33,35 +33,126 @@
                      </section>
                   </form>
                   <form novalidate [formGroup]="enrolledInPeriod">
-                  <sa-datatable
-                     [options]="{
-                     ajax: 'assets/api/tables/datatables.standard.json',
-                     columns: [
-                     {data: 'id'},
-                     {data: 'name'},
-                     {data: 'phone'},
-                     {data: 'company'},
-                     {data: 'zip'},
-                     {data: 'city'},
-                     {data: 'date'}
-                     ],
-                     buttons: [
-                     'copy', 'excel', 'pdf', 'print'
-                     ]
-                     }"
-                     tableClass="table table-striped table-bordered table-hover">
-                     <thead>
-                        <tr>
-                           <th data-hide="mobile-p">ID</th>
-                           <th data-class="expand">Name</th>
-                           <th>Phone</th>
-                           <th data-hide="mobile-p">Company</th>
-                           <th data-hide="mobile-p,tablet-p">Zip</th>
-                           <th data-hide="mobile-p,tablet-p">City</th>
-                           <th data-hide="mobile-p,tablet-p">Date</th>
-                        </tr>
-                     </thead>
-                  </sa-datatable>
+                     <sa-datatable [options]="{                       
+                        buttons: [
+                        'copy', 'excel', 'pdf', 'print'
+                        ],
+                        responsive: true
+                        }" tableClass="table table-striped table-bordered table-hover">
+                        <thead>
+                           <tr>
+                              <th></th>
+                              <th colspan="2" style="text-align: center">Total</th>
+                              <th colspan="14" style="text-align: center">Adult</th>
+                              <th colspan="16" style="text-align: center">Children</th>
+                           </tr>
+                           <tr>
+                              <th></th>
+                              <th></th>
+                              <th></th>
+                              <th>Male</th>
+                              <th></th>
+                              <th></th>
+                              <th></th>
+                              <th></th>
+                              <th></th>
+                              <th>Female</th>
+                              <th></th>
+                              <th></th>
+                              <th></th>
+                              <th></th>
+                              <th></th>
+                              <th></th>
+                              <th></th>
+                              <th>Male</th>
+                              <th></th>
+                              <th></th>
+                              <th></th>
+                              <th></th>
+                              <th></th>
+                              <th></th>
+                              <th></th>
+                              <th>Female</th>
+                              <th></th>
+                              <th></th>
+                              <th></th>
+                              <th></th>
+                              <th></th>
+                              <th></th>
+                              <th></th>
+                           </tr>
+                           <tr>
+                              <th></th>
+                              <th></th>
+                              <th></th>
+                              <th>ART</th>
+                              <th></th>
+                              <th>PEP</th>
+                              <th></th>
+                              <th>OI</th>
+                              <th></th>
+                              <th>ART</th>
+                              <th></th>
+                              <th>PEP</th>
+                              <th></th>
+                              <th>PMTCT</th>
+                              <th></th>
+                              <th>OI</th>
+                              <th></th>
+                              <th>ART</th>
+                              <th></th>
+                              <th>PEP</th>
+                              <th></th>
+                              <th>PMTCT</th>
+                              <th></th>
+                              <th>OI</th>
+                              <th></th>
+                              <th>ART</th>
+                              <th></th>
+                              <th>PEP</th>
+                              <th></th>
+                              <th>PMTCT</th>
+                              <th></th>
+                              <th>OI</th>
+                              <th></th>
+                           </tr>
+                           <tr>
+                              <th>Source</th>
+                              <th>No.</th>
+                              <th>%</th>
+                              <th>No.</th>
+                              <th>%</th>
+                              <th>No.</th>
+                              <th>%</th>
+                              <th>No.</th>
+                              <th>%</th>
+                              <th>No.</th>
+                              <th>%</th>
+                              <th>No.</th>
+                              <th>%</th>
+                              <th>No.</th>
+                              <th>%</th>
+                              <th>No.</th>
+                              <th>%</th>
+                              <th>No.</th>
+                              <th>%</th>
+                              <th>No.</th>
+                              <th>%</th>
+                              <th>No.</th>
+                              <th>%</th>
+                              <th>No.</th>
+                              <th>%</th>
+                              <th>No.</th>
+                              <th>%</th>
+                              <th>No.</th>
+                              <th>%</th>
+                              <th>No.</th>
+                              <th>%</th>
+                              <th>No.</th>
+                              <th>%</th>
+                           </tr>
+                        </thead>
+                     </sa-datatable>
                   </form>
                </div>
             </div>
