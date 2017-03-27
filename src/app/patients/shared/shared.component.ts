@@ -424,7 +424,7 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
         }
         if (patient.other_drug !== null) {
             this.patientForm.patchValue({
-                drug_name: patient.other_drug.drug_name,
+                drug_name: patient.other_drug['drug_name'],
             })
         }
         if (patient.other_drug_allergy !== null) {
@@ -532,7 +532,7 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
             status: patient.status,
             support_group: patient.support_group,
             alternate_number: patient.alternate_number,
-            other_illness: patient.other_illness,
+            other_illness: patient.other_illnesses['illness_name'],
             pep_reason: patient.pep_reason,
             isoniazid_start: patient.isoniazid_start,
             isoniazid_end: patient.isoniazid_end,
