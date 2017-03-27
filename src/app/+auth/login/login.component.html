@@ -13,7 +13,7 @@
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-md-offset-3">
         <div class="well no-padding">
-          <form class="smart-form client-form">
+          <form class="smart-form client-form" #loginForm="ngForm" (ngSubmit)="login()" >
             <header>
               Sign In
             </header>
@@ -21,14 +21,14 @@
               <section>
                 <label class="label">E-mail</label>
                 <label class="input"> <i class="icon-append fa fa-user"></i>
-                  <input type="email" name="email" data-smart-validate-input="" data-required="" data-email="" data-message-required="Please enter your email address" data-message-email="Please enter a VALID email address">
+                  <input type="email" name="email" [(ngModel)]="model.email" data-smart-validate-input="" data-required="" data-email="" data-message-required="Please enter your email address" data-message-email="Please enter a VALID email address">
                   <b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i>
                     Please enter email address/username</b></label>
               </section>
               <section>
                 <label class="label">Password</label>
                 <label class="input"> <i class="icon-append fa fa-lock"></i>
-                  <input type="password" name="password" data-smart-validate-input="" data-required="" data-minlength="3" data-maxnlength="20" data-message="Please enter your email password">
+                  <input type="password" name="password" [(ngModel)]="model.password" data-smart-validate-input="" data-required="" data-minlength="3" data-maxnlength="20" data-message="Please enter your email password">
                   <b class="tooltip tooltip-top-right"><i class="fa fa-lock txt-color-teal"></i> Enter
                     your password</b> </label>
 
@@ -43,7 +43,7 @@
               </section>
             </fieldset>
             <footer>
-              <button (click)="login($event)" class="btn btn-primary">
+              <button type="submit" class="btn btn-primary">
                 Sign in
               </button>
             </footer>
@@ -54,6 +54,7 @@
           Government of Kenya &copy; {{year}} All Rights Reserved<br/><br/>
           <strong>Web-ADT version 4.0</strong>
         </footer>
+        <pre>{{ loginForm.value | json }}</pre>
       </div>
     </div>
   </div>

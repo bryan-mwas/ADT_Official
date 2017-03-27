@@ -135,9 +135,9 @@
                            <!--<input id="input" class="form-control" formControlName="expiry_date" type="text">-->
                            <div class="input-group">
                               <input type="text" formControlName="expiry_date" class="form-control datepicker" [saUiDatepicker]="eDateOptions"
-                              (selectDate)='setEDate($event, this.i)'>
+                              (selectDate)='setEDate($event, this.i)' [attr.readonly]= "toggleRead ? true : null">
                            </div>
-                        </td>
+                        </td>                        
                         <td id="complex_table">
                            <input #packs id="input" class="form-control" formControlName="quantity_packs" type="text" autocomplete="off" (keyup)="quantityValidator(packs.value, this.i)" (keyup)="quantityCalculator(packs, this.i)">
                         </td>

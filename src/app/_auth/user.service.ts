@@ -12,20 +12,21 @@ import { User } from './user';
 export class UserService {
 
     private _apiUrl = CONFIG.baseUrl;
-    private _loginURL = this._apiUrl + 'auth/login';
+    private _loginURL = this._apiUrl + 'auth/user';
 
     constructor(
         private _http: Http,
         private _authenticationService: AuthenticationService) {
     }
 
-    getUsers(): Observable<User[]> {
+    getUsers(): any {
         // add authorization header with jwt token
         let headers = new Headers({ 'Authorization': 'Bearer ' + this._authenticationService.token });
         let options = new RequestOptions({ headers: headers });
 
         // get users from api
-        return this._http.get(this._loginURL, options)
+        return this._http.get(`${this._loginURL}?token=${this._authenticationService.token}`, options)
+            // .subscribe(user => console.log(user));
             .map((response: Response) => response.json());
     }
 }

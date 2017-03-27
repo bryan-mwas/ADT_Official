@@ -25,12 +25,16 @@ export class StockTransactionsComponent implements OnInit, DoCheck, OnDestroy {
   transaction: Transaction;
   // stockItem: Transaction;
   drugItem: Drug;
+  toggleRead: boolean = false;
   eDateOptions: Object = {
     dateFormat: 'yy-mm-dd',
     changeMonth: true,
     changeYear: true,
     yearRange: 'c:c+20',
-    minDate: new Date()
+    minDate: new Date(),
+    // enableOnReadonly: false,
+    // Diasable if Readonly
+    beforeShow: function (i) { if ($(i).attr('readonly')) { return false; } }
   };
   dateOptions: Object = {
     dateFormat: 'yy-mm-dd',
@@ -54,8 +58,8 @@ export class StockTransactionsComponent implements OnInit, DoCheck, OnDestroy {
     private _route: ActivatedRoute,
     private _datePipe: DatePipe,
     private _router: Router) {
-      _route.params.subscribe(params => this.ngOnInit());
-     }
+    _route.params.subscribe(params => this.ngOnInit());
+  }
 
   ngOnInit() {
     this._route.params
@@ -73,8 +77,8 @@ export class StockTransactionsComponent implements OnInit, DoCheck, OnDestroy {
     this._transactionService.getStores().subscribe(z => this.storesList = z);
   }
 
-  ngOnDestroy(){
-    confirm('Are you sure you want to leave this page?');
+  ngOnDestroy() {
+    // confirm('Are you sure you want to leave this page?');
   }
 
   buildRow(): FormGroup {
@@ -162,13 +166,13 @@ export class StockTransactionsComponent implements OnInit, DoCheck, OnDestroy {
         .switchMap((params: Params) => this._transactionService.getDrugsbyStore(+params['id']))
         .subscribe(z => this.drugsList = z);
     } else {
+      this.toggleRead = false;
       this.rows.controls[+[index]].reset();
       this._transactionService.getDrugs().subscribe(d => this.drugsList = d);
       this.negative = false;
     }
-    if (this.rows.get('store').value !== null || this.rows.get('store_id').value !== null) {
-      this.rows.get('store').reset();
-      this.rows.get('store_id').reset();
+    if (this.stockTransactionsForm.controls['store'].dirty === true) {
+      this.stockTransactionsForm.controls['store'].reset();
     }
   }
 
@@ -181,15 +185,17 @@ export class StockTransactionsComponent implements OnInit, DoCheck, OnDestroy {
       .takeWhile(() => this.negative === true)
       .subscribe(i => this.batchList = i);
     this._route.params
-        .switchMap((params: Params) => this._transactionService.getBatchDetails(+params['id'], this.rows.get(`${index}.drug_id`).value))
-        .takeWhile(() => this.negative === true)
-        .subscribe(p => this.allBatches = p);
+      .switchMap((params: Params) => this._transactionService.getBatchDetails(+params['id'], this.rows.get(`${index}.drug_id`).value))
+      .takeWhile(() => this.negative === true)
+      .subscribe(p => this.allBatches = p);
   }
 
   getBatchDetails(batchNo: string, index: number) {
-    let b = this.allBatches.find(val => val['batch_number'] === batchNo);
-    if (b && this.negative === true) {
-      this.patchBatch(b, index);
+    if (typeof this.allBatches !== 'undefined') {
+      let b = this.allBatches.find(val => val['batch_number'] === batchNo);
+      if (b && this.negative === true) {
+        this.patchBatch(b, index);
+      }
     }
   }
 
@@ -209,6 +215,8 @@ export class StockTransactionsComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   patchBatch(batch: any, val: number) {
+    this.toggleRead = true;
+    this.rows.get(`${val}.expiry_date`).invalid;
     this.rows.controls[+[val]].patchValue(
       {
         expiry_date: batch.expiry_date,
@@ -307,6 +315,6 @@ export class StockTransactionsComponent implements OnInit, DoCheck, OnDestroy {
   // Yucky Zone
 
   ngDoCheck() {
-    // console.log(this.negative)
+    // console.log(this.toggleRead)
   }
 }

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
+import { User } from '../../_auth/user';
 
 import { AuthenticationService } from '../../_auth/authentication.service';
 
@@ -10,7 +12,7 @@ import { AuthenticationService } from '../../_auth/authentication.service';
 })
 export class LoginComponent implements OnInit {
 
-  model: any = {};
+  model = new User();
   loading = false;
   error = '';
   // year property gets the current year
@@ -25,15 +27,15 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.loading = true;
-    this._authenticationService.login(this.model.email, this.model.password)
-      .subscribe(result => {
+    this._authenticationService.login(this.model)
+    .subscribe(result => {
         if (result === true) {
           // login successful
-          this._router.navigate(['/home']);
+          this._router.navigateByUrl('/home');
         } else {
           // login failed
           this.error = 'Email or password is incorrect';
+          alert('Email or password is incorrect');
           this.loading = false;
         }
       });
