@@ -64,7 +64,7 @@
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                         <label>Start Age</label>
-                                        <input class="form-control" placeholder="Weight" type="text" value="{{getAge(patient.birth_date)}}" name="start_age" disabled>
+                                        <input class="form-control" placeholder="Weight" type="text" value="{{getAge(patient.birth_date, patient.enrollment_date)}}" name="start_age" disabled>
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                         <label><span style="color:red; font-weight:bold">*</span> Current Age</label>
@@ -185,12 +185,19 @@
                                         </div>
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label>If other Illnesses</label>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label class="checkbox-inline">
                                             <input type="checkbox" [(ngModel)]="patient.is_illness" name="is_illness" disabled>Click Here</label>
                                     </div>
-                                    <div *ngIf="patient.other_illnesses" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div *ngIf="patient?.other_illnesses" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>List Them Below (Type and enter to add tag)</label>
                                         <textarea class="form-control" rows="2" [(ngModel)]="patient.other_illnesses.other_illness" name="other_illness" [disabled]="patient.is_illness != true"></textarea>
+                                    </div>
+                                    <div *ngIf="!patient?.other_illnesses" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label style="font-weight: bold; text-align: center;">No patient illnesses</label>
+                                        <!--<textarea class="form-control" rows="2" [(ngModel)]="patient.other_illnesses.other_illness" name="other_illness" [disabled]="patient.is_illness != true"></textarea>-->
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>Is Patient Taking any Other Drugs?</label>
@@ -201,9 +208,9 @@
                                     </div>
                                     <div *ngIf="patient?.other_drug" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>List Them</label>
-                                        <textarea class="form-control" rows="2" [(ngModel)]="patient.other_drug.drug_name" name="drugs" [disabled]="patient.is_drugs != true"></textarea>
+                                        <textarea class="form-control" rows="2" [(ngModel)]="patient.other_drug.drug_name" name="drugs" disabled></textarea>
                                     </div>
-                                    <div *ngIf="patient.drug_allergy" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div *ngIf="patient?.drug_allergy" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>Drug Allergies/ADR</label>
                                         <div class="well">
                                             <div *ngFor="let allergy of patient?.drug_allergy">{{allergy.name}}</div>
@@ -409,7 +416,7 @@
                                                 </li>
                                             </ul>
                                             <tabset class="padding-5">
-                                                <sa-widget [editbutton]="false" color="darken">
+                                                <sa-widget [editbutton]="false" [colorbutton]="false" [editbutton]="false" [togglebutton]="false" [deletebutton]="false" [custombutton]="false" [togglebutton]="false" color="blueDark" [fullscreenbutton]="false">
                                                     <header><span class="widget-icon"> <i class="fa fa-table"></i> </span>
                                                         <h2>Dispensing History</h2>
                                                     </header>
@@ -580,7 +587,8 @@
                                                                                         <td>{{getAge(patient.birth_date)}}</td>
                                                                                         <td>{{patient.enrollment_date}}</td>
                                                                                         <td>{{patient.current_status_name}}</td>
-                                                                                        <td>{{latest_viral_load?.test_date || 'n/a'}}</td>
+                                                                                        <td>{{latest_viral_load?.test_date || 'n/a'}}
+                                                                                        </td>
                                                                                         <td>{{latest_viral_load?.result || 'n/a'}}</td>
                                                                                     </tr>
                                                                                 </tbody>
