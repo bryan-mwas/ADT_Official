@@ -6,11 +6,12 @@ import { RegisterComponent } from './register/register.component';
 import { ForgotComponent } from './forgot/forgot.component';
 import { routing } from './auth.routing';
 import { AuthComponent } from './auth.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
     CommonModule,
-
+    FormsModule,
     routing,
   ],
   declarations: [

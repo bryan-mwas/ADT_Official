@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response } from '@angular/http';
+import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs';
+import { User } from './user';
 import 'rxjs/add/operator/map';
 import { CONFIG } from '../core/config';
 
@@ -16,17 +17,22 @@ export class AuthenticationService {
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.token = currentUser && currentUser.token;
     }
-    login(email: string, password: string): Observable<boolean> {
-        return this._http.post(this._loginURL, JSON.stringify({ email: email, password: password }))
+    login(body: User): any {
+        let headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
+        let options = new RequestOptions({ headers: headers }); // Create a request option
+        // let user: User;
+        // let loginInfo = { email, password }
+        return this._http.post(this._loginURL, body, options)
+            // .subscribe(u => console.log (u));
             .map((response: Response) => {
                 // login successful if there's a jwt token in the response
-                let token = response.json() && response.json().token;
+                let token = response.json() && response.json().data.token;
                 if (token) {
                     // set token property
                     this.token = token;
 
                     // store email and jwt token in local storage to keep user logged in between page refreshes
-                    localStorage.setItem('currentUser', JSON.stringify({ email: email, token: token }));
+                    localStorage.setItem('currentUser', JSON.stringify({ email: body.email, token: token }));
 
                     // return true to indicate successful login
                     return true;
