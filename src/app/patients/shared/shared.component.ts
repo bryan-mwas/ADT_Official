@@ -37,6 +37,7 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
     toggle_prophylaxis_check: boolean = false;
     toggle_pep: boolean = false;
     toggle_prep: boolean = false;
+    toggle_prep_result: boolean = false;
     toggle_oi: boolean = false;
     dispense: boolean = false;
 
@@ -186,24 +187,39 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
             start_age: [{ value: '', disabled: true }],
             current_age: [{ value: '', disabled: true }],
             prep_reason: '',
-            is_prep_tested: '0'
+            is_prep_tested: '0',
+            prep_tested: '',
+            prep_result: '0'
         });
+        // Track prep result
+        this.patientForm.get('prep_result').valueChanges
+            .subscribe(
+            value => {
+                let art = this.patientServices.find(service => service.name.toLowerCase() === 'art');
+                this.smartAlert('Patient should be started on ART Service');
+                // If positive set service to ART
+                if (value == 1) {
+                    this.patientForm.patchValue({
+                        service_id: art.id
+                    })
+                }
+            });
         // Track pregnancy to trigger PMTCT if one is pregnant
         this.patientForm.get('is_pregnant').valueChanges.subscribe(
             is_pregnant => {
-                // if (+[is_pregnant] === 1) {
-                //     let pmtct = this.patientServices.find(service => service.name.toLowerCase() === 'pmtct');
-                //     if (typeof pmtct !== 'undefined') {
-                //         this.patientForm.patchValue({
-                //             service_id: pmtct.id
-                //         });
-                //     }
-                // }
-                // else {
-                //     this.patientForm.patchValue({
-                //         service_id: ''
-                //     });
-                // }
+                if (+[is_pregnant] === 1) {
+                    let pmtct = this.patientServices.find(service => service.name.toLowerCase() === 'pmtct');
+                    if (typeof pmtct !== 'undefined') {
+                        this.patientForm.patchValue({
+                            service_id: pmtct.id
+                        });
+                    }
+                }
+                else {
+                    this.patientForm.patchValue({
+                        service_id: ''
+                    });
+                }
             }
         )
         // Track source_id
@@ -782,6 +798,13 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
             buttons: '[OK]'
         });
     }
+    smartAlert(value: string) {
+        $.SmartMessageBox({
+            title: "Incorrect Regimen",
+            content: value,
+            buttons: '[OK]'
+        });
+    }
     /**
      * Checks for cotrimoxazole and dapsone selection
      * Triggers display of the isoniazid start and end dates.
@@ -801,5 +824,11 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
      */
     ngOnDestroy() {
         this._layoutService.onCollapseMenu();
+    }
+    /**
+     * Trigger prep result
+     */
+    prepResult() {
+        this.toggle_prep_result = true;
     }
 }

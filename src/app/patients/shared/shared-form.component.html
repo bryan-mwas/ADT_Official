@@ -496,11 +496,22 @@
                                             <option value="0">No</option>
                                         </select>
                                     </div>
+                                    <div *ngIf="patientForm.get('is_prep_tested').value === '1'" class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Tested Date</label>
+                                        <input type="text" (click)="prepResult()" formControlName="prep_tested" placeholder="Start date" class="form-control datepicker" [saUiDatepicker]="{ dateFormat: 'yy-mm-dd', maxDate: 'new Date()' }" (selectDate)='setDate($event,"isoniazid_start")'>
+                                        <!--<span class="input-group-addon"><i class="fa fa-calendar"></i></span>-->
+                                    </div>
+                                    <div *ngIf="toggle_prep_result" class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                        <label>Was test positive?</label>
+                                        <select class="form-control" id="select-1" formControlName="prep_result">
+                                            <option value="1">Yes</option>
+                                            <option value="0">No</option>
+                                        </select>
+                                    </div>
                                     <div *ngIf="!toggle_oi" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>Start Regimen Date</label>
                                         <input id="reg_date" type="text" formControlName="regimen_start_date" placeholder="Regimen start date" class="form-control datepicker" [saUiDatepicker]="{ dateFormat: 'yy-mm-dd', maxDate: 'new Date()' }" (selectDate)='setDate($event,"regimen")'>
                                     </div>
-
                                     <div *ngIf="edit && regimen" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label>Current Regimen</label>
                                         <select class="form-control" id="select-1" formControlName="current_regimen_id">
