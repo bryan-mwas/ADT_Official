@@ -122,7 +122,7 @@
                                         </select>
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                        <label>Start weight <span style="font-weight: bold;"><span style="font-weight: bold;">(kg)</span></span>
+                                        <label><span *ngIf="!edit" style="color:red; font-weight:bold">*</span>Start weight <span style="font-weight: bold;"><span style="font-weight: bold;">(kg)</span></span>
                                         </label>
                                         <input class="form-control" placeholder="Current Weight" type="text" formControlName="initial_weight">
                                     </div>
@@ -131,7 +131,7 @@
                                         <input class="form-control" placeholder="Weight" type="text" formControlName="current_weight">
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                        <label>Start Height <span style="font-weight: bold;">(cm)</span></label>
+                                        <label><span *ngIf="!edit" style="color:red; font-weight:bold">*</span>Start Height <span style="font-weight: bold;">(cm)</span></label>
                                         <input class="form-control" placeholder="Current Height" type="text" formControlName="initial_height">
                                     </div>
                                     <div *ngIf="edit" class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">

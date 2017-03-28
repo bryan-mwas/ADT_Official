@@ -119,8 +119,7 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
         this._patientService.getProphylaxis().subscribe(prophy => this.prophylaxisOptions = prophy);
         this._patientService.getSource().subscribe(source => this.patientSources = source);
         this._patientService.getServices().subscribe(service => { this.patientServices = service });
-        // Form Builder Logic
-        const form = this.patientForm;
+        // Create the form
         this.patientForm = this.fb.group({
             id: [''],
             ccc_number: ['', Validators.required],
@@ -205,7 +204,9 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
                 }
             });
         // Track pregnancy to trigger PMTCT if one is pregnant
-        this.patientForm.get('is_pregnant').valueChanges.subscribe(
+        this.patientForm.get('is_pregnant').valueChanges
+            .takeWhile(() => typeof this.patientSources !== 'undefined')
+            .subscribe(
             is_pregnant => {
                 if (+[is_pregnant] === 1) {
                     let pmtct = this.patientServices.find(service => service.name.toLowerCase() === 'pmtct');
@@ -215,13 +216,8 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
                         });
                     }
                 }
-                else {
-                    this.patientForm.patchValue({
-                        service_id: ''
-                    });
-                }
             }
-        )
+            )
         // Track source_id
         this.patientForm.get('source_id').valueChanges
             .takeWhile(() => typeof this.patientSources !== 'undefined')
@@ -238,21 +234,7 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
                         this.toggle_facilities = false;
                     }
                 }
-            }
-            )
-        // Track appointment_date
-        this.patientForm.get('appointment_date').valueChanges.subscribe(
-            date => {
-                if (new Date(date).toString().toLocaleLowerCase() === 'invalid date') {
-                    alert('Invalid appointment date');
-                }
-                else {
-                    this.patientForm.patchValue({
-                        days_to: this.dateDiff(date)
-                    })
-                }
-            }
-        )
+            });
         // Watch for changes to the service_id value. Triggers loading of regimens belonging to respective service
         this.patientForm.get('service_id').valueChanges
             .takeWhile(() => typeof this.patientSources !== 'undefined')
@@ -284,6 +266,18 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
                     else {
                         this.toggle_oi = false;
                     }
+                }
+            });
+        // Track appointment_date
+        this.patientForm.get('appointment_date').valueChanges.subscribe(
+            date => {
+                if (new Date(date).toString().toLocaleLowerCase() === 'invalid date') {
+                    alert('Invalid appointment date');
+                }
+                else {
+                    this.patientForm.patchValue({
+                        days_to: this.dateDiff(date)
+                    })
                 }
             });
         // Matches spouse to ccc_number
@@ -387,6 +381,24 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
                 }
             }
         );
+
+        // Only required for the edit page
+        if (this.formType === 'edit') {
+            this._patientService.getPatient(+[this.patientData[0]]).subscribe(val => this.patientValues(val));
+            this._patientService.getLatestVisit(+[this.patientData[0]]).subscribe(val => {
+                let latest_visit = val[val.length - 1]; // Access the only property in the array
+                if (typeof latest_visit !== 'undefined') {
+                    this.patientForm.patchValue({
+                        current_weight: latest_visit.current_weight,
+                        current_height: latest_visit.current_height,
+                        current_regimen_id: latest_visit.current_regimen_id
+                    })
+                }
+                else {
+                    console.log('Patient is yet to visit')
+                }
+            });
+        }
     }
 
     today(): string {
@@ -764,27 +776,12 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
     }
 
     ngOnChanges() {
-        console.log(this.patientData);
         let id = +[this.patientData[0]];
         this.formType = this.patientData[1];
         if (this.formType == 'edit') {
             this.edit = true;
             this.add = false;
         }
-        this._patientService.getPatient(id).subscribe(val => this.patientValues(val));
-        this._patientService.getLatestVisit(id).subscribe(val => {
-            let latest_visit = val[val.length - 1]; // Access the only property in the array
-            if (typeof latest_visit !== 'undefined') {
-                this.patientForm.patchValue({
-                    current_weight: latest_visit.current_weight,
-                    current_height: latest_visit.current_height,
-                    current_regimen_id: latest_visit.current_regimen_id
-                })
-            }
-            else {
-                console.log('Patient is yet to visit')
-            }
-        });
     }
 
     onChange(value: any): void {
