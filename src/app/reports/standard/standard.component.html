@@ -10,11 +10,12 @@
             </header>
             <div>
                <div class="widget-body no-padding">
+                   <div class="col-xs-2 col-md-2"></div>
+                   <div class="col-xs-8 col-md-8">
                   <form novalidate [formGroup]="standardReport">
-                     <section>
+                     <section style="text-align: center; padding: 12px">
                         <label>Select Report</label>
-                        <label class="select"></label>
-                        <select formControlName="type" class="form-control" id="select-1">
+                        <select #report formControlName="type" class="form-control" id="select-1">
                            <option value="0" selected> Select a Report </option>
                            <option value="1">Number of Patients Enrolled in Period</option>
                            <option value="2">Number of Patients Started on ART in Period</option>
@@ -32,7 +33,10 @@
                         </select>
                      </section>
                   </form>
-                  <form novalidate [formGroup]="enrolledInPeriod">
+                   </div>
+                   <div class="col-xs-2 col-md-2">
+                   </div>
+                  <form novalidate [formGroup]="enrolledInPeriod" *ngIf="standardReport.get('type').value == 1">
                      <sa-datatable [options]="{                       
                         buttons: [
                         'copy', 'excel', 'pdf', 'print'
@@ -48,43 +52,15 @@
                            </tr>
                            <tr>
                               <th></th>
-                              <th></th>
-                              <th></th>
-                              <th>Male</th>
-                              <th></th>
-                              <th></th>
-                              <th></th>
-                              <th></th>
-                              <th></th>
-                              <th>Female</th>
-                              <th></th>
-                              <th></th>
-                              <th></th>
-                              <th></th>
-                              <th></th>
-                              <th></th>
-                              <th></th>
-                              <th>Male</th>
-                              <th></th>
-                              <th></th>
-                              <th></th>
-                              <th></th>
-                              <th></th>
-                              <th></th>
-                              <th></th>
-                              <th>Female</th>
-                              <th></th>
-                              <th></th>
-                              <th></th>
-                              <th></th>
-                              <th></th>
-                              <th></th>
-                              <th></th>
+                              <th colspan="2"></th>
+                              <th colspan="6" style="text-align: center">Male</th>
+                              <th colspan="8" style="text-align: center">Female</th>
+                              <th colspan="8" style="text-align: center">Male</th>
+                              <th colspan="8" style="text-align: center">Female</th>
                            </tr>
                            <tr>
                               <th></th>
-                              <th></th>
-                              <th></th>
+                              <th colspan="2"></th>
                               <th>ART</th>
                               <th></th>
                               <th>PEP</th>
@@ -160,5 +136,5 @@
          </article>
       </div>
    </sa-widgets-grid>
-   <pre>{{ standardReport.value | json }}</pre>
+   <!--<pre>{{ standardReport.value | json }}</pre>-->
 </div>
