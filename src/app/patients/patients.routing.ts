@@ -12,7 +12,7 @@ export const routes: Routes = [
     {
         path: 'add',
         component: PatientAddComponent,
-        data: { pageTitle: 'Add Patient' }
+        data: { pageTitle: `<a [routerLink]="['/patients/list']"><span class="menu-item-parent">Add patients</span></a>` }
     },
     {
         path: 'list',

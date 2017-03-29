@@ -117,8 +117,8 @@ export class SharedComponent implements OnInit, DoCheck, OnChanges {
         this._patientService.getIllness().subscribe(resp => this.chronicIllnessOptions = resp);
         this._patientService.getAllergies().subscribe(allergies => this.allergiesOptions = allergies);
         this._patientService.getProphylaxis().subscribe(prophy => this.prophylaxisOptions = prophy);
-        this._patientService.getSource().subscribe(source => this.patientSources = source);
-        this._patientService.getServices().subscribe(service => { this.patientServices = service });
+        this._patientService.getSource().retryWhen(error => error.delay(1000)).subscribe(source => this.patientSources = source);
+        this._patientService.getServices().retryWhen(error => error.delay(1000)).subscribe(service => { this.patientServices = service });
         // Create the form
         this.patientForm = this.fb.group({
             id: [''],

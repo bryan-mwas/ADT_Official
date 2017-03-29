@@ -48,14 +48,21 @@
                                         <label>Place of birth</label>
                                         <input class="form-control" [(ngModel)]="patient.place_of_birth.name" name="place_of_birth" disabled>
                                     </div>
-                                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div *ngIf="patient.gender === 'male'" class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <label><span style="color:red; font-weight:bold">*</span> Gender</label>
                                         <select class="form-control" [(ngModel)]="patient.gender" name="gender" disabled>
                                             <option value="male">Male</option>
                                             <option value="female">Female</option>
                                         </select>
                                     </div>
-                                    <div *ngIf="patient.gender === 'Female'" class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <div *ngIf="patient.gender === 'female'" class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                        <label><span style="color:red; font-weight:bold">*</span> Gender</label>
+                                        <select class="form-control" [(ngModel)]="patient.gender" name="gender" disabled>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                        </select>
+                                    </div>
+                                    <div *ngIf="patient.gender === 'female'" class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                         <label>Pregnant?</label>
                                         <select class="form-control" [(ngModel)]="patient.is_pregnant" name="is_pregnant" disabled>
                                             <option value="1">Yes</option>

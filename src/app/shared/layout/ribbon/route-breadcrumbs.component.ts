@@ -5,7 +5,7 @@ import {ActivatedRoute, Router, NavigationEnd} from "@angular/router";
   selector: 'sa-route-breadcrumbs',
   template: `
         <ol class="breadcrumb">
-           <li *ngFor="let item of items">{{item}}</li>
+           <li *ngFor="let item of items" [innerHTML]="item"></li>
         </ol>
   `,
   styles: []
